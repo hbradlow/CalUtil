@@ -1,11 +1,12 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
-from api.API import BusStopResource
+from api.API import BusStopResource,BusLineResource
 
 from django.contrib import admin
 admin.autodiscover()
 
 api = Api(api_name='api')
+api.register(BusLineResource())
 api.register(BusStopResource())
 
 urlpatterns = patterns('',

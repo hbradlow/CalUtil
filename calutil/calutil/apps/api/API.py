@@ -1,9 +1,16 @@
 from django.contrib.auth.models import User
-from tastypie.resources import ModelResource
-from api.models import BusStop
+from tastypie import fields
+from tastypie.resources import ModelResource,ALL_WITH_RELATIONS
+from api.models import BusStop, BusLine
 
-
+class BusLineResource(ModelResource):
+    class Meta:
+        queryset = BusLine.objects.all()
+        resource_name = 'bus_line'
 class BusStopResource(ModelResource):
+    lines = fields.ToManyField("api.API.BusLineResource","lines",full=True)
     class Meta:
         queryset = BusStop.objects.all()
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         resource_name = 'bus_stop'
