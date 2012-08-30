@@ -1,334 +1,190 @@
 #import "MapViewController.h"
 
 @implementation MapViewController
-@synthesize mapView;
-@synthesize busstopCallout = _testCallout;
-@synthesize busstopAnnotation = _testAnnotation;
-@synthesize selectedAnnotation = _selectedAnnotation;
-@synthesize busStops = _busStops;
-@synthesize cal1cardLocations = _cal1cardLocations;
-@synthesize annotationSelector = _annotationSelector;
-@synthesize webView = _webView;
-@synthesize doneButton = _doneButton;
-@synthesize cal1Callout = _cal1Callout;
-@synthesize timePopUps = _timePopUps;
-@synthesize navigationBar = _navigationBar;
-@synthesize searchBar = _searchBar;
-@synthesize infoButton = _infoButton;
-@synthesize mapKeyImageView = _mapKeyTableView;
-@synthesize buildingAnnotation = _buildingAnnotation;
-@synthesize searchResults = _searchResults;
-@synthesize infoView = _libraryLabel;
 
 static NSString *OffCampus = @"Off-Campus";
 static NSString *OnCampus = @"On-campus by Cal Dining";
+static float CenterOfCampusLat = 37.870218;
+static float CenterOfCampusLong = -122.259481;
+static float LatitudeDelta = 0.015;
+static float LongitudeDelta = 0.015;
 
-/* 
- When the view loads do all the initialization of arrays, set the region of the mapview, 
- load all the schedule and location information from the datasources and add annotations 
- to the mapview. 
- */
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.busStops = [[NSMutableArray alloc] init];
-    self.timePopUps = [[NSMutableArray alloc] init];
-    self.cal1cardLocations = [[NSMutableArray alloc] init];
-    self.searchResults = [[NSMutableArray alloc] init];
+    self.busStopAnnotations = [[NSMutableArray alloc] init];
+    self.calCardAnnotations = [[NSMutableArray alloc] init];
     
+    // Setting up the map
     self.mapView.delegate = self;
-	CLLocationCoordinate2D coordinate = {38.315, -90.2045};
-	[self.mapView setRegion:MKCoordinateRegionMake(coordinate, 
-												   MKCoordinateSpanMake(1, 1))];  
-    CLLocationCoordinate2D coord = {.latitude =  37.870218, .longitude =  -122.259481};
-    MKCoordinateSpan span = {.latitudeDelta = 0.01, .longitudeDelta = 0.01};
+    self.mapView.showsUserLocation = YES;
+    
+    CLLocationCoordinate2D coord = {.latitude =  CenterOfCampusLat, .longitude =  CenterOfCampusLong};
+    MKCoordinateSpan span = {.latitudeDelta = LatitudeDelta, .longitudeDelta = LongitudeDelta};
+    
     MKCoordinateRegion region = {coord, span};
     [self.mapView setRegion:region];
-    NSString* plistpath = [[NSBundle mainBundle] pathForResource:@"Stops" ofType:@"plist"];
-    NSDictionary* stops = [NSDictionary dictionaryWithContentsOfFile:plistpath];
-    NSEnumerator* enumerator = [stops keyEnumerator];
-    id stop;
-    while ((stop = [enumerator nextObject]))
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"LoadedStops"];
+    // Loading the stops
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"LoadedStops"])
     {
-        NSDictionary* current = [stops objectForKey:stop];
-        NSNumber* longitude = [current objectForKey:@"long"];
-        NSNumber* latitude = [current objectForKey:@"lat"];
-        int index = [(NSNumber*)[current objectForKey:@"index"] integerValue];
-        BasicMapAnnotation* ano = [[BasicMapAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andRoutes:[current objectForKey:@"times"] andIndex:index];
-        ano.title = stop;
-        [self.busStops addObject:ano];	
-    }
-    [self.mapView addAnnotations:self.busStops];
-    
-    self.mapView.showsUserLocation = YES;    
-    
-    [[NSBundle mainBundle] loadNibNamed:@"InfoView" owner:self options:nil];
-    CGRect frame = self.infoView.frame; 
-    frame.origin.y = 480;
-    self.infoView.frame = frame;
-    //self.infoView = [[InfoView alloc] initWithFrame:CGRectMake(0, 480, 320, 200)];
-    //self.infoView.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.8];
-    [self.view addSubview:self.infoView];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-       
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/locations/", ServerURL];
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/?format=json",ServerURL];
+        queryString = [queryString lowercaseString];
         
+        NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
         
-        NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                     returningResponse:&response
-                                                                 error:&error];
-        NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];  
-        for (NSDictionary *currentLocation in arr)
-        {
-            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
-            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
-            NSString *info = [currentLocation objectForKey:@"description"];
-            NSString *title = [currentLocation objectForKey:@"name"];
-            NSString *times = [currentLocation objectForKey:@"times"];
-            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
-            NSString *type = [currentLocation objectForKey:@"kind"];
-            if (latitude != nil)
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                         returningResponse:&response
+                                                                     error:&error];
+            NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+            
+            NSArray *stops = [dict objectForKey:@"objects"];
+            
+            for (NSDictionary *currentStop in stops)
             {
-                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
-                annotation.type = type;
-                [self.cal1cardLocations addObject:annotation];
+                NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
+                NSArray *currentRoutes = nil;
+                float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
+                float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];
+                NSString *title = [currentStop objectForKey:@"title"];
+                
+                BusStopAnnotation *currentAnnotation = [[BusStopAnnotation alloc] initWithID:currentID latitude:currentLat longitude:currentLong routes:currentRoutes];
+                currentAnnotation.title = title;
+                [self.busStopAnnotations addObject:currentAnnotation];
             }
-        }
-        
-        NSString *plistpath = [[NSBundle mainBundle] pathForResource:@"Cal1CardLocations" ofType:@"plist"];
-        NSDictionary *stops = [NSDictionary dictionaryWithContentsOfFile:plistpath];
-        NSEnumerator *enumerator = [stops keyEnumerator];
-        id stop;
-        while ((stop = [enumerator nextObject]))
-        {
-            NSDictionary* current = [stops objectForKey:stop];
-            NSNumber* longitude = [current objectForKey:@"long"];
-            NSNumber* latitude = [current objectForKey:@"lat"];
-            Cal1CardAnnotation* ano = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:stop andURL:[current objectForKey:@"url"] andTimes:[current objectForKey:@"times"] andInfo:[current objectForKey:@"info"]];
-            ano.type = [current objectForKey:@"type"];
-            [self.cal1cardLocations addObject:ano];	
-        }
-    });
+            
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            
+            dispatch_async(updateUIQueue, ^{
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoadedStops"];
+                if ([self.annotationSelector selectedSegmentIndex] == 0)
+                    [self.mapView addAnnotations:self.busStopAnnotations];
+            });
+        });
+    }
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Cal1CardLocations"];
+    // Loading the cal1card locations
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Cal1CardLocations"])
+    {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            
+            NSString *queryString = [NSString stringWithFormat:@"https://calutil.herokuapp.com/api/locations/"];
+            NSURL *requestURL = [NSURL URLWithString:queryString];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            
+            NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+            
+            NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                         returningResponse:&response
+                                                                     error:&error];
+            NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+            NSLog(@"cal1card: %@%@", arr, queryString);
+            for (NSDictionary *currentLocation in arr)
+            {
+                NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+                NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+                NSString *info = [currentLocation objectForKey:@"description"];
+                NSString *title = [currentLocation objectForKey:@"name"];
+                NSString *times = [currentLocation objectForKey:@"times"];
+                NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+                NSString *type = [currentLocation objectForKey:@"kind"];
+                if (latitude != nil)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Cal1CardLocations"];
+                    Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
+                    annotation.type = type;
+                    [self.calCardAnnotations addObject:annotation];
+                }
+            }
+        });
+    }
 }
 
-/*
- Handles the selection of the annotations and displays the correct popups.
- */
+- (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
+    /*
+     MKCoordinateRegion region;
+     MKCoordinateSpan span;
+     span.latitudeDelta = 0.01;
+     span.longitudeDelta = 0.01;
+     CLLocationCoordinate2D location;
+     location.latitude = aUserLocation.coordinate.latitude;
+     location.longitude = aUserLocation.coordinate.longitude;
+     region.span = span;
+     region.center = location;
+     [aMapView setRegion:region animated:YES];*/
+}
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if ([self.busStops containsObject:view.annotation])
-    {   
-        if (self.busstopCallout == nil) 
-        {
-            self.busstopCallout = [[BusStopAnnotation alloc] initWithLatitude:view.annotation.coordinate.latitude andLongitude:view.annotation.coordinate.longitude andRoutes:((BasicMapAnnotation*)view.annotation).routes andDelegate:self andIndex:((BasicMapAnnotation*)view.annotation).index];
-            self.busstopCallout.title = view.annotation.title;
-        }
-        else {
-            self.busstopCallout.title = view.annotation.title;
-            self.busstopCallout.latitude = view.annotation.coordinate.latitude;
-            self.busstopCallout.longitude = view.annotation.coordinate.longitude;
-            self.busstopCallout.routes = ((BasicMapAnnotation*)view.annotation).routes;
-            self.busstopCallout.routeIndex = ((BasicMapAnnotation*)view.annotation).index;
-        }
-        [self.mapView addAnnotation:self.busstopCallout];
-        self.selectedAnnotation = view;
-    }
-    
-    if ([self.cal1cardLocations containsObject:view.annotation])
+    if (([self.busStopAnnotations containsObject:view.annotation] || [self.calCardAnnotations containsObject:view.annotation])
+        && self.selectedAnnotation == nil)
     {
-        if (self.cal1Callout == nil)
+        if (!self.selectedAnnotation)
         {
-            self.cal1Callout = [[Cal1CardAnnotation alloc] initWithLatitude:view.annotation.coordinate.latitude 
-                                                               andLongitude:view.annotation.coordinate.longitude 
-                                                                   andTitle:((BasicMapAnnotation*)view.annotation).title 
-                                                                     andURL:((Cal1CardAnnotation*)view.annotation).imageURL 
-                                                                   andTimes:((Cal1CardAnnotation*)view.annotation).times
-                                                                    andInfo:((Cal1CardAnnotation*)view.annotation).info];
-        } else {
-            self.cal1Callout.latitude = view.annotation.coordinate.latitude;
-            self.cal1Callout.longitude = view.annotation.coordinate.longitude;
-            self.cal1Callout.title = view.annotation.title;
-            self.cal1Callout.times = ((Cal1CardAnnotation*)view.annotation).times;
-            self.cal1Callout.info = ((Cal1CardAnnotation*)view.annotation).info;
-            self.cal1Callout.imageURL = ((Cal1CardAnnotation*)view.annotation).imageURL;
-            self.cal1Callout.type = ((Cal1CardAnnotation*)view.annotation).type;
-        }   
-        [self.mapView addAnnotation:self.cal1Callout];
-        self.selectedAnnotation = view;
-    }
-}
-/*
- Deselects the selected annotation view, but has some custom code to prevent 
- deselection if the annotation wants to prevent it for reasons like that the 
- touch was to select a bus path etc. 
- */
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
-{
-    // Make sure that the deselection wasn't as a result of a tab inside the callout table view, then deselect 
-    // the correct annotation. 
-    if (self.busstopCallout && [self.busStops containsObject:view.annotation] && !((BasicMapAnnotationView*)view).preventSelectionChange)
-    {
-        [self.mapView removeAnnotation:self.busstopCallout];
-        [self.mapView removeAnnotations:self.timePopUps];
-        for (BasicMapAnnotation *anno in self.mapView.annotations)
+            self.selectedAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:view.annotation.coordinate.latitude
+                                                                      andLongitude:view.annotation.coordinate.longitude];
+            self.selectedAnnotation.title = view.annotation.title;
+        }
+        else
         {
-            if ([anno class] == [BasicMapAnnotation class])
-            {
-                BasicMapAnnotationView *view = (BasicMapAnnotationView*)[self.mapView viewForAnnotation:anno];
-                view.pinColor = MKPinAnnotationColorGreen;
-            }
+            self.selectedAnnotation.coordinate = view.annotation.coordinate;
+            self.selectedAnnotation.title = view.annotation.title;
         }
-    }
-    if (self.cal1Callout && [self.cal1cardLocations containsObject:view.annotation] && !((BasicMapAnnotationView*)view).preventSelectionChange)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.75];
-        CGRect frame = self.infoView.frame;
-        if (frame.origin.y == 480-frame.size.height-68){
-            frame.origin.y = 480;
-        }
-        self.infoView.frame = frame;
-        [UIView commitAnimations];
-        [self.mapView removeAnnotation:self.cal1Callout];
+        [self.mapView addAnnotation:self.selectedAnnotation];
+        self.selectedAnnotationView = (MKPinAnnotationView*)view;
     }
 }
 
-/*
- A lot of customization code to display the correct views for the annotations,
- and prevents customization of the annotation that shows the user location. 
- */ 
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    if (self.selectedAnnotation && !((BasicMapAnnotationView*)view).preventSelectionChange)
+    {
+        [self.mapView removeAnnotation:self.selectedAnnotation];
+        self.selectedAnnotation = nil;
+    }
+}
+
 -(MKAnnotationView*)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
-    if (annotation == self.busstopCallout)
+    if (annotation == self.selectedAnnotation)
     {
-        BusStopAnnotationView *callout = (BusStopAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"callout"];
+        DisclosureAnnotationView *callout = (DisclosureAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"callout"];
         if (!callout)
         {
-            callout = [[BusStopAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"callout"];
-            callout.contentHeight = 78.0f; 
-        }
-        callout.parentAnnotationView = self.selectedAnnotation;
-        callout.mapView = self.mapView;
-        callout.tableView.delegate = ((BusStopAnnotation*)annotation);
-        callout.tableView.dataSource = ((BusStopAnnotation*)annotation);
-        [((BusStopAnnotation*)annotation) sortStops];
-        [callout.tableView reloadData];
-        
-        return callout;
-    }
-    else if (annotation == self.buildingAnnotation) {
-        
-        MKPinAnnotationView *anno = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"building"];
-        anno.canShowCallout = YES;
-        return anno;
-    }
-    else if (annotation == self.cal1Callout) {
-        Cal1CardAnnotationView *callout = (Cal1CardAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"cal1callout"];
-        if (!callout)
-        {
-            callout = [[Cal1CardAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"cal1callout"];
+            callout = [[DisclosureAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"callout"];
             callout.contentHeight = 39.0f;
-            callout.times = ((Cal1CardAnnotation*)annotation).times;
-            callout.title = ((Cal1CardAnnotation*)annotation).title;
         }
-        callout.times = ((Cal1CardAnnotation*)annotation).times;
-        callout.title = ((Cal1CardAnnotation*)annotation).title;
-        callout.parentAnnotationView = self.selectedAnnotation;
+        callout.parentAnnotationView = self.selectedAnnotationView;
+        callout.textLabel.text = self.selectedAnnotation.title;
         callout.mapView = self.mapView;
-        callout.textLabel.text = ((Cal1CardAnnotation*)annotation).title;
-        callout.info = ((Cal1CardAnnotation*)annotation).info;
-        callout.imageURL = ((Cal1CardAnnotation*)annotation).imageURL;
         return callout;
     }
-    else if ([self.busStops containsObject:annotation]) 
+    else if ([self.busStopAnnotations containsObject:annotation])
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"BusPin"];
-        annotationView.canShowCallout = NO; 
+        annotationView.canShowCallout = NO;
         annotationView.pinColor = MKPinAnnotationColorGreen;
         return annotationView;
     }
-    else if ([self.cal1cardLocations containsObject:annotation])
+    else if ([self.calCardAnnotations containsObject:annotation])
     {
-        MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Cal1Pin"];
-        annotationView.canShowCallout = NO; 
-        if ([((Cal1CardAnnotation*)annotation).type isEqualToString:OffCampus])
-            annotationView.pinColor = MKPinAnnotationColorRed;
-        else if([((Cal1CardAnnotation*)annotation).type isEqualToString:OnCampus]) {
-            annotationView.pinColor = MKPinAnnotationColorGreen;
-        } else {
-            annotationView.pinColor = MKPinAnnotationColorPurple;
-        }
-        return annotationView;  
-    }
-    else if ([self.timePopUps containsObject:annotation])
-    {
-        TimePopAnnotationView *callout = (TimePopAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"TimePop"];
-        if (!callout)
-        {
-            callout = [[TimePopAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"TimePop"];
-            callout.contentHeight = 39.0f;
-            callout.titleLabel.text = annotation.title;
-        }
-        callout.titleLabel.text = annotation.title;
-        callout.mapView = self.mapView;
-        return callout;
+        MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
+        annotationView.canShowCallout = NO;
+        annotationView.pinColor = MKPinAnnotationColorRed;
+        return annotationView;
     }
     return nil;
-}
-
-/*
- Takes an index of a time, busstop, and a line (perimeter, f, etc), and 
- highlights the path and displays the time pop ups. 
- */
-- (void)highlightPath:(NSString *)path:(NSString*)indexes
-{
-    [self.mapView removeAnnotations:self.timePopUps];
-    self.timePopUps = [[NSMutableArray alloc] init];
-    NSString *timeIndex = [[indexes componentsSeparatedByString:@":"] objectAtIndex:0];
-    NSString *routeIndex = [[indexes componentsSeparatedByString:@":"] objectAtIndex:1];
-    NSString *pathName = path;
-    NSLog(@"highlight path with start index %@ %@",indexes, path);
-    for (BasicMapAnnotation *anno in self.busStops)
-    {
-        if ([anno.routes objectForKey:pathName])
-        {
-            NSArray *times = [anno.routes objectForKey:pathName];
-            NSString *closestTime = @"N/A";
-            
-            if ([routeIndex integerValue] > anno.index) {
-                if (!([timeIndex integerValue]+2 > [times count]))
-                    closestTime = [times objectAtIndex:[timeIndex integerValue]+2];
-            }
-            else {
-                closestTime = [times objectAtIndex:[timeIndex integerValue]];
-            }
-            
-            BasicMapAnnotationView *view = (BasicMapAnnotationView*)[self.mapView viewForAnnotation:anno];
-            // Make the pin red to show that the annotation is part of the path 
-            view.pinColor = MKPinAnnotationColorRed;
-            BasicMapAnnotation *v = [[BasicMapAnnotation alloc] initWithLatitude:anno.coordinate.latitude andLongitude:anno.coordinate.longitude andRoutes:nil andIndex:0];
-            
-            // If the specific bus that was selected never reaches this location, don't change the title
-            if (![closestTime isEqualToString:@"N/A"])
-                v.title = [NSString stringWithFormat:@"%@:%@", [[closestTime componentsSeparatedByString:@":"] objectAtIndex:0],[[closestTime componentsSeparatedByString:@":"] objectAtIndex:1]];
-            else 
-                v.title = closestTime;
-            v.url = @"testing";
-            
-            // Do not add a popup for the selected annotation
-            if (!(anno == self.selectedAnnotation.annotation))
-                [self.timePopUps addObject:v];
-        }
-    }
-    [self.mapView addAnnotations:self.timePopUps];
 }
 
 - (IBAction)displayMapKey:(id)sender {
@@ -344,133 +200,27 @@ static NSString *OnCampus = @"On-campus by Cal Dining";
     [UIView commitAnimations];
 }
 
-/*
- Switched the annotations on the map and handles the title of the 
- segmented control in the title bar. 
- */
-- (IBAction)switchAnnotations:(id)sender {
-    [self.mapView removeAnnotations:self.busStops];
-    [self.mapView removeAnnotations:self.cal1cardLocations];
-    [self.mapView removeAnnotations:self.timePopUps];
-    [self.infoButton setHidden:YES];
+- (IBAction)switchAnnotations:(id)sender
+{
+    [self.mapView removeAnnotations:self.calCardAnnotations];
+    [self.mapView removeAnnotations:self.busStopAnnotations];
     if (self.buildingAnnotation)
         [self.mapView removeAnnotation:self.buildingAnnotation];
-    [UIView beginAnimations:nil context:NULL];
-    [self.searchDisplayController.searchBar setHidden:YES];
-    [UIView commitAnimations];
-    switch (self.annotationSelector.selectedSegmentIndex) {
+    [self.searchBar setHidden:YES];
+    
+    switch ([self.annotationSelector selectedSegmentIndex]) {
         case 0:
-        {
-            [self.mapView addAnnotations:self.busStops];
-            [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
-        }
+            [self.mapView addAnnotations:self.busStopAnnotations];
             break;
         case 1:
-        {
-            [self.infoButton setHidden:NO];
-            [self.mapView addAnnotations:self.cal1cardLocations];
-            NSString *balance = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"cal1bal"]];
-            NSArray *components = [balance componentsSeparatedByString:@"."];
-            if ([components count] >= 2)
-                if ([[components objectAtIndex:1] length] > 2)
-                    balance = [NSString stringWithFormat:@"%@.%@", [components objectAtIndex:0], [[components objectAtIndex:1] substringToIndex:2]];
-            if ([balance isEqualToString:@"-1"] || !balance || [balance isEqualToString:@"(null)"])
-                balance = @"N/A";
-            else 
-                balance = [NSString stringWithFormat:@"%@$", balance];
-            [self.annotationSelector setTitle:balance forSegmentAtIndex:1]; 
-        }
+            [self.mapView addAnnotations:self.calCardAnnotations];
             break;
         case 2:
-        {
-            [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
-            [UIView beginAnimations:nil context:NULL];
-            [self.searchDisplayController.searchBar setHidden:NO];
-            [UIView commitAnimations];
-        }
+            [self.searchBar setHidden:NO];
+            break;
+        default:
             break;
     }
-}
-
-/*
- Display the website for the cal1card location that was selected. 
- */
-- (void)displayInfo:(Cal1CardAnnotationView *)annotation
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.75];
-    CGRect frame = self.infoView.frame;
-    if (frame.origin.y == 480)
-    {
-        frame.origin.y = 480-frame.size.height-68;
-    }
-    else if (frame.origin.y == 480-frame.size.height-68){
-        frame.origin.y = 480;
-    }
-    self.infoView.frame = frame;
-    self.infoView.textView.text = annotation.info;
-    self.infoView.titleLabel.text = annotation.title;
-    self.infoView.timesTextView.text = annotation.times;
-    if ([((Cal1CardAnnotation*)annotation.annotation).type isEqualToString:@"library"])
-    {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
-        dispatch_async(queue, ^{
-            
-            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:annotation.imageURL]]];
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^{
-                self.infoView.imageView.image = image;
-            });
-        });
- 
-    }
-    else {
-        self.infoView.imageView.image = [UIImage imageNamed:annotation.imageURL];
-    }
-    [UIView commitAnimations];
-}
-/*
- Remove the webview and return to the cal1card view. 
- */
-- (IBAction)doneButtonPushed:(id)sender
-{
-    // When the user taps the done button after viewing a website, this method returns the mapview and 
-    // updates the segmented control. 
-    [self.webView setHidden:YES];
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.5];
-    NSString *balance = [NSString stringWithFormat:@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"cal1bal"]];
-    NSArray *components = [balance componentsSeparatedByString:@"."];
-    if ([components count] >= 2)
-        if ([[components objectAtIndex:1] length] > 2)
-            balance = [NSString stringWithFormat:@"%@.%@", [components objectAtIndex:0], [[components objectAtIndex:1] substringToIndex:2]];
-    if ([balance isEqualToString:@"-1"] || !balance || [balance isEqualToString:@"(null)"])
-        balance = @"N/A";
-    else 
-        balance = [NSString stringWithFormat:@"%@$", balance];
-    
-    [self.annotationSelector setTitle:balance forSegmentAtIndex:1]; 
-    
-    [self.annotationSelector setEnabled:YES forSegmentAtIndex:0];
-    [self.annotationSelector setEnabled:YES forSegmentAtIndex:1];
-    [self.annotationSelector setSelectedSegmentIndex:1];
-    CGRect frame = self.annotationSelector.frame;
-    frame.size.width = 300;
-    self.annotationSelector.frame = frame;
-    self.navigationBar.rightBarButtonItem = nil;
-    [UIView commitAnimations];
-}
-
-/*
- Customize the table view that is displayed for the full schedule 
- of a busstop. 
- */
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    [self.mapView removeAnnotations:self.timePopUps];
-    ((ScheduleViewController*)segue.destinationViewController).items = ((BusStopAnnotation*)sender).nextBuses;
-    ((ScheduleViewController*)segue.destinationViewController).delegate = self;
-    ((ScheduleViewController*)segue.destinationViewController).stop = sender;    
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -480,7 +230,7 @@ static NSString *OnCampus = @"On-campus by Cal Dining";
 }
 
 /*
- Uses the google maps api to search for buldings in Berkeley. 
+ Uses the google maps api to search for buldings in Berkeley.
  */
 -(void)searchForBuilding
 {
@@ -516,8 +266,8 @@ static NSString *OnCampus = @"On-campus by Cal Dining";
 }
 
 /*
- Everything below here is related to the table view, and just handles 
- the customization of the cells etc. 
+ Everything below here is related to the table view, and just handles
+ the customization of the cells etc.
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -562,11 +312,11 @@ static NSString *OnCampus = @"On-campus by Cal Dining";
     self.searchDisplayController.searchBar.text = @"";
     NSString *lat =  [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"];
     NSString *lng =  [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"];
-    self.buildingAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:[lat doubleValue] andLongitude:[lng doubleValue] andRoutes:nil andIndex:0];
+    self.buildingAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:[lat doubleValue] andLongitude:[lng doubleValue]];
     self.buildingAnnotation.title = [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"formatted_address"] componentsSeparatedByString:@","] objectAtIndex:0];
     [self.mapView addAnnotation:self.buildingAnnotation];
-    [self.mapView setCenterCoordinate:self.buildingAnnotation.coordinate];    
-    [self.searchDisplayController setActive:NO animated:YES];  
+    [self.mapView setCenterCoordinate:self.buildingAnnotation.coordinate];
+    [self.searchDisplayController setActive:NO animated:YES];
     self.searchResults = [[NSMutableArray alloc] init];
     [self performSelector:@selector(selectBuilding) withObject:nil afterDelay:0.7];
 }
@@ -576,12 +326,11 @@ static NSString *OnCampus = @"On-campus by Cal Dining";
 }
 -(void)selectBuilding
 {
-    [self.mapView selectAnnotation:self.buildingAnnotation animated:YES];  
+    [self.mapView selectAnnotation:self.buildingAnnotation animated:YES];
 }
 - (void)viewDidUnload {
     [self setAnnotationSelector:nil];
     [self setWebView:nil];
-    [self setDoneButton:nil];
     [self setNavigationBar:nil];
     [self setSearchBar:nil];
     [self setMapKeyImageView:nil];

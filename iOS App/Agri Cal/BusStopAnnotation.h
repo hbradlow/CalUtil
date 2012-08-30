@@ -7,27 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BasicMapAnnotation.h"
 
-@interface BusStopAnnotation : NSObject <MKAnnotation, UITableViewDelegate, UITableViewDataSource>
-{
-    CLLocationDegrees _latitude;
-    CLLocationDegrees _longitude;
-    NSMutableDictionary *_routes;
-    NSMutableArray *_nextBuses; 
-    id _delegate;
-}
+@interface BusStopAnnotation : BasicMapAnnotation
 
-@property (nonatomic) CLLocationDegrees latitude;
-@property (nonatomic) CLLocationDegrees longitude;
-@property (nonatomic,strong) NSMutableDictionary *routes; 
-@property (nonatomic, strong) NSMutableArray *nextBuses;
-@property (nonatomic) NSInteger routeIndex;
-@property (nonatomic,strong) id delegate;
-@property (nonatomic, strong) NSString *title;
-- (id)initWithLatitude:(CLLocationDegrees)latitude
-		  andLongitude:(CLLocationDegrees)longitude
-             andRoutes:(NSMutableDictionary*)routes
-           andDelegate:(id)delegate
-              andIndex:(NSInteger)index;
-- (void)sortStops;
+@property (nonatomic) NSInteger stopID;
+@property (nonatomic, strong) NSArray *routes;
+
+- (id)initWithID:(NSInteger)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts;
+
 @end

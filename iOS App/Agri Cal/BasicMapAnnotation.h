@@ -12,18 +12,12 @@
     CLLocationDegrees _latitude;
     CLLocationDegrees _longitude; 
     NSString *_title; 
-    NSMutableDictionary *_routes;
-    NSMutableDictionary *_routeNumbers;
-    NSString *_url;
+    NSString *_subtitle;
 }
 @property (nonatomic, retain) NSString *title;
-@property (nonatomic, strong) NSMutableDictionary *routes; 
-@property (nonatomic, strong) NSString *url;
-@property (nonatomic) NSInteger index;
+@property (nonatomic, retain) NSString *subtitle;
 
 - (id)initWithLatitude:(CLLocationDegrees)latitude
-          andLongitude:(CLLocationDegrees)longitude
-             andRoutes:(NSMutableDictionary*)routes
-              andIndex:(NSInteger)index;
+          andLongitude:(CLLocationDegrees)longitude;
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
 @end

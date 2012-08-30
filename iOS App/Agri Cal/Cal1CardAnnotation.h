@@ -7,16 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BasicMapAnnotation.h"
 
-@interface Cal1CardAnnotation : NSObject <MKAnnotation> {
-    CLLocationDegrees _latitude;
-	CLLocationDegrees _longitude;
-    NSString *_title;
-    NSString *_url;
-}
+@interface Cal1CardAnnotation : BasicMapAnnotation
 
-@property (nonatomic) CLLocationDegrees latitude;
-@property (nonatomic) CLLocationDegrees longitude;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *times;
 @property (nonatomic, strong) NSString *info;
