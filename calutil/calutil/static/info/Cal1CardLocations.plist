@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Bear Basics</key>
+	<dict>
+		<key>url</key>
+		<string>bearbasics.jpg</string>
+		<key>lat</key>
+		<real>37.86768</real>
+		<key>long</key>
+		<real>-122.259085</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>info</key>
+		<string>The ground floor of this Cal logo superstore sells mostly UC Berkeley apparel: sweatshirts, socks, even baby clothes with the Berkeley Bear logo. Upstairs is Futura, which focuses on women&apos;s clothing. In the basement is T-Shirt Orgy, where references to TV, film, pop-culture and marijuana run rampant. - courtesy of sfgate.com</string>
+		<key>times</key>
+		<string>10-6:30 Daily</string>
+	</dict>
+	<key>Berkeley Thai House</key>
+	<dict>
+		<key>url</key>
+		<string>berkeleyThaiHouse.jpg</string>
+		<key>long</key>
+		<real>-122.258389</real>
+		<key>lat</key>
+		<real>37.867061</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Thurs: 11am - 9:30pm 
+Fri-Sat:11am-10pm 
+Sun: noon-9:30pm</string>
+		<key>info</key>
+		<string>Berkeley Thai House has been family owned and operated since 1986! Berkeley Thai House prides itself on its fast, friendly, and authentic Thai dining experience at an affordable price.</string>
+	</dict>
+	<key>Cafe Durant</key>
+	<dict>
+		<key>url</key>
+		<string>cafedurant.jpg</string>
+		<key>lat</key>
+		<real>37.868026</real>
+		<key>long</key>
+		<real>-122.258245</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>info</key>
+		<string>We at Cafe Durant thank everyone for making us a Berkeley staple for the past 20+ years! Please come check out the newly upgraded sun deck which will now be open at night for a dining experience under the beautiful sky unlike any other restaurant in Berkeley. </string>
+		<key>times</key>
+		<string>Open Daily for Breakfast, Lunch and Dinner 
+Sun-Mon: 7:30AM to 9:00PM
+Tues-Sat: 7:30AM to 10:00PM</string>
+	</dict>
+	<key>Chipotle Mexican Grill</key>
+	<dict>
+		<key>url</key>
+		<string>chipotle.gif</string>
+		<key>lat</key>
+		<real>37.868366</real>
+		<key>long</key>
+		<real>-122.25905</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>info</key>
+		<string>When Chipotle (pronounced chi-POAT-lay) opened its first store in 1993, the idea was simple: demonstrate that food served fast didn&apos;t have to be a &quot;fast-food&quot; experience. We use high-quality raw ingredients, classic cooking methods and distinctive interior design--features that are more frequently found in the world of fine dining. When we opened, there wasn&apos;t an industry category to describe what we were doing. Some 16 years and more than 900 restaurants later, we compete in a category of dining now called &quot;fast-casual,&quot; the fastest growing segment of the restaurant industry, where customers expect food quality that&apos;s more in line with full-service restaurants, coupled with the speed and convenience of fast food.</string>
+		<key>times</key>
+		<string>Mon-Sun 11 am - 10 pm</string>
+	</dict>
+	<key>IB&apos;s Hoagies &amp; Cheesesteaks</key>
+	<dict>
+		<key>url</key>
+		<string>hoagies.JPG</string>
+		<key>lat</key>
+		<real>37.868018</real>
+		<key>long</key>
+		<real>-122.258502</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sun 10 am - 10 pm</string>
+		<key>info</key>
+		<string>No information available.</string>
+	</dict>
+	<key>Johnston&apos;s Market</key>
+	<dict>
+		<key>url</key>
+		<string>johnstons.jpg</string>
+		<key>lat</key>
+		<real>37.868024</real>
+		<key>long</key>
+		<real>-122.258457</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Hours not available.</string>
+		<key>info</key>
+		<string>No information available.</string>
+	</dict>
+	<key>Moe&apos;s Books</key>
+	<dict>
+		<key>url</key>
+		<string>Moesbooks.jpg</string>
+		<key>lat</key>
+		<real>37.865522</real>
+		<key>long</key>
+		<real>-122.258646</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sun 10 am - 10 pm</string>
+		<key>info</key>
+		<string>Since its inception back in the heyday of the Beatnik era, Moe&apos;s Books has managed to become more than just a great bookstore--it has achieved the rarified status of a beloved landmark institution as well. Situated just four blocks from the University of California campus, Moe&apos;s has managed to mirror the often turbulent and triumphant times that have come to epitomize all that is exciting and unique about Berkeley.</string>
+	</dict>
+	<key>Ned&apos;s Berkeley Bookstore</key>
+	<dict>
+		<key>url</key>
+		<string>neds.jpg</string>
+		<key>lat</key>
+		<real>37.868554</real>
+		<key>long</key>
+		<real>-122.259842</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>info</key>
+		<string>No information available.</string>
+		<key>times</key>
+		<string>Mon-Fri 9 am - 6 pm
+Sat 11 am - 5 pm
+Sun 12 pm - 5 pm</string>
+	</dict>
+	<key>UC Hair Salon &amp; Waxing</key>
+	<dict>
+		<key>url</key>
+		<string>uchair.jpg</string>
+		<key>lat</key>
+		<real>37.868402</real>
+		<key>long</key>
+		<real>-122.26052</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Monday – Saturday, 10 a.m. – 6 p.m. Closed on Sunday</string>
+		<key>info</key>
+		<string>At U.C. Hair Salon and Waxing, our staff of highly trained, professional hairstylists helps you find the look that is right for your personality and lifestyle. We are passionate about our work, so we continue our training to master the latest techniques in hair styling to give you elegant, gorgeous, fun styles to suit your individuality. Because we want you to look stunning even days after you left our hair salon, we provide you with the tips and tricks to help you maintain your style at home.</string>
+	</dict>
+	<key>Berkeley Student Food Collective</key>
+	<dict>
+		<key>url</key>
+		<string>studentfood.jpg</string>
+		<key>lat</key>
+		<real>37.868402</real>
+		<key>long</key>
+		<real>-122.26052</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Monday-Thursday: 9am-8pm
+Friday: 9am-7pm
+Saturday: 10am-5pm</string>
+		<key>info</key>
+		<string>We&apos;re dedicated to providing fresh, local, healthy, environmentally sustainable and ethically produced food at affordable prices to the Berkeley campus and greater community. We seek to educate students about nutrition and food systems, empower new leaders, and train youth to work in and manage a sustainable business. Through inclusive, democratic decision-making, we operate a cooperative grocery market that promotes community-building and environmental stewardship.</string>
+	</dict>
+	<key>Blondie&apos;s Pizza</key>
+	<dict>
+		<key>url</key>
+		<string>blondies.jpg</string>
+		<key>lat</key>
+		<real>37.868034</real>
+		<key>long</key>
+		<real>-122.259197</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon, Sun 10 am - 12 am
+Tue-Thu 10 am - 1 am
+Fri-Sat 10 am - 2 am</string>
+		<key>info</key>
+		<string>No information available.</string>
+	</dict>
+	<key>Cheese &apos;n&apos; Stuff</key>
+	<dict>
+		<key>url</key>
+		<string>cheesenstuff.jpg</string>
+		<key>lat</key>
+		<real>37.86763</real>
+		<key>long</key>
+		<real>-122.26029</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Monday - Sat 10am - 6pm</string>
+		<key>info</key>
+		<string>Simply put, a lunch trip to Cheese &apos;N&apos; Stuff has become a UC Berkeley tradition. It&apos;s more than just the fresh bread and great meat selection. It&apos;s about seeing everyone you know in line for a said sandwich.
+
+It&apos;s about Cheese &apos;N&apos; Stuff&apos;s tireless support for the UC Berkeley athletic department, making it their favorite lunch spot, as well as the entire Greek system.</string>
+	</dict>
+	<key>Extreme Pizza, Shattuck Ave.</key>
+	<dict>
+		<key>url</key>
+		<string>extreme.jpg</string>
+		<key>lat</key>
+		<real>37.86621</real>
+		<key>long</key>
+		<real>-122.268271</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sun 11:30 am - 12 am</string>
+		<key>info</key>
+		<string>Only the freshest ingredients, the tastiest combinations of toppings, and a mouth-watering store-baked crust</string>
+	</dict>
+	<key>Extreme Pizza, College Ave.</key>
+	<dict>
+		<key>url</key>
+		<string>http://www.extremepizza.com/</string>
+		<key>lat</key>
+		<real>37.851045</real>
+		<key>long</key>
+		<real>-122.252634</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Hours not available.</string>
+		<key>info</key>
+		<string>Information not available.</string>
+	</dict>
+	<key>Jamba Juice</key>
+	<dict>
+		<key>url</key>
+		<string>jamba.jpg</string>
+		<key>lat</key>
+		<real>37.868682</real>
+		<key>long</key>
+		<real>-122.258734</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sun 8 am - 8 pm</string>
+		<key>info</key>
+		<string>Information not available.</string>
+	</dict>
+	<key>Joshua-ya&apos;s Brasserie</key>
+	<dict>
+		<key>url</key>
+		<string>joshu.jpg</string>
+		<key>lat</key>
+		<real>37.865234</real>
+		<key>long</key>
+		<real>-122.259381</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sat 11:30 am - 4 pm
+Mon-Sun 4 pm - 10 pm
+Sun 9:30 am - 4 pm</string>
+		<key>info</key>
+		<string>Joshu-ya Brasserie is a Japanese brasserie that serves sushi and tapas inspired from influences around the world. In conjunction to traditional sushi, Joshu-ya also offers a wide selection of California / New York inspired tapas with a Japanese flare. </string>
+	</dict>
+	<key>Naan-N-Curry</key>
+	<dict>
+		<key>url</key>
+		<string>naan.JPG</string>
+		<key>lat</key>
+		<real>37.8674</real>
+		<key>long</key>
+		<real>-122.259068</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sun 11 am - 11 pm</string>
+		<key>info</key>
+		<string>San Francisco, CA was the birthplace of Naan -N- Curry. In San Francisco, CA since February of 2002, the team at Naan -N- Curry was determined to bring the same traditional Pakistani and Indian flavors from the Bay Area. The Puget Sound community has responded to this yearning and helped make Naan -N- Curry one of the most prominent Pakistani and Indian restaurants in San Francisco.</string>
+	</dict>
+	<key>San Francisco Soup Company</key>
+	<dict>
+		<key>url</key>
+		<string>soupco.jpg</string>
+		<key>lat</key>
+		<real>37.868671</real>
+		<key>long</key>
+		<real>-122.258563</real>
+		<key>type</key>
+		<string>Off-Campus</string>
+		<key>times</key>
+		<string>Mon-Sat 11 am - 7 pm
+Sun 12 pm - 8 pm</string>
+		<key>info</key>
+		<string>San Francisco Soup Company is a family owned business.  Each of our restaurants is run with the same attention and care as our first location, Crocker Galleria, which we opened in 1999 in San Francisco&apos;s financial district.  Our vision was to serve quality food in a fast, convenient environment.  At the time, San Francisco was starving for great food that people could access on their short lunch breaks.</string>
+	</dict>
+	<key>Bear Market</key>
+	<dict>
+		<key>url</key>
+		<string>bearmarket.gif</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.867146</real>
+		<key>long</key>
+		<real>-122.260387</real>
+		<key>times</key>
+		<string>9:00 am - 2:00 am</string>
+		<key>info</key>
+		<string>Bear Market, attached to Café 3, is a mini-grocery store in the residential area. Bear Market offers grab-and-go meals, microwavable and frozen meals, as well as snacks, beverages, health and beauty items and laundry detergent – all the basics!</string>
+	</dict>
+	<key>Golden Bear Cafe</key>
+	<dict>
+		<key>url</key>
+		<string>gbc.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.86978</real>
+		<key>long</key>
+		<real>-122.259759</real>
+		<key>times</key>
+		<string>Mon-Thu 7:00 am - 8:00 pm
+Fri 7:00 am - 4:00 pm</string>
+		<key>info</key>
+		<string>Located in the heart of campus in the famous Sproul Plaza, Golden Bear (GBC) offers a great mix of made-to-order and grab-and-go items, such as packaged Kosher, natural and earth-friendly items, ethnic specialties, sushi, bento boxes, salads and sandwiches and made-to-order smoothies, bagel bar, deli, salads and grill stations.</string>
+	</dict>
+	<key>Peet&apos;s Coffee &amp; Tea</key>
+	<dict>
+		<key>url</key>
+		<string>peets.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.866867</real>
+		<key>long</key>
+		<real>-122.256235</real>
+		<key>info</key>
+		<string>The Den, attached to Crossroads dining hall, is a residential retail location that features a Peet’s Coffee &amp; Tea store, made-to-order deli and bagel bar, smoothies and grab-and-go items.</string>
+		<key>times</key>
+		<string>Monday - Friday 7:00 am - 10:00 pm
+Saturday-Sunday 9:00 am - 10:00 pm</string>
+	</dict>
+	<key>Qualcomm Cybercafe</key>
+	<dict>
+		<key>url</key>
+		<string>qualcomm.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.874667</real>
+		<key>long</key>
+		<real>-122.258665</real>
+		<key>times</key>
+		<string>Monday - Thursday 7:00 am - 8:00 pm	
+Friday 7:00 am - 4:00 pm
+Breakfast served until 10:30 am.</string>
+		<key>info</key>
+		<string>The Qualcomm Cafe is Cal Dining&apos;s newest location, featuring a Peet’s Coffee &amp; Tea store, salads, a made-to-order wrap bar and other grab-and-go items. Located on the north side of campus, QC2 is perfect for getting coffee between classes or sitting down for lunch.</string>
+	</dict>
+	<key>The Terrace Cafe</key>
+	<dict>
+		<key>url</key>
+		<string>terrace.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.874354</real>
+		<key>long</key>
+		<real>-122.25815</real>
+		<key>times</key>
+		<string>Monday - Friday 8:00 am - 3:00 pm</string>
+		<key>info</key>
+		<string>Designed for quick service on the run, Terrace Café features a variety of popular grab-and-go salads, sushi, sandwiches and great coffee.</string>
+	</dict>
+	<key>Common Grounds</key>
+	<dict>
+		<key>url</key>
+		<string>commongrounds.gif</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.870786</real>
+		<key>long</key>
+		<real>-122.260515</real>
+		<key>times</key>
+		<string>Monday - Friday 8:00 am - 3:00 pm</string>
+		<key>info</key>
+		<string>On level F of Dwinelle Hall, Common Grounds proudly brews Peet’s Coffee and offers standard Peet’s coffee and tea products, as well as grab-and-go items.  Open weekdays.</string>
+	</dict>
+	<key>Pat Brown&apos;s Grille</key>
+	<dict>
+		<key>url</key>
+		<string>patbrown.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.873625</real>
+		<key>long</key>
+		<real>-122.264796</real>
+		<key>times</key>
+		<string>Monday - Friday 7:30 am - 4 pm	</string>
+		<key>info</key>
+		<string>Serving the northwest part of campus, Pat Brown’s has made-to-order salads and sandwiches, along with an impressive selection of rotisserie and hand-carved meats. Now proudly brewing Peet&apos;s Coffee and Tea, PB&apos;s offers standard Peet’s Coffee and Tea products, as well as grab-and-go items for those in a hurry. The menu is complimented with plenty of indoor and outdoor patio seating with umbrellas.</string>
+	</dict>
+	<key>The Pro Shop</key>
+	<dict>
+		<key>url</key>
+		<string>proshop.gif</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.868569</real>
+		<key>long</key>
+		<real>-122.262683</real>
+		<key>times</key>
+		<string>Monday - Thursday 10:00 am  12:00 am
+Friday 9:00 am - 11:00 pm
+Saturday - Sunday 8:00 am - 9:00 pm</string>
+		<key>info</key>
+		<string>Located in the Recreational Sports Facility (RSF), The Pro Shop provides just what customers need before or after a workout: sports drinks, fresh juices, fresh fruit, salads, sandwiches, sushi, energy bars, high energy snacks and sporting goods. Open daily from early morning to late at night.</string>
+	</dict>
+	<key>Ramona&apos;s</key>
+	<dict>
+		<key>url</key>
+		<string>ramonas.jpg</string>
+		<key>type</key>
+		<string>On-campus by Cal Dining</string>
+		<key>lat</key>
+		<real>37.87028</real>
+		<key>long</key>
+		<real>-122.254786</real>
+		<key>times</key>
+		<string>Monday - Thursday 7:00 am - 8:00 pm
+Friday 7:00 am - 4:00 pm</string>
+		<key>info</key>
+		<string>Specializing in made-to-order paninis and Asian rice bowls, Ramona’s also serves grab-and-go items, baked goods and a variety of beverages and snacks. Located in Wurster Hall, Ramona’s has ample indoor and outdoor seating.</string>
+	</dict>
+</dict>
+</plist>

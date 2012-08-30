@@ -32,11 +32,12 @@ class Course(models.Model):
     available_seats = models.CharField(max_length=10,default="",null=True)
 class CalOneCardLocation(models.Model):
     name = models.CharField(max_length=300)
-    address = models.CharField(max_length=1000)
     latitude = models.FloatField()
     longitude = models.FloatField()
     image_url = models.URLField()
     type = models.CharField(max_length=200)
+    times = models.CharField(max_length=200)
+    info = models.TextField()
 
 class BusLine(models.Model):
 	title = models.CharField(max_length = 100)
@@ -294,3 +295,4 @@ admin.site.register(Webcast)
 admin.site.register(Section)
 admin.site.register(BusStop)
 admin.site.register(BusStopDirection)
+admin.site.register(CalOneCardLocation)

@@ -5,6 +5,43 @@ import requests
 from django.db.models import Q
 
 ###############################NEW########################################
+def pairs(lst):
+    i = iter(lst)
+    first = prev = item = i.next()
+    for item in i:
+        yield prev, item
+        prev = i.next()
+    yield item, first
+def cal1card_from_plist():
+    f = open("calutil/calutil/static/info/Cal1CardLocations.plist","r")
+    soup = bs4.BeautifulSoup(f.read())
+    children = filter(lambda a: a!=u'\n', soup("dict")[0].children)
+    for key,value in pairs(children):
+        name = key.string
+        try:
+            location = CalOneCardLocation.objects.get(name=name)
+        except:
+            location = CalOneCardLocation()
+        print key
+        location.name = name
+        children2 = filter(lambda a: a!=u'\n', value.children)
+        for key2,value2 in pairs(children2):
+            type = key2.string
+            if type=="url":
+                location.image_url = value2.string
+            if type=="lat":
+                location.latitude = float(value2.string)
+            if type=="long":
+                location.longitude = float(value2.string)
+            if type=="type":
+                location.type = value2.string
+            if type=="info":
+                location.info = value2.string
+            if type=="times":
+                location.times = value2.string
+        print "Name: " + location.name
+        location.save()
+
 def courses():
     data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=FL&p_list_all=Y")
     soup = bs4.BeautifulSoup(data.text)
