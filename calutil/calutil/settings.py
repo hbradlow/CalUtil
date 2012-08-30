@@ -158,4 +158,4 @@ import dj_database_url
 DATABASES = {'default': dj_database_url.config(default='postgres://localhost/calutil')}
 
 #tastypie
-API_LIMIT_PER_PAGE = 5000
+API_LIMIT_PER_PAGE = 500
