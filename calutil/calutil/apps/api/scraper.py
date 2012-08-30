@@ -2,11 +2,63 @@ from api.models import *
 import bs4
 import mechanize
 import requests
+from django.db.models import Q
 
 ###############################NEW########################################
+def courses():
+    data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=FL&p_list_all=Y")
+    soup = bs4.BeautifulSoup(data.text)
+    rows = soup("table")[0]("table")[0]("tr")[1:]
+    current_title = rows[0]("b")[0].string
+    for row in rows:
+        try:
+            current_title = row("b")[0].string
+            print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Section: " + current_title
+        except:
+            type = row("td")[0]("label")[0].string.strip()
+            number = row("td")[1]("label")[0].string.strip()
+            try:
+                course = Course.objects.get(Q(type=type) & Q(number=number))
+            except:
+                course = Course()
+            course.type = type
+            course.number = number
+            try:
+                course.abbreviation = row("td")[2]("label")[0].string.strip()
+            except:
+                course.abbreviation = None
+            course.save()
+            print "Course: " + course.type + " " + course.number
+
+def get_cal_balance(username,password):
+    from twill.commands import *
+    import twill
+
+    b = twill.get_browser() # make it so that twill can handle xhtml
+    b._browser._factory.is_html = True
+    twill.browser = b
+
+    b.clear_cookies()
+    b.go("https://services.housing.berkeley.edu/c1c/dyn/balance.asp")
+    try:
+        fv("1","username",username)
+        fv("1","password",password)
+        submit('0')
+        submit('0')
+    except:
+        pass
+    b.go("https://services.housing.berkeley.edu/c1c/dyn/balance.asp")
+    soup = bs4.BeautifulSoup(show())
+    try:
+        balance = soup("table")[0]("tr")[4]("td")[0]("b")[0].string
+        return balance
+    except:
+        return False
+
 def cal_one_card_locations():
     data = requests.get("http://services.housing.berkeley.edu/c1c/static/merchants.htm")
-    soup = bs4.BeautifulSoup(data.text)
+    soup = bs4.BeautifulSoup(data.text,"xml")
+
 
 def bus_lines():
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)
@@ -268,27 +320,6 @@ def update_course_data():
 					print "Trying class again..."
 					count += 1
 
-def get_cal_balance(username,password):
-	from twill.commands import *
-	import twill
-
-	b = twill.get_browser() # make it so that twill can handle xhtml
-	b._browser._factory.is_html = True
-	twill.browser = b
-
-	b.clear_cookies()
-	b.go("https://services.housing.berkeley.edu/c1c/dyn/balance.asp")
-	try:
-		fv("1","username",username)
-		fv("1","password",password)
-		submit('0')
-		submit('0')
-	except:
-		pass
-	b.go("https://services.housing.berkeley.edu/c1c/dyn/balance.asp")
-	soup = BeautifulSoup.BeautifulSoup(show())
-	balance = soup.find("table").findAll("tr")[4].find("td").find("b").contents[0]
-	return balance
 
 def get_schedule(username,password):
 	from twill.commands import *

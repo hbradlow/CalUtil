@@ -9,14 +9,35 @@ Cal one card locations (time, coordinates, picture)
 """
 
 ###############################NEW########################################
+class Course(models.Model):
+    semester = models.CharField(max_length=30,default="Spring",null=True)
+    year = models.CharField(max_length=20,default="",null=True)
+    ccn = models.CharField(max_length=20,default="",null=True)
+    abbreviation = models.CharField(max_length=500,default="",null=True)
+    number = models.CharField(max_length=50,default="",null=True)
+    section = models.CharField(max_length=20,default="",null=True)
+    type = models.CharField(max_length=20,default="",null=True)
+    title = models.CharField(max_length=500,default="",null=True)
+    instructor = models.CharField(max_length=100,default="",null=True)
+    time = models.CharField(max_length=100,default="",null=True)
+    location = models.CharField(max_length=100,default="",null=True)
+    units = models.CharField(max_length=20,default="",null=True)
+    exam_group = models.CharField(max_length=20,default="",null=True)
+    days = models.CharField(max_length=100,default="",null=True)
+    pnp = models.CharField(max_length=10,default="",null=True)
+
+    limit = models.CharField(max_length=10,default="",null=True)
+    enrolled = models.CharField(max_length=10,default="",null=True)
+    waitlist = models.CharField(max_length=10,default="",null=True)
+    available_seats = models.CharField(max_length=10,default="",null=True)
 class CalOneCardLocation(models.Model):
     name = models.CharField(max_length=300)
     address = models.CharField(max_length=1000)
     latitude = models.FloatField()
     longitude = models.FloatField()
     image_url = models.URLField()
-    
     type = models.CharField(max_length=200)
+
 class BusLine(models.Model):
 	title = models.CharField(max_length = 100)
 	tag = models.CharField(max_length = 50)
@@ -254,42 +275,6 @@ class Section(models.Model):
 	enrolled = models.CharField(max_length=10,default="",null=True)
 	waitlist = models.CharField(max_length=10,default="",null=True)
 	available_seats = models.CharField(max_length=10,default="",null=True)
-
-class Course(models.Model):
-    semester = models.CharField(max_length=30,default="Spring",null=True)
-    year = models.CharField(max_length=20,default="",null=True)
-    ccn = models.CharField(max_length=20,default="",null=True)
-    abbreviation = models.CharField(max_length=50,default="",null=True)
-    number = models.CharField(max_length=50,default="",null=True)
-    section = models.CharField(max_length=20,default="",null=True)
-    type = models.CharField(max_length=20,default="",null=True)
-    title = models.CharField(max_length=500,default="",null=True)
-    instructor = models.CharField(max_length=100,default="",null=True)
-    time = models.CharField(max_length=100,default="",null=True)
-    location = models.CharField(max_length=100,default="",null=True)
-    units = models.CharField(max_length=20,default="",null=True)
-    exam_group = models.CharField(max_length=20,default="",null=True)
-    days = models.CharField(max_length=100,default="",null=True)
-    pnp = models.CharField(max_length=10,default="",null=True)
-    sections = models.ManyToManyField(Section)
-
-    limit = models.CharField(max_length=10,default="",null=True)
-    enrolled = models.CharField(max_length=10,default="",null=True)
-    waitlist = models.CharField(max_length=10,default="",null=True)
-    available_seats = models.CharField(max_length=10,default="",null=True)
-    @property
-    def has_webcasts(self):
-        return Webcast.objects.filter(description__in=self.title).count() > 0
-        """
-        these_webcasts = []
-        for w in all_webcasts:
-            if w.description and w.description in self.title:
-                these_webcasts.append(w)
-        if len(these_webcasts)!=0:
-            return "true"
-        else:
-            return "false"
-        """
 
 class Webcast(models.Model):
 	title = models.CharField(max_length=200,default="",null=True)
