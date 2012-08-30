@@ -46,6 +46,15 @@ def bus_stops():
                 stop.save()
             except:
                 pass #this was a bogus stop
+        for direction in soup("direction"):
+            try:
+                bus_direction = BusStopDirection.objects.get(tag=direction['tag'])
+            except:
+                bus_direction = BusStopDirection()
+            bus_direction.tag = direction['tag']
+            bus_direction.title = direction['title']
+            bus_direction.line = line
+            bus_direction.save()
 
 ###############################OLD########################################
 def scrape_class(c):

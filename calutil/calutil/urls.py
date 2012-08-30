@@ -15,4 +15,5 @@ urlpatterns = patterns('',
 
     #project
     (r'^', include(api.urls)),
+    (r'^', include("api.urls")),
 )

@@ -27,6 +27,23 @@ class BusStop(models.Model):
     longitude = models.FloatField()
     stop_id = models.CharField(max_length=50)
     lines = models.ManyToManyField(BusLine)
+    def predictions(self):
+        import requests
+        results = {'objects':[]}
+        soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=actransit&stopId=" + self.stop_id).text)
+        for prediction in soup("predictions"):
+            line = BusLine.objects.get(tag=prediction['routetag'])
+            print line.tag
+            for direction in prediction("direction"):
+                title = direction['title']
+                for prediction in direction("prediction"):
+                    results['objects'].append({"line":line.tag,"direction":title,"seconds":prediction['seconds'],"minutes":prediction['minutes']})
+        return results
+
+class BusStopDirection(models.Model):
+    tag = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
+    line = models.ForeignKey(BusLine)
 
 ###############################OLD########################################
 class BusVehicle(models.Model):
@@ -291,3 +308,4 @@ admin.site.register(Course)
 admin.site.register(Webcast)
 admin.site.register(Section)
 admin.site.register(BusStop)
+admin.site.register(BusStopDirection)
