@@ -13,6 +13,7 @@ def pairs(lst):
         prev = i.next()
     yield item, first
 def cal1card_from_plist():
+    from django.contrib.staticfiles.storage import staticfiles_storage
     f = open("calutil/calutil/static/info/Cal1CardLocations.plist","r")
     soup = bs4.BeautifulSoup(f.read())
     children = filter(lambda a: a!=u'\n', soup("dict")[0].children)
@@ -22,13 +23,12 @@ def cal1card_from_plist():
             location = CalOneCardLocation.objects.get(name=name)
         except:
             location = CalOneCardLocation()
-        print key
         location.name = name
         children2 = filter(lambda a: a!=u'\n', value.children)
         for key2,value2 in pairs(children2):
             type = key2.string
             if type=="url":
-                location.image_url = value2.string
+                location.image_url = staticfiles_storage.url("images/" + value2.string)
             if type=="lat":
                 location.latitude = float(value2.string)
             if type=="long":

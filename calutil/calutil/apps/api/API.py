@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from tastypie import fields
 from tastypie.resources import ModelResource,ALL_WITH_RELATIONS
-from api.models import BusStop, BusLine
+from api.models import BusStop, BusLine,CalOneCardLocation
 
 class BusLineResource(ModelResource):
     class Meta:
@@ -14,3 +14,8 @@ class BusStopResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         resource_name = 'bus_stop'
+
+class CalOneCardLocationResource(ModelResource):
+    class Meta:
+        queryset = CalOneCardLocation.objects.all()
+        resource_name = "cal_one_card"

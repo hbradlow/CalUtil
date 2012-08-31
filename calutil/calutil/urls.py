@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
-from api.API import BusStopResource,BusLineResource
+from api.API import BusStopResource,BusLineResource, CalOneCardLocationResource
 
 from django.contrib import admin
 admin.autodiscover()
@@ -8,6 +8,7 @@ admin.autodiscover()
 api = Api(api_name='api')
 api.register(BusLineResource())
 api.register(BusStopResource())
+api.register(CalOneCardLocationResource())
 
 urlpatterns = patterns('',
     #django
