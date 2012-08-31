@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *times;
 @property (nonatomic, strong) UILabel *textLabel;
+@property (nonatomic, strong) UILabel *subtitleLabel;
 @property (nonatomic, strong) NSString *info;
 @property (nonatomic, strong) NSString *imageURL;
 - (void)animateIn;

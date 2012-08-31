@@ -89,7 +89,7 @@
 - (void) calloutAccessoryTapped {
 	if ([self.mapView.delegate respondsToSelector:@selector(displayInfo:)])
     {
-        [self.mapView.delegate performSelector:@selector(displayInfo:) withObject:self];
+        [self.mapView.delegate performSelector:@selector(displayInfo:) withObject:self.parentAnnotationView.annotation];
     }
 }
 
@@ -405,10 +405,17 @@
 		_contentView = [[UIView alloc] init];
 		self.contentView.backgroundColor = [UIColor clearColor];
 		self.contentView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 2, 265, 35)];
+        
+        self.textLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 2, 265, 12)];
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
         [self.textLabel setTextColor:[UIColor lightGrayColor]];
         [self.contentView addSubview:self.textLabel];
+        
+        self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, 16, 265, 12)];
+        [self.subtitleLabel setBackgroundColor:[UIColor clearColor]];
+        [self.subtitleLabel setTextColor:[UIColor lightGrayColor]];
+        [self.contentView addSubview:self.subtitleLabel];
+        
 		[self addSubview:self.contentView];
 	}
 	return _contentView;

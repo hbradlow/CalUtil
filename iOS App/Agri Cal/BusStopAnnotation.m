@@ -8,6 +8,9 @@
 
 #import "BusStopAnnotation.h"
 
+#define kIDKey @"sid" 
+#define kRoutesKey @"routes"
+
 @implementation BusStopAnnotation
 
 - (id)initWithID:(NSInteger)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts
@@ -22,6 +25,23 @@
     }
     
     return nil;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeInteger:self.stopID forKey:kIDKey];
+    [aCoder encodeObject:self.routes forKey:kRoutesKey];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if ((self = [super initWithCoder:aDecoder]))
+    {
+        self.stopID = [aDecoder decodeIntegerForKey:kIDKey];
+        self.routes = [aDecoder decodeObjectForKey:kRoutesKey];
+    }
+    return self;
 }
 
 @end

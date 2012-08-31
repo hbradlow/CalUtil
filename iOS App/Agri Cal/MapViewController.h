@@ -32,4 +32,5 @@
 
 - (IBAction)switchAnnotations:(id)sender;
 - (IBAction)displayMapKey:(id)sender;
+- (void)displayInfo:(id)sender;
 @end

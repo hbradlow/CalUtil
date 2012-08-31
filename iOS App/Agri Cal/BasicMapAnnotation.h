@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BasicMapAnnotation : NSObject <MKAnnotation> {
+@interface BasicMapAnnotation : NSObject <MKAnnotation, NSCoding> {
     CLLocationDegrees _latitude;
     CLLocationDegrees _longitude; 
     NSString *_title; 

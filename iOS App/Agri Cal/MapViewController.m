@@ -1,4 +1,9 @@
 #import "MapViewController.h"
+#import "NextBusViewController.h"
+
+#define kBusDataKey @"busdata"
+#define kBusFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"busfile"]
+#define kBusesLoaded @"loaded"
 
 @implementation MapViewController
 
@@ -25,87 +30,130 @@ static float LongitudeDelta = 0.015;
     
     MKCoordinateRegion region = {coord, span};
     [self.mapView setRegion:region];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"LoadedStops"];
+    
     // Loading the stops
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"LoadedStops"])
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
     {
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/?format=json",ServerURL];
-        queryString = [queryString lowercaseString];
-        
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-        
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        NSLog(@"not preloaded %i", [[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded]);
         dispatch_async(queue, ^{
             
-            NSURLResponse *response = nil;
-            NSError *error = nil;
-            NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                         returningResponse:&response
-                                                                     error:&error];
-            NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-            
-            NSArray *stops = [dict objectForKey:@"objects"];
-            
-            for (NSDictionary *currentStop in stops)
-            {
-                NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
-                NSArray *currentRoutes = nil;
-                float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
-                float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];
-                NSString *title = [currentStop objectForKey:@"title"];
-                
-                BusStopAnnotation *currentAnnotation = [[BusStopAnnotation alloc] initWithID:currentID latitude:currentLat longitude:currentLong routes:currentRoutes];
-                currentAnnotation.title = title;
-                [self.busStopAnnotations addObject:currentAnnotation];
-            }
-            
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            
-            dispatch_async(updateUIQueue, ^{
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"LoadedStops"];
-                if ([self.annotationSelector selectedSegmentIndex] == 0)
-                    [self.mapView addAnnotations:self.busStopAnnotations];
-            });
+            [self loadBusStopsWithExtension:@"/api/bus_stop/?format=json"];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
         });
     }
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"Cal1CardLocations"];
-    // Loading the cal1card locations
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"Cal1CardLocations"])
+    else
     {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            
-            NSString *queryString = [NSString stringWithFormat:@"https://calutil.herokuapp.com/api/locations/"];
-            NSURL *requestURL = [NSURL URLWithString:queryString];
-            NSURLResponse *response = nil;
-            NSError *error = nil;
-            
-            NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-            
-            NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                         returningResponse:&response
-                                                                     error:&error];
-            NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-            NSLog(@"cal1card: %@%@", arr, queryString);
-            for (NSDictionary *currentLocation in arr)
+        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
+        [unarchiver finishDecoding];
+        [self.mapView addAnnotations:self.busStopAnnotations];
+    }
+    
+    // Loading the cal1card locations
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        
+        NSString *queryString = [NSString stringWithFormat:@"https://calutil.herokuapp.com/api/locations/"];
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        
+        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        
+        NSData *receivedData;
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"calcard"])
+        {
+            receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                 returningResponse:&response
+                                                             error:&error];
+            [[NSUserDefaults standardUserDefaults] setObject:receivedData forKey:@"calcard"];
+        }
+        else
+        {
+            receivedData = [[NSUserDefaults standardUserDefaults] objectForKey:@"calcard"];
+        }
+        
+        NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        
+        for (NSDictionary *currentLocation in arr)
+        {
+            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+            NSString *info = [currentLocation objectForKey:@"description"];
+            NSString *title = [currentLocation objectForKey:@"name"];
+            NSString *times = [currentLocation objectForKey:@"times"];
+            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            NSString *type = [currentLocation objectForKey:@"kind"];
+            if (latitude != nil)
             {
-                NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
-                NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
-                NSString *info = [currentLocation objectForKey:@"description"];
-                NSString *title = [currentLocation objectForKey:@"name"];
-                NSString *times = [currentLocation objectForKey:@"times"];
-                NSString *imageURL = [currentLocation objectForKey:@"image_url"];
-                NSString *type = [currentLocation objectForKey:@"kind"];
-                if (latitude != nil)
-                {
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Cal1CardLocations"];
-                    Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
-                    annotation.type = type;
-                    [self.calCardAnnotations addObject:annotation];
-                }
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Cal1CardLocations"];
+                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
+                annotation.type = type;
+                [self.calCardAnnotations addObject:annotation];
             }
+        }
+    });
+}
+
+- (void)saveBusesToFile
+{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self.busStopAnnotations forKey:kBusDataKey];
+    [archiver finishEncoding];
+    [data writeToFile:kBusFilePath atomically:YES];
+}
+
+- (void)loadBusStopsWithExtension:(NSString*)urlExtension
+{
+    NSString *queryString = [NSString stringWithFormat:@"%@%@",ServerURL, urlExtension];
+    queryString = [queryString lowercaseString];
+    
+    NSURL *requestURL = [NSURL URLWithString:queryString];
+    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+    
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                 returningResponse:&response
+                                                             error:&error];
+    
+    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+    
+    NSArray *stops = [dict objectForKey:@"objects"];
+    
+    for (NSDictionary *currentStop in stops)
+    {
+        NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
+        NSArray *currentRoutes = [currentStop objectForKey:@"lines"];
+        float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
+        float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];
+        NSString *title = [currentStop objectForKey:@"title"];
+        
+        BusStopAnnotation *currentAnnotation = [[BusStopAnnotation alloc] initWithID:currentID latitude:currentLat longitude:currentLong routes:currentRoutes];
+        currentAnnotation.title = title;
+        NSString *subtitle = @"";
+        for (NSDictionary *currentLine in currentRoutes)
+        {
+            subtitle = [subtitle stringByAppendingFormat:@"%@ ",[currentLine objectForKey:@"title"]];
+        }
+        currentAnnotation.subtitle = subtitle;
+        [self.busStopAnnotations addObject:currentAnnotation];
+    }
+    
+    if (!([[dict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+        [self loadBusStopsWithExtension:[[dict objectForKey:@"meta"] objectForKey:@"next"]];
+    else
+    {
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^{
+            if ([self.annotationSelector selectedSegmentIndex] == 0)
+                [self.mapView addAnnotations:self.busStopAnnotations];
         });
+        [self saveBusesToFile];
     }
 }
 
@@ -133,11 +181,13 @@ static float LongitudeDelta = 0.015;
             self.selectedAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:view.annotation.coordinate.latitude
                                                                       andLongitude:view.annotation.coordinate.longitude];
             self.selectedAnnotation.title = view.annotation.title;
+            self.selectedAnnotation.subtitle = view.annotation.subtitle;
         }
         else
         {
             self.selectedAnnotation.coordinate = view.annotation.coordinate;
             self.selectedAnnotation.title = view.annotation.title;
+            self.selectedAnnotation.subtitle = view.annotation.subtitle;
         }
         [self.mapView addAnnotation:self.selectedAnnotation];
         self.selectedAnnotationView = (MKPinAnnotationView*)view;
@@ -167,6 +217,8 @@ static float LongitudeDelta = 0.015;
         }
         callout.parentAnnotationView = self.selectedAnnotationView;
         callout.textLabel.text = self.selectedAnnotation.title;
+        NSLog(@"subtitle: %@", self.selectedAnnotation.subtitle);
+        callout.subtitleLabel.text = self.selectedAnnotation.subtitle;
         callout.mapView = self.mapView;
         return callout;
     }
@@ -192,20 +244,52 @@ static float LongitudeDelta = 0.015;
     [UIView setAnimationDuration:1.0];
     CGRect frame = self.mapKeyImageView.frame;
     if (frame.origin.x == 320)
+    {
         frame.origin.x -= frame.size.width;
+        [self.mapKeyImageView setHidden:YES];
+    }
     else {
         frame.origin.x += frame.size.width;
+        [self.mapKeyImageView setHidden:NO];
     }
     self.mapKeyImageView.frame = frame;
     [UIView commitAnimations];
+}
+
+- (void)displayInfo:(id)sender
+{
+    if ([self.busStopAnnotations containsObject:sender])
+    {
+        [self performSegueWithIdentifier:@"bus" sender:sender];
+    }
+    else if ([self.calCardAnnotations containsObject:sender])
+        NSLog(@"calcard");
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"bus"])
+    {
+        NextBusViewController *nextController = (NextBusViewController*)[segue destinationViewController];
+        nextController.annotation = (BusStopAnnotation*)sender;
+        nextController.lines = [[NSMutableArray alloc] init];
+        for (NSDictionary *currentLine in nextController.annotation.routes)
+        {
+            [nextController.lines addObject:currentLine];
+        }
+    }
 }
 
 - (IBAction)switchAnnotations:(id)sender
 {
     [self.mapView removeAnnotations:self.calCardAnnotations];
     [self.mapView removeAnnotations:self.busStopAnnotations];
+    
     if (self.buildingAnnotation)
         [self.mapView removeAnnotation:self.buildingAnnotation];
+    if (self.selectedAnnotation)
+        [self.mapView removeAnnotation:self.selectedAnnotation];
+    
     [self.searchBar setHidden:YES];
     
     switch ([self.annotationSelector selectedSegmentIndex]) {

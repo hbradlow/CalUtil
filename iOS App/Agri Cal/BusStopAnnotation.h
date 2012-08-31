@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BasicMapAnnotation.h"
 
-@interface BusStopAnnotation : BasicMapAnnotation
+@interface BusStopAnnotation : BasicMapAnnotation <NSCoding>
 
 @property (nonatomic) NSInteger stopID;
 @property (nonatomic, strong) NSArray *routes;
