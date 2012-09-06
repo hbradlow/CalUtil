@@ -90,6 +90,7 @@
                         <outlet property="searchDisplayController" destination="HnC-EA-YeH" id="9bK-Jg-qh6"/>
                         <outlet property="webView" destination="VHt-Z8-l7l" id="d7l-gd-28D"/>
                         <segue destination="HRo-jH-eTq" kind="push" identifier="bus" id="0DT-nr-lPZ"/>
+                        <segue destination="cKu-Yf-HLn" kind="push" identifier="calcard" id="qIU-mA-3HA"/>
                     </connections>
                 </viewController>
                 <searchDisplayController id="HnC-EA-YeH">
@@ -132,6 +133,39 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1453" y="-147"/>
+        </scene>
+        <!--Cal1 Card View Controller-->
+        <scene sceneID="1lj-xh-Bel">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bHk-Yh-fib" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="cKu-Yf-HLn" customClass="Cal1CardViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gnu-5n-H0d">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="xON-1u-kom">
+                                <rect key="frame" x="0.0" y="127" width="320" height="240"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="cKu-Yf-HLn" id="qrY-m5-aSy"/>
+                                    <outlet property="delegate" destination="cKu-Yf-HLn" id="WZz-rc-WGM"/>
+                                </connections>
+                            </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="HSW-Ax-rOk">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="119"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="nAP-L3-XCS"/>
+                    <connections>
+                        <outlet property="imageView" destination="HSW-Ax-rOk" id="ksM-kT-wl3"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1835" y="-147"/>
         </scene>
         <!--Dining Main View Controller - Dining Commons-->
         <scene sceneID="g5H-WC-Prc">
@@ -1112,6 +1146,9 @@
         <image name="world.png" width="26" height="26"/>
     </resources>
     <classes>
+        <class className="Cal1CardViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/Cal1CardViewController.h"/>
+        </class>
         <class className="CourseDetailViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CourseDetailViewController.h"/>
             <relationships>

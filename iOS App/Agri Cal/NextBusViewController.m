@@ -15,6 +15,12 @@
 @implementation NextBusViewController
 @synthesize tableView;
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationItem.title = self.annotation.title;
+}
+
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.lines count];
@@ -50,7 +56,6 @@
                                                  returningResponse:&response
                                                              error:&error];
     NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    NSLog(@"%@", arr);
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
     dispatch_async(updateUIQueue, ^{
         NSString *subtitle = [arr componentsJoinedByString:@", "];

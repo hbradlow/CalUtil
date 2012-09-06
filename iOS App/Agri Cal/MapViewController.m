@@ -1,9 +1,6 @@
 #import "MapViewController.h"
 #import "NextBusViewController.h"
-
-#define kBusDataKey @"busdata"
-#define kBusFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"busfile"]
-#define kBusesLoaded @"loaded"
+#import "Cal1CardViewController.h"
 
 @implementation MapViewController
 
@@ -36,7 +33,6 @@ static float LongitudeDelta = 0.015;
     
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
     {
-        NSLog(@"not preloaded %i", [[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded]);
         dispatch_async(queue, ^{
             
             [self loadBusStopsWithExtension:@"/api/bus_stop/?format=json"];
@@ -54,48 +50,68 @@ static float LongitudeDelta = 0.015;
     
     // Loading the cal1card locations
     queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        
-        NSString *queryString = [NSString stringWithFormat:@"https://calutil.herokuapp.com/api/locations/"];
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        
-        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-        
-        NSData *receivedData;
-        if (![[NSUserDefaults standardUserDefaults] objectForKey:@"calcard"])
+    
+    //if (![[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
+    //{
+        dispatch_async(queue, ^{
+            [self loadCal1CardLocations];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
+        });
+    /*}
+    else
+    {
+        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
+        [unarchiver finishDecoding];
+    }*/
+}
+
+- (void)loadCal1CardLocations
+{
+    NSString *queryString = [NSString stringWithFormat:@"%@/api/cal_one_card/?format=json", ServerURL];
+    NSURL *requestURL = [NSURL URLWithString:queryString];
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    
+    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+    
+    NSData *receivedData;
+    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                             returningResponse:&response
+                                                         error:&error];
+    
+    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+    
+    NSArray *arr = [receivedDict objectForKey:@"objects"];
+    
+    for (NSDictionary *currentLocation in arr)
+    {
+        NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+        NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+        NSString *info = [currentLocation objectForKey:@"info"];
+        NSString *title = [currentLocation objectForKey:@"name"];
+        NSString *times = [currentLocation objectForKey:@"times"];
+        NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+        NSString *type = [currentLocation objectForKey:@"type"];
+        if (latitude != nil)
         {
-            receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                 returningResponse:&response
-                                                             error:&error];
-            [[NSUserDefaults standardUserDefaults] setObject:receivedData forKey:@"calcard"];
+            Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
+            annotation.type = type;
+            annotation.subtitle = type;
+            [self.calCardAnnotations addObject:annotation];
         }
-        else
-        {
-            receivedData = [[NSUserDefaults standardUserDefaults] objectForKey:@"calcard"];
-        }
-        
-        NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-        
-        for (NSDictionary *currentLocation in arr)
-        {
-            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
-            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
-            NSString *info = [currentLocation objectForKey:@"description"];
-            NSString *title = [currentLocation objectForKey:@"name"];
-            NSString *times = [currentLocation objectForKey:@"times"];
-            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
-            NSString *type = [currentLocation objectForKey:@"kind"];
-            if (latitude != nil)
-            {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"Cal1CardLocations"];
-                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
-                annotation.type = type;
-                [self.calCardAnnotations addObject:annotation];
-            }
-        }
-    });
+    }
+    [self saveCalCardLocationsToFile];
+}
+
+- (void)saveCalCardLocationsToFile
+{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self.calCardAnnotations forKey:kCalDataKey];
+    [archiver finishEncoding];
+    [data writeToFile:kCalFilePath atomically:YES];
 }
 
 - (void)saveBusesToFile
@@ -263,7 +279,9 @@ static float LongitudeDelta = 0.015;
         [self performSegueWithIdentifier:@"bus" sender:sender];
     }
     else if ([self.calCardAnnotations containsObject:sender])
-        NSLog(@"calcard");
+    {
+        [self performSegueWithIdentifier:@"calcard" sender:sender];
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -277,6 +295,11 @@ static float LongitudeDelta = 0.015;
         {
             [nextController.lines addObject:currentLine];
         }
+    }
+    else if ([[segue identifier] isEqualToString:@"calcard"])
+    {
+        Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];
+        nextController.annotation = (Cal1CardAnnotation*)sender;
     }
 }
 
@@ -357,10 +380,12 @@ static float LongitudeDelta = 0.015;
 {
     return [self.searchResults count];
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
@@ -386,6 +411,7 @@ static float LongitudeDelta = 0.015;
     }
     return cell;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.buildingAnnotation)
@@ -404,14 +430,17 @@ static float LongitudeDelta = 0.015;
     self.searchResults = [[NSMutableArray alloc] init];
     [self performSelector:@selector(selectBuilding) withObject:nil afterDelay:0.7];
 }
+
 -(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return @"Map Key";
 }
+
 -(void)selectBuilding
 {
     [self.mapView selectAnnotation:self.buildingAnnotation animated:YES];
 }
+
 - (void)viewDidUnload {
     [self setAnnotationSelector:nil];
     [self setWebView:nil];
@@ -421,4 +450,5 @@ static float LongitudeDelta = 0.015;
     [self setInfoButton:nil];
     [super viewDidUnload];
 }
+
 @end

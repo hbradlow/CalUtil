@@ -66,6 +66,7 @@
 		63B2E3EC15204BBF00AA7848 /* CourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2E3EB15204BBF00AA7848 /* CourseViewController.m */; };
 		63B2E3EF1520642000AA7848 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */; };
 		63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C187B7152D90B000FF4AF1 /* InfoViewController.m */; };
+		63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */; };
 		63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
 		63DE52BB1539332C00F9ECFB /* berkeleyThaiHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */; };
@@ -205,6 +206,8 @@
 		63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
 		63C187B6152D90B000FF4AF1 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
 		63C187B7152D90B000FF4AF1 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
+		63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cal1CardViewController.h; sourceTree = "<group>"; };
+		63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cal1CardViewController.m; sourceTree = "<group>"; };
 		63D6146515EECA9F00931A59 /* DisclosureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureAnnotationView.h; sourceTree = "<group>"; };
 		63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureAnnotationView.m; sourceTree = "<group>"; };
 		63DE52B71539330C00F9ECFB /* bearbasics.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bearbasics.jpg; sourceTree = "<group>"; };
@@ -324,6 +327,8 @@
 				6393DE21150301F3003B77F5 /* MapViewController.m */,
 				63389DD815F0230F00953A01 /* NextBusViewController.h */,
 				63389DD915F0230F00953A01 /* NextBusViewController.m */,
+				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
+				63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */,
 				638DD18E15384A95009EA87A /* InfoView.h */,
 				638DD18F15384A95009EA87A /* InfoView.m */,
 				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
@@ -682,6 +687,7 @@
 				638DD199153917F4009EA87A /* TVOutManager.m in Sources */,
 				63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */,
 				63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */,
+				63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
