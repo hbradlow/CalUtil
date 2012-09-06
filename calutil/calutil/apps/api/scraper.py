@@ -20,7 +20,7 @@ def cal1card_from_plist():
     for key,value in pairs(children):
         name = key.string
         try:
-            location = CalOneCardLocation.objects.get(name=name)
+            location = CalOneCardLocation.objects.filter(name=str(name))[0]
         except:
             location = CalOneCardLocation()
         location.name = name

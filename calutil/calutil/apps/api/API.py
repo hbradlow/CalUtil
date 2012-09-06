@@ -14,7 +14,6 @@ class BusStopResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         resource_name = 'bus_stop'
-
 class CalOneCardLocationResource(ModelResource):
     class Meta:
         queryset = CalOneCardLocation.objects.all()
