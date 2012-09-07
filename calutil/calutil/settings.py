@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     #external
     'south',
     'tastypie',
+    'django_extensions',
 
     #project
     'api',

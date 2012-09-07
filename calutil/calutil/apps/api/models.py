@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.core.urlresolvers import reverse
+from django_extensions.db.fields import *
 
 import bs4
 import urllib
@@ -9,6 +10,11 @@ Cal one card locations (time, coordinates, picture)
 """
 
 ###############################NEW########################################
+class Department(models.Model):
+    name = models.CharField(max_length=500)
+    slug = AutoSlugField(populate_from="name",unique=True)
+    def __unicode__(self):
+        return self.name
 class Course(models.Model):
     semester = models.CharField(max_length=30,default="Spring",null=True)
     year = models.CharField(max_length=20,default="",null=True)
@@ -22,9 +28,10 @@ class Course(models.Model):
     time = models.CharField(max_length=100,default="",null=True)
     location = models.CharField(max_length=100,default="",null=True)
     units = models.CharField(max_length=20,default="",null=True)
-    exam_group = models.CharField(max_length=20,default="",null=True)
+    exam_group = models.CharField(max_length=200,default="",null=True)
     days = models.CharField(max_length=100,default="",null=True)
     pnp = models.CharField(max_length=10,default="",null=True)
+    department = models.ForeignKey(Department,null=True)
 
     limit = models.CharField(max_length=10,default="",null=True)
     enrolled = models.CharField(max_length=10,default="",null=True)

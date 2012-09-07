@@ -43,13 +43,19 @@ def cal1card_from_plist():
         location.save()
 
 def courses():
+    import re
     data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=FL&p_list_all=Y")
     soup = bs4.BeautifulSoup(data.text)
     rows = soup("table")[0]("table")[0]("tr")[1:]
     current_title = rows[0]("b")[0].string
+    department = None
     for row in rows:
         try:
             current_title = row("b")[0].string
+            try:
+                department = Department.objects.get(name=str(current_title))
+            except:
+                department = Department.objects.create(name=str(current_title))
             print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Section: " + current_title
         except:
             type = row("td")[0]("label")[0].string.strip()
@@ -60,12 +66,50 @@ def courses():
                 course = Course()
             course.type = type
             course.number = number
+            course.department = department
             try:
-                course.abbreviation = row("td")[2]("label")[0].string.strip()
+                course.abbreviation = re.match(r'^(.*?)(\.\.\.)?$',row("td")[2]("label")[0].string.strip()).group(1)
             except:
-                course.abbreviation = None
+                course.abbreviation = ""
             course.save()
-            print "Course: " + course.type + " " + course.number
+            print "Course: " + course.type + " " + course.number + " >> " + course.title
+
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+    """
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+def get_first_or_none(list):
+    if list:
+        return list[0].strip()
+    return None
+def process_table(course,table):
+    course.instructor = get_first_or_none(table("tr")[3]("td")[1]("tt")[0].contents)
+    course.ccn = get_first_or_none(table("tr")[5]("td")[1]("tt")[0].contents)
+    course.units = get_first_or_none(table("tr")[6]("td")[1]("tt")[0].contents)
+    course.exam_group = get_first_or_none(table("tr")[7]("td")[1]("tt")[0].contents)
+    course.save()
+
+def full_courses(chunk_size=100):
+    import grequests
+    courses = Course.objects.all()
+    base_url = "http://osoc.berkeley.edu/OSOC/osoc"
+    chunked_courses = chunks(courses,chunk_size)
+    num_chunks = len(courses)/chunk_size
+    for chunk,i in zip(chunked_courses,range(num_chunks)):
+        urls = [base_url for course in chunk]
+        datas = [{"p_term":"FL","p_dept":course.type,"p_course":course.number,"p_title":course.abbreviation} for course in chunk]
+        rs = (grequests.post(url,data=data) for (url,data) in zip(urls,datas))
+        results = grequests.map(rs)
+        for r,course in zip(results,chunk):
+            soup = bs4.BeautifulSoup(r.text)
+            try:
+                for table in [soup("table")[1]]:
+                    process_table(course,table)
+            except:
+                print "FAIL on course:"
+                print course.type + " " + course.number
+        print "Done chunk " + str(i) + " of " + str(num_chunks)
 
 def get_cal_balance(username,password):
     from twill.commands import *
