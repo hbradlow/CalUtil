@@ -112,6 +112,38 @@ def full_courses(chunk_size=70):
                 print course.type + " " + course.number
         print "Done chunk " + str(i) + " of " + str(num_chunks)
 
+def webcasts():
+    from gdata.youtube.service import *
+    import re
+    yt_service = gdata.youtube.service.YouTubeService()
+    playlist_feed = yt_service.GetYouTubePlaylistFeed(username='ucberkeley')
+    for video_entry in playlist_feed.entry:
+        playlist_video_feed = yt_service.GetYouTubePlaylistVideoFeed(uri='http://gdata.youtube.com/feeds/api/playlists/' + video_entry.id.text.split("/")[-1])
+        for entry in playlist_video_feed.entry:
+            w = Webcast()
+            s = entry.title.text
+            r = re.match("^(.*?)-.*?Lecture (\d+).*?$",s)
+            if r:
+                try:
+                    w.title = r.group(1).strip()
+                except:
+                    pass
+                try:
+                    w.number = r.group(2).strip()
+                except:
+                    pass
+
+                w.description = entry.description.text
+                w.url = entry.media.content[0].url
+
+                print s
+                print r.group(1).strip()
+                r2 = re.match("^(.*) (.*?\d+.*?)$",r.group(1).strip())
+                department_name = r2.group(1).strip().upper()
+                course_number = r2.group(2).strip()
+                print department_name 
+                w.course = Course.objects.filter(Q(department__name=department_name) & Q(number=course_number))[0]
+                w.save()
 def get_cal_balance(username,password):
     from twill.commands import *
     import twill
@@ -136,11 +168,6 @@ def get_cal_balance(username,password):
         return balance
     except:
         return False
-
-def cal_one_card_locations():
-    data = requests.get("http://services.housing.berkeley.edu/c1c/static/merchants.htm")
-    soup = bs4.BeautifulSoup(data.text,"xml")
-
 
 def bus_lines():
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)
@@ -449,27 +476,6 @@ def get_schedule(username,password):
 			"""
 	return cs 
 
-def update_webcast_data():
-	from gdata.youtube.service import *
-	yt_service = gdata.youtube.service.YouTubeService()
-	playlist_feed = yt_service.GetYouTubePlaylistFeed(username='ucberkeley')
-	for video_entry in playlist_feed.entry:
-		playlist_video_feed = yt_service.GetYouTubePlaylistVideoFeed(uri='http://gdata.youtube.com/feeds/api/playlists/' + video_entry.id.text.split("/")[-1])
-		for entry in playlist_video_feed.entry:
-			w = Webcast()
-			t = entry.title.text.split(" - ")
-			try:
-				w.title = t[0]
-			except:
-				pass
-			try:
-				w.number = t[1].split()[1].replace(":","")
-			except:
-				pass
-
-			w.description = entry.description.text
-			w.url = entry.media.content[0].url
-			w.save()
 def enrollment_info(ccn):
 	url = "http://osoc.berkeley.edu/OSOC/osoc?y=1&p_ccn=" + ccn + "&p_term=SP&p_deptname=--+Choose+a+Department+Name+--&p_classif=--+Choose+a+Course+Classification+--&p_presuf=--+Choose+a+Course+Prefix%2fSuffix+--&x=67"
 	br = mechanize.Browser()

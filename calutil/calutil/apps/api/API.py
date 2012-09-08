@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from tastypie import fields
 from tastypie.resources import ModelResource,ALL_WITH_RELATIONS
-from api.models import BusStop, BusLine,CalOneCardLocation, Course, Department
+from api.models import BusStop, BusLine,CalOneCardLocation, Course, Department, Webcast
 
 class BusLineResource(ModelResource):
     class Meta:
@@ -33,3 +33,14 @@ class DepartmentResource(ModelResource):
     class Meta:
         queryset = Department.objects.all()
         resource_name = "department"
+
+class WebcastResource(ModelResource):
+    course = fields.ToOneField("api.API.CourseResource","course")
+    class Meta:
+        queryset = Webcast.objects.all()
+        resource_name = "webcast"
+        filtering = {
+            'course':['exact'],
+            'limit':['exact'],
+            'offset':['exact']
+        }

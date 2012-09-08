@@ -285,10 +285,15 @@ class Section(models.Model):
 	available_seats = models.CharField(max_length=10,default="",null=True)
 
 class Webcast(models.Model):
-	title = models.CharField(max_length=200,default="",null=True)
-	description = models.CharField(max_length=200,default="",null=True)
-	url = models.CharField(max_length=1000,default="",null=True)
-	number = models.CharField(max_length=200,default="",null=True)
+    title = models.CharField(max_length=200,default="",null=True)
+    description = models.CharField(max_length=200,default="",null=True)
+    url = models.CharField(max_length=1000,default="",null=True)
+    number = models.CharField(max_length=200,default="",null=True)
+    course = models.ForeignKey(Course)
+
+    def __unicode__(self):
+        return self.title + ": " + self.number
+
 
 admin.site.register(BusLine)
 admin.site.register(BusVehicle)
