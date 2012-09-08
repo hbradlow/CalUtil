@@ -12,5 +12,6 @@
 
 @property (nonatomic, retain) NSMutableArray *classes;
 @property (nonatomic, retain) NSString *departmentURL;
+@property (nonatomic, retain) NSMutableArray *searchResults;
 
 @end

@@ -125,6 +125,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
     if (tableView == self.tableView)

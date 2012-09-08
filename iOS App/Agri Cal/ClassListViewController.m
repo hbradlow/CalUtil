@@ -8,6 +8,7 @@
 
 #import "ClassListViewController.h"
 #import "CalClass.h"
+#import "ClassViewController.h"
 
 #define kClassesPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:self.departmentURL]
 #define kClassesData @"classdata"
@@ -23,6 +24,7 @@
 {
     [super viewWillAppear:animated];
     self.classes = [[NSMutableArray alloc] init];
+    self.searchResults = [[NSMutableArray alloc] init];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
@@ -111,7 +113,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.classes count];
+    if (tableView == self.tableView)
+        return [self.classes count];
+    else
+        return [self.searchResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -121,11 +126,70 @@
     
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellAccessoryDisclosureIndicator reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.classes objectAtIndex:indexPath.row] number], [[self.classes objectAtIndex:indexPath.row] title]];
+    if (tableView == self.tableView)
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.classes objectAtIndex:indexPath.row] number], [[self.classes objectAtIndex:indexPath.row] title]];
+    else
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.searchResults objectAtIndex:indexPath.row] number], [[self.searchResults objectAtIndex:indexPath.row] title]];
     
     return cell;
+}
+
+#pragma mark - UISearchDisplayController delegate methods
+
+- (void)filterContentForSearchText:(NSString*)searchText
+                             scope:(NSString*)scope
+{
+    NSPredicate *resultPredicate = [NSPredicate
+                                    predicateWithFormat:@"number contains[cd] %@ OR title contains[cd] %@",
+                                    searchText, searchText];
+    
+    self.searchResults = [NSMutableArray arrayWithArray:[self.classes filteredArrayUsingPredicate:resultPredicate]];
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchScope:(NSInteger)searchOption
+{
+    [self filterContentForSearchText:[self.searchDisplayController.searchBar text]
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:searchOption]];
+    
+    return YES;
+}
+
+#pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"class"])
+    {
+        ClassViewController *viewController = [segue destinationViewController];
+        UITableView *table = (UITableView*)sender;
+        viewController.title = [table cellForRowAtIndexPath:[table indexPathForSelectedRow]].textLabel.text;
+        if (table == self.tableView)
+            viewController.currentClass = [self.classes objectAtIndex:[table indexPathForSelectedRow].row];
+        else
+            viewController.currentClass = [self.searchResults objectAtIndex:[table indexPathForSelectedRow].row];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"class" sender:tableView];
 }
 
 @end
