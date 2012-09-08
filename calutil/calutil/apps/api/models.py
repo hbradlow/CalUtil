@@ -74,6 +74,26 @@ class BusStopDirection(models.Model):
     title = models.CharField(max_length=100)
     line = models.ForeignKey(BusLine)
 
+class MenuItem(models.Model):
+	name = models.CharField(max_length=200)
+	type = models.CharField(max_length=50,default="Normal")
+	link = models.URLField(null=True)
+	pub_date = models.DateTimeField(auto_now_add=True)
+class TimeSpan(models.Model):
+	days = models.CharField(max_length=50)
+	type = models.CharField(max_length=50)
+	span = models.CharField(max_length=50)
+class Location(models.Model):
+    name = models.CharField(max_length=50) 
+    link = models.URLField(null=True)
+    timespans = models.ManyToManyField(TimeSpan)
+class Menu(models.Model):
+    location = models.ForeignKey(Location,default=1)
+    breakfast = models.ManyToManyField(MenuItem,related_name="breakfast",blank=True)
+    lunch = models.ManyToManyField(MenuItem,related_name="lunch",blank=True)
+    brunch = models.ManyToManyField(MenuItem,related_name="brunch",blank=True)
+    dinner = models.ManyToManyField(MenuItem,related_name="dinner",blank=True)
+    pub_date = models.DateTimeField(auto_now_add=True)
 ###############################OLD########################################
 class BusVehicle(models.Model):
 	vehicle_id = models.IntegerField()
@@ -116,20 +136,13 @@ class BusLine2(models.Model):
 			b.speed = v['speedkmhr']
 			b.save()
 			self.vehicles.add(b)
-	
 
-class MenuItem(models.Model):
-	name = models.CharField(max_length=200)
-	type = models.CharField(max_length=50,default="Normal")
-	link = models.CharField(max_length=1000,default="#")
-	pub_date = models.DateTimeField(auto_now_add=True)
-
-class Menu(models.Model):
+class Menu2(models.Model):
 	location = models.CharField(max_length=50)
-	breakfast = models.ManyToManyField(MenuItem,related_name="breakfast")
-	lunch = models.ManyToManyField(MenuItem,related_name="lunch")
-	brunch = models.ManyToManyField(MenuItem,related_name="brunch")
-	dinner = models.ManyToManyField(MenuItem,related_name="dinner")
+	breakfast = models.ManyToManyField(MenuItem,related_name="breakfast2")
+	lunch = models.ManyToManyField(MenuItem,related_name="lunch2")
+	brunch = models.ManyToManyField(MenuItem,related_name="brunch2")
+	dinner = models.ManyToManyField(MenuItem,related_name="dinner2")
 	pub_date = models.DateTimeField(auto_now_add=True)
 
 	def update(self):
@@ -192,13 +205,6 @@ class Menu(models.Model):
 	class Meta:
 		ordering = ['-pub_date']
 
-class TimeSpan(models.Model):
-	days = models.CharField(max_length=50)
-	type = models.CharField(max_length=50)
-	span = models.CharField(max_length=50)
-class Location(models.Model):
-	location = models.CharField(max_length=50) 
-	timespans = models.ManyToManyField(TimeSpan)
 def clean(s):
     """
         Cleans html text of usual tags.

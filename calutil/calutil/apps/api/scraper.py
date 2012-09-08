@@ -5,6 +5,46 @@ import requests
 from django.db.models import Q
 
 ###############################NEW########################################
+def menu(menu):
+    base_url = "http://services.housing.berkeley.edu/FoodPro/dining/static/"
+    r = requests.get(base_url + "todaysentrees.asp")
+    soup = bs4.BeautifulSoup(r.text)
+    index = 0
+    if menu.location.name == "crossroads":
+        index = 0
+    elif menu.location.name == "cafe3":
+        index = 1
+    elif menu.location.name == "foothill":
+        index = 2
+    elif menu.location.name == "ckc":
+        index = 3
+
+    breakfast = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[1]("td")[index].findAll("a")
+    lunch = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[2]("td")[index].findAll("a")
+    dinner = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[3]("td")[index].findAll("a")
+    
+    soup_key = soup("table")[0]("tbody")[0]("tr",recursive=False)[0]("td",recursive=False)[1]("table")[0]("table")[0]("font")
+    key = {u'#000000':"Normal"}
+    for i in soup_key[1:4]:
+        key[i['color']] = i.contents[0]
+    for meal in [breakfast,lunch,dinner]:
+        for i in meal:
+            if i.find("font"):
+                m = MenuItem()
+                m.link = base_url + i['href']
+                m.name = i.find("font").contents[0]
+                try:
+                    m.type = key[i.find("font")['color']]
+                except:
+                    pass
+                m.save()
+                if meal == breakfast:
+                    menu.breakfast.add(m)
+                if meal == lunch:
+                    menu.lunch.add(m)
+                if meal == dinner:
+                    menu.dinner.add(m)
+    menu.save()
 def pairs(lst):
     i = iter(lst)
     first = prev = item = i.next()
