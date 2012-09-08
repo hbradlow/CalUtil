@@ -25,7 +25,9 @@ class CourseResource(ModelResource):
         queryset = Course.objects.all()
         resource_name = "course"
         filtering = {
-            'department':['exact']
+            'department':['exact'],
+            'limit':['exact'],
+            'offset':['exact']
         }
 class DepartmentResource(ModelResource):
     class Meta:

@@ -42,9 +42,9 @@ def cal1card_from_plist():
         print "Name: " + location.name
         location.save()
 
-def courses():
+def courses(term="FL"):
     import re
-    data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=FL&p_list_all=Y")
+    data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=" + term + "&p_list_all=Y")
     soup = bs4.BeautifulSoup(data.text)
     rows = soup("table")[0]("table")[0]("tr")[1:]
     current_title = rows[0]("b")[0].string
@@ -61,18 +61,19 @@ def courses():
             type = row("td")[0]("label")[0].string.strip()
             number = row("td")[1]("label")[0].string.strip()
             try:
-                course = Course.objects.get(Q(type=type) & Q(number=number))
+                course = Course.objects.get(Q(type=type) & Q(number=number) &Q(semester=term))
             except:
                 course = Course()
             course.type = type
             course.number = number
             course.department = department
+            course.semester = term
             try:
                 course.abbreviation = re.match(r'^(.*?)(\.\.\.)?$',row("td")[2]("label")[0].string.strip()).group(1)
             except:
                 course.abbreviation = ""
             course.save()
-            print "Course: " + course.type + " " + course.number + " >> " + course.title
+            print "Course: " + course.type + " " + course.number + " >> " + course.abbreviation
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
@@ -90,7 +91,7 @@ def process_table(course,table):
     course.exam_group = get_first_or_none(table("tr")[7]("td")[1]("tt")[0].contents)
     course.save()
 
-def full_courses(chunk_size=100):
+def full_courses(chunk_size=70):
     import grequests
     courses = Course.objects.all()
     base_url = "http://osoc.berkeley.edu/OSOC/osoc"
@@ -98,7 +99,7 @@ def full_courses(chunk_size=100):
     num_chunks = len(courses)/chunk_size
     for chunk,i in zip(chunked_courses,range(num_chunks)):
         urls = [base_url for course in chunk]
-        datas = [{"p_term":"FL","p_dept":course.type,"p_course":course.number,"p_title":course.abbreviation} for course in chunk]
+        datas = [{"p_term":course.semester,"p_dept":course.type,"p_course":course.number,"p_title":course.abbreviation} for course in chunk]
         rs = (grequests.post(url,data=data) for (url,data) in zip(urls,datas))
         results = grequests.map(rs)
         for r,course in zip(results,chunk):

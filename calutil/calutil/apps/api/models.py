@@ -16,7 +16,7 @@ class Department(models.Model):
     def __unicode__(self):
         return self.name
 class Course(models.Model):
-    semester = models.CharField(max_length=30,default="Spring",null=True)
+    semester = models.CharField(max_length=30,default="FL",null=True)
     year = models.CharField(max_length=20,default="",null=True)
     ccn = models.CharField(max_length=20,default="",null=True)
     abbreviation = models.CharField(max_length=500,default="",null=True)
