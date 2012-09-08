@@ -179,9 +179,9 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         UITableView *table = (UITableView*)sender;
         viewController.title = [table cellForRowAtIndexPath:[table indexPathForSelectedRow]].textLabel.text;
         if (table == self.tableView)
-            viewController.departmentURL = [[self.departments objectAtIndex:[self.tableView indexPathForSelectedRow].row] departmentID];
+            viewController.departmentURL = [[self.departments objectAtIndex:[table indexPathForSelectedRow].row] departmentID];
         else
-            viewController.departmentURL = [[self.searchResults objectAtIndex:[self.tableView indexPathForSelectedRow].row] departmentID];
+            viewController.departmentURL = [[self.searchResults objectAtIndex:[table indexPathForSelectedRow].row] departmentID];
     }
 }
 

@@ -2,14 +2,16 @@
 //  WebcastListViewController.h
 //  Agri Cal
 //
-//  Created by Kevin Lindkvist on 3/27/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Kevin Lindkvist on 9/8/12.
+//
 //
 
 #import <UIKit/UIKit.h>
-#import "WebcastViewController.h"
+#import "Webcast.h"
 
 @interface WebcastListViewController : UITableViewController
-@property (strong, nonatomic) NSMutableArray *webcasts;
-@property (strong, nonatomic) NSString *url;
+
+@property (nonatomic, copy) NSString *courseID;
+@property (nonatomic, retain) NSMutableArray *webcasts;
+
 @end

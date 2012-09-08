@@ -7,6 +7,7 @@
 //
 
 #import "ClassViewController.h"
+#import "WebcastListViewController.h"
 
 @interface ClassViewController ()
 
@@ -21,7 +22,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 9;
+    return 10;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -33,7 +34,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     }
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Title";
@@ -74,13 +75,29 @@
         case 9:
             cell.textLabel.text = @"Webcast";
             cell.detailTextLabel.text = self.currentClass.hasWebcast ? @"Yes" : @"No";
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = self.currentClass.hasWebcast ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+            cell.selectionStyle = self.currentClass.hasWebcast ? UITableViewCellSelectionStyleGray : UITableViewCellSelectionStyleNone;
             break;
         default:
             break;
     }
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 9 && self.currentClass.hasWebcast)
+    {
+        [self performSegueWithIdentifier:@"webcast" sender:nil];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    WebcastListViewController *controller = [segue destinationViewController];
+    controller.courseID = [self.currentClass uniqueID];
+    controller.navigationItem.title = self.currentClass.title;
 }
 
 @end

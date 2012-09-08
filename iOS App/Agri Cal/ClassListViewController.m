@@ -78,6 +78,7 @@
         newClass.waitlist = [currentClass objectForKey:@"waitlist"];
         newClass.number = [currentClass objectForKey:@"number"];
         newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
+        newClass.uniqueID = [currentClass objectForKey:@"id"];
         [self.classes addObject:newClass];
     }
     
@@ -143,6 +144,8 @@
         theClass = [self.searchResults objectAtIndex:indexPath.row];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[theClass number], [theClass title]];
+    cell.detailTextLabel.text = @"MWF 12-1";
+    
     if (theClass.hasWebcast)
         cell.imageView.image = [UIImage imageNamed:@"monitor.png"];
     else

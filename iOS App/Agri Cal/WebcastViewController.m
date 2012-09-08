@@ -29,7 +29,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self embedYouTube:self.url];
+    [self embedYouTube:@"https://www.youtube.com/watch?v=bQbbtnTz1KE&feature=g-logo-xit"];
 }
 - (void)embedYouTube:(NSString*)urlString {  
     NSString *embedHTML = @"\

@@ -1,69 +1,72 @@
+//
+//  WebcastListViewController.m
+//  Agri Cal
+//
+//  Created by Kevin Lindkvist on 9/8/12.
+//
+//
+
 #import "WebcastListViewController.h"
+#import "WebcastViewController.h"
 
 @interface WebcastListViewController ()
 
 @end
 
 @implementation WebcastListViewController
-@synthesize webcasts = _webcasts;
-@synthesize url = _url;
-- (id)initWithStyle:(UITableViewStyle)style
+
+- (void)viewDidLoad
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+    [super viewDidLoad];
+    self.webcasts = [[NSMutableArray alloc] init];
 }
-/*
-    Load all the webcasts for the selected course from the API, 
-    making sure that the list is sorted by lecture number, and that 
-    if a lecture is missing it displays that. 
- */
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.webcasts = [[NSUserDefaults standardUserDefaults] objectForKey:self.url];
-    if (!self.webcasts) 
-        self.webcasts = [[NSMutableArray alloc] init];
-    NSString *queryString = [NSString stringWithFormat:@"%@/%@", ServerURL, self.url]; 
-    queryString = [queryString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-
-    // Use GCD to perform request in background, and then jump back on the main thread 
-    // to update the UI
-    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
-        @try {
-            NSURLResponse *response = nil;
-            NSError *error = nil;
-            NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                         returningResponse:&response
-                                                                     error:&error];
-            self.webcasts = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil]; 
-            NSLog(@"%@", self.webcasts);
-            // Making sure that the sort is done by lecture number and not alpha-numerical. 
-            int i = 0;
-            while (i < [self.webcasts count])
-            {
-                NSDictionary *currentDict = [self.webcasts objectAtIndex:i];
-                [currentDict setValue:[NSNumber numberWithInt:[[currentDict objectForKey:@"number"] integerValue]] forKey:@"number"];
-                i++;
-            }
-            NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"number"  ascending:YES];
-            [self.webcasts sortUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-            [[NSUserDefaults standardUserDefaults] setValue:self.webcasts forKey:self.url];
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^{
-                [self.tableView reloadData];
-            });
-        }@catch (NSException *e) {
-            NSLog(@"Error %@", e);
-        }
+        [self loadWebcasts];
     });
+}
+
+- (void)loadWebcasts
+{
+    NSString *queryString = [NSString stringWithFormat:@"%@/api/webcast/?format=json&course=%@", ServerURL, self.courseID];
+    NSURL *requestURL = [NSURL URLWithString:queryString];
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+    
+    NSData *receivedData;
+    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                         returningResponse:&response
+                                                     error:&error];
+    
+    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+    
+    NSArray *arr = [receivedDict objectForKey:@"objects"];
+    
+    NSMutableArray *tempWebcasts = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *currentWebcast in arr)
+    {
+        Webcast *newCast = [[Webcast alloc] init];
+        newCast.url = [currentWebcast objectForKey:@"url"];
+        newCast.number = [currentWebcast objectForKey:@"number"];
+        [tempWebcasts addObject:newCast];
+    }
+    self.webcasts = tempWebcasts;
+    [self.webcasts sortUsingComparator:(NSComparator)^(Webcast *obj1, Webcast *obj2){
+        return [obj1.number compare:obj2.number options:NSNumericSearch];
+    }];
+    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Table view data source
@@ -77,7 +80,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return MAX([self.webcasts count], 1);
+    return [self.webcasts count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,29 +90,25 @@
     
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
-    }
-    if ([self.webcasts count])
-    {
-        cell.textLabel.text = [NSString stringWithFormat:@"Lecture %@", [[self.webcasts objectAtIndex:indexPath.row] objectForKey:@"number"]];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    else 
-    {
-        cell.textLabel.text = @"Loading webcasts...";
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    cell.textLabel.text = [NSString stringWithFormat:@"Lecture %@",[[self.webcasts objectAtIndex:indexPath.row] number]];
     return cell;
 }
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"test" sender:[tableView cellForRowAtIndexPath:indexPath]];
+    [self performSegueWithIdentifier:@"view" sender:tableView];
+    NSLog(@"did select row");
 }
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    ((WebcastViewController*)segue.destinationViewController).url = [[self.webcasts objectAtIndex:[self.tableView indexPathForCell:(UITableViewCell*)sender].row] objectForKey:@"url"];
+    WebcastViewController *destination = [segue destinationViewController];
+    destination.url = [self.webcasts objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    NSLog(@"preparing for segue");
 }
+
 @end
