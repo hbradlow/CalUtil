@@ -19,7 +19,6 @@
 		638DD19315384D46009EA87A /* infoimage.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19115384D46009EA87A /* infoimage.png */; };
 		638DD19415384D46009EA87A /* infoimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19215384D46009EA87A /* infoimage@2x.png */; };
 		638DD1961538F12B009EA87A /* doe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 638DD1951538F12B009EA87A /* doe.jpg */; };
-		638DD199153917F4009EA87A /* TVOutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DD198153917F4009EA87A /* TVOutManager.m */; };
 		638F42DD150C68620031A9F6 /* DiningMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42DC150C68620031A9F6 /* DiningMainViewController.m */; };
 		638F42E1150C6D3E0031A9F6 /* DiningDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */; };
 		638F42E7150CB96C0031A9F6 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42E6150CB96B0031A9F6 /* SettingsViewController.m */; };
@@ -34,7 +33,6 @@
 		6393DE22150301F3003B77F5 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393DE21150301F3003B77F5 /* MapViewController.m */; };
 		6393DE24150301F3003B77F5 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 6393DE23150301F3003B77F5 /* first.png */; };
 		6393DE26150301F3003B77F5 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6393DE25150301F3003B77F5 /* first@2x.png */; };
-		6393DE29150301F3003B77F5 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6393DE28150301F3003B77F5 /* SecondViewController.m */; };
 		6393DE2B150301F3003B77F5 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 6393DE2A150301F3003B77F5 /* second.png */; };
 		6393DE2D150301F3003B77F5 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6393DE2C150301F3003B77F5 /* second@2x.png */; };
 		6393DE35150301F3003B77F5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6393DE34150301F3003B77F5 /* SenTestingKit.framework */; };
@@ -146,8 +144,6 @@
 		638DD19115384D46009EA87A /* infoimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoimage.png; sourceTree = "<group>"; };
 		638DD19215384D46009EA87A /* infoimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoimage@2x.png"; sourceTree = "<group>"; };
 		638DD1951538F12B009EA87A /* doe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = doe.jpg; sourceTree = "<group>"; };
-		638DD197153917F4009EA87A /* TVOutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVOutManager.h; sourceTree = "<group>"; };
-		638DD198153917F4009EA87A /* TVOutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TVOutManager.m; sourceTree = "<group>"; };
 		638F42DB150C68620031A9F6 /* DiningMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningMainViewController.h; sourceTree = "<group>"; };
 		638F42DC150C68620031A9F6 /* DiningMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningMainViewController.m; sourceTree = "<group>"; };
 		638F42DF150C6D3E0031A9F6 /* DiningDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningDetailViewController.h; sourceTree = "<group>"; };
@@ -170,8 +166,6 @@
 		6393DE21150301F3003B77F5 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		6393DE23150301F3003B77F5 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
 		6393DE25150301F3003B77F5 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
-		6393DE27150301F3003B77F5 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		6393DE28150301F3003B77F5 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		6393DE2A150301F3003B77F5 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		6393DE2C150301F3003B77F5 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		6393DE33150301F3003B77F5 /* Agri CalTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Agri CalTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -338,22 +332,12 @@
 				6393DE18150301F3003B77F5 /* AppDelegate.m */,
 				6393DE1A150301F3003B77F5 /* MainStoryboard_iPhone.storyboard */,
 				6393DE1D150301F3003B77F5 /* MainStoryboard_iPad.storyboard */,
-				6393DE20150301F3003B77F5 /* MapViewController.h */,
-				6393DE21150301F3003B77F5 /* MapViewController.m */,
-				63389DD815F0230F00953A01 /* NextBusViewController.h */,
-				63389DD915F0230F00953A01 /* NextBusViewController.m */,
-				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
-				63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */,
 				638DD18E15384A95009EA87A /* InfoView.h */,
 				638DD18F15384A95009EA87A /* InfoView.m */,
 				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
+				63C28D4B15FAF40C00E212F0 /* Maps */,
+				63C28D4A15FAF3FB00E212F0 /* Dining */,
 				6393DE5C15030FA5003B77F5 /* Map Annotations */,
-				638F42DB150C68620031A9F6 /* DiningMainViewController.h */,
-				638F42DC150C68620031A9F6 /* DiningMainViewController.m */,
-				638F42DF150C6D3E0031A9F6 /* DiningDetailViewController.h */,
-				638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */,
-				6D48991E152C33D20060CBA6 /* MealViewController.h */,
-				6D48991F152C33D20060CBA6 /* MealViewController.m */,
 				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
 				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
 				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
@@ -371,61 +355,8 @@
 				6326ABA715227213005F1537 /* WebcastViewController.m */,
 				639994E4152BCFBC00356F87 /* Tabbar images */,
 				6393DE5D15030FC5003B77F5 /* Models */,
-				6393DE23150301F3003B77F5 /* first.png */,
-				6393DE25150301F3003B77F5 /* first@2x.png */,
-				6393DE27150301F3003B77F5 /* SecondViewController.h */,
-				6393DE28150301F3003B77F5 /* SecondViewController.m */,
-				6393DE2A150301F3003B77F5 /* second.png */,
-				6393DE2C150301F3003B77F5 /* second@2x.png */,
-				6387FF481538157A00EA4A15 /* mapkey.png */,
-				6387FF491538157A00EA4A15 /* mapkey@2x.png */,
-				638DD19115384D46009EA87A /* infoimage.png */,
-				638DD19215384D46009EA87A /* infoimage@2x.png */,
-				638DD1951538F12B009EA87A /* doe.jpg */,
-				63DE52B71539330C00F9ECFB /* bearbasics.jpg */,
-				63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */,
-				63DE52BC153933E700F9ECFB /* cafedurant.jpg */,
-				63DE52BE1539343B00F9ECFB /* chipotle.gif */,
-				63DE52C01539345F00F9ECFB /* hoagies.JPG */,
-				63DE52C21539363700F9ECFB /* johnstons.jpg */,
-				63DE52C41539365000F9ECFB /* Moesbooks.jpg */,
-				63DE52C61539369400F9ECFB /* neds.jpg */,
-				63DE52C81539371F00F9ECFB /* uchair.jpg */,
-				63DE52CA1539375000F9ECFB /* studentfood.jpg */,
-				63DE52CC153937EB00F9ECFB /* extreme.jpg */,
-				63DE52CE15393BA200F9ECFB /* ramonas.jpg */,
-				63DE52CF15393BA200F9ECFB /* proshop.gif */,
-				63DE52D015393BA200F9ECFB /* patbrown.jpg */,
-				63DE52D115393BA200F9ECFB /* commongrounds.gif */,
-				63DE52D215393BA200F9ECFB /* terrace.jpg */,
-				63DE52D315393BA200F9ECFB /* qualcomm.jpg */,
-				63DE52D415393BA200F9ECFB /* peets.jpg */,
-				63DE52E815393C7000F9ECFB /* cheesenstuff.jpg */,
-				63DE52EA15393C7A00F9ECFB /* blondies.jpg */,
-				63DE52D515393BA200F9ECFB /* gbc.jpg */,
-				63DE52D615393BA200F9ECFB /* bearmarket.gif */,
-				63DE52D715393BA200F9ECFB /* soupco.jpg */,
-				63DE52D815393BA200F9ECFB /* naan.JPG */,
-				63DE52D915393BA200F9ECFB /* joshu.jpg */,
-				63DE52DA15393BA200F9ECFB /* jamba.jpg */,
-				63DE52EC153940C100F9ECFB /* physicslib.png */,
-				63DE52ED153940C100F9ECFB /* optometrylib.jpg */,
-				63DE52EE153940C100F9ECFB /* musiclib.jpg */,
-				63DE52EF153940C100F9ECFB /* mathlib.jpeg */,
-				63DE52F0153940C100F9ECFB /* psychlib.jpg */,
-				63DE52F1153940C100F9ECFB /* chemlib.jpeg */,
-				63DE52F2153940C100F9ECFB /* biolib.JPG */,
-				63DE52F3153940C100F9ECFB /* sheldon.jpg */,
-				63DE52F4153940C100F9ECFB /* moffitt.jpg */,
-				63DE52F5153940C100F9ECFB /* ethnicstud.jpg */,
-				63DE52F6153940C100F9ECFB /* kresge.jpg */,
-				63DE52F7153940C100F9ECFB /* eastasianlib.jpeg */,
-				63DE52F8153940C100F9ECFB /* buslib.jpg */,
-				63DE52F9153940C100F9ECFB /* bancroft.jpg */,
-				63DE52FA153940C100F9ECFB /* anthro.jpeg */,
+				63C28D4C15FAF42A00E212F0 /* Images */,
 				6393DE0F150301F3003B77F5 /* Supporting Files */,
-				638DD197153917F4009EA87A /* TVOutManager.h */,
-				638DD198153917F4009EA87A /* TVOutManager.m */,
 			);
 			path = "Agri Cal";
 			sourceTree = "<group>";
@@ -520,6 +451,89 @@
 				63C28D3915F9602700E212F0 /* CalClass.m */,
 			);
 			name = "Schedule Information";
+			sourceTree = "<group>";
+		};
+		63C28D4A15FAF3FB00E212F0 /* Dining */ = {
+			isa = PBXGroup;
+			children = (
+				638F42DB150C68620031A9F6 /* DiningMainViewController.h */,
+				638F42DC150C68620031A9F6 /* DiningMainViewController.m */,
+				638F42DF150C6D3E0031A9F6 /* DiningDetailViewController.h */,
+				638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */,
+				6D48991E152C33D20060CBA6 /* MealViewController.h */,
+				6D48991F152C33D20060CBA6 /* MealViewController.m */,
+			);
+			name = Dining;
+			sourceTree = "<group>";
+		};
+		63C28D4B15FAF40C00E212F0 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				6393DE20150301F3003B77F5 /* MapViewController.h */,
+				6393DE21150301F3003B77F5 /* MapViewController.m */,
+				63389DD815F0230F00953A01 /* NextBusViewController.h */,
+				63389DD915F0230F00953A01 /* NextBusViewController.m */,
+				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
+				63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
+		63C28D4C15FAF42A00E212F0 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				6393DE23150301F3003B77F5 /* first.png */,
+				6393DE25150301F3003B77F5 /* first@2x.png */,
+				6393DE2A150301F3003B77F5 /* second.png */,
+				6393DE2C150301F3003B77F5 /* second@2x.png */,
+				6387FF481538157A00EA4A15 /* mapkey.png */,
+				6387FF491538157A00EA4A15 /* mapkey@2x.png */,
+				638DD19115384D46009EA87A /* infoimage.png */,
+				638DD19215384D46009EA87A /* infoimage@2x.png */,
+				638DD1951538F12B009EA87A /* doe.jpg */,
+				63DE52B71539330C00F9ECFB /* bearbasics.jpg */,
+				63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */,
+				63DE52BC153933E700F9ECFB /* cafedurant.jpg */,
+				63DE52BE1539343B00F9ECFB /* chipotle.gif */,
+				63DE52C01539345F00F9ECFB /* hoagies.JPG */,
+				63DE52C21539363700F9ECFB /* johnstons.jpg */,
+				63DE52C41539365000F9ECFB /* Moesbooks.jpg */,
+				63DE52C61539369400F9ECFB /* neds.jpg */,
+				63DE52C81539371F00F9ECFB /* uchair.jpg */,
+				63DE52CA1539375000F9ECFB /* studentfood.jpg */,
+				63DE52CC153937EB00F9ECFB /* extreme.jpg */,
+				63DE52CE15393BA200F9ECFB /* ramonas.jpg */,
+				63DE52CF15393BA200F9ECFB /* proshop.gif */,
+				63DE52D015393BA200F9ECFB /* patbrown.jpg */,
+				63DE52D115393BA200F9ECFB /* commongrounds.gif */,
+				63DE52D215393BA200F9ECFB /* terrace.jpg */,
+				63DE52D315393BA200F9ECFB /* qualcomm.jpg */,
+				63DE52D415393BA200F9ECFB /* peets.jpg */,
+				63DE52E815393C7000F9ECFB /* cheesenstuff.jpg */,
+				63DE52EA15393C7A00F9ECFB /* blondies.jpg */,
+				63DE52D515393BA200F9ECFB /* gbc.jpg */,
+				63DE52D615393BA200F9ECFB /* bearmarket.gif */,
+				63DE52D715393BA200F9ECFB /* soupco.jpg */,
+				63DE52D815393BA200F9ECFB /* naan.JPG */,
+				63DE52D915393BA200F9ECFB /* joshu.jpg */,
+				63DE52DA15393BA200F9ECFB /* jamba.jpg */,
+				63DE52EC153940C100F9ECFB /* physicslib.png */,
+				63DE52ED153940C100F9ECFB /* optometrylib.jpg */,
+				63DE52EE153940C100F9ECFB /* musiclib.jpg */,
+				63DE52EF153940C100F9ECFB /* mathlib.jpeg */,
+				63DE52F0153940C100F9ECFB /* psychlib.jpg */,
+				63DE52F1153940C100F9ECFB /* chemlib.jpeg */,
+				63DE52F2153940C100F9ECFB /* biolib.JPG */,
+				63DE52F3153940C100F9ECFB /* sheldon.jpg */,
+				63DE52F4153940C100F9ECFB /* moffitt.jpg */,
+				63DE52F5153940C100F9ECFB /* ethnicstud.jpg */,
+				63DE52F6153940C100F9ECFB /* kresge.jpg */,
+				63DE52F7153940C100F9ECFB /* eastasianlib.jpeg */,
+				63DE52F8153940C100F9ECFB /* buslib.jpg */,
+				63DE52F9153940C100F9ECFB /* bancroft.jpg */,
+				63DE52FA153940C100F9ECFB /* anthro.jpeg */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -701,7 +715,6 @@
 				6393DE15150301F3003B77F5 /* main.m in Sources */,
 				6393DE19150301F3003B77F5 /* AppDelegate.m in Sources */,
 				6393DE22150301F3003B77F5 /* MapViewController.m in Sources */,
-				6393DE29150301F3003B77F5 /* SecondViewController.m in Sources */,
 				6393DE4F15030395003B77F5 /* BasicMapAnnotation.m in Sources */,
 				6393DE52150303A8003B77F5 /* BasicMapAnnotationView.m in Sources */,
 				6393DE55150303B8003B77F5 /* BusStopAnnotation.m in Sources */,
@@ -717,7 +730,6 @@
 				6D489920152C33D20060CBA6 /* MealViewController.m in Sources */,
 				63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */,
 				638DD19015384A95009EA87A /* InfoView.m in Sources */,
-				638DD199153917F4009EA87A /* TVOutManager.m in Sources */,
 				63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */,
 				63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */,
 				63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */,

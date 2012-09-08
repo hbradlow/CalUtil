@@ -77,10 +77,7 @@
     //[self performSelector:@selector(startTvOut) withObject:nil afterDelay:1.5];
     return YES;
 }
--(void)startTvOut
-{
-    [[TVOutManager sharedInstance] startTVOut];
-}
+
 /*  
     The same thing happens each time the application enters the foreground
  */

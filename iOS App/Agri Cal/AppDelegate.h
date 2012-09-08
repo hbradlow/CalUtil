@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TVOutManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIWebViewDelegate>
 
