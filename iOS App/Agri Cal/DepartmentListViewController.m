@@ -7,9 +7,11 @@
 //
 
 #import "DepartmentListViewController.h"
+#import "ClassListViewController.h"
 
 #define kDepartmentData @"depdata"
 #define kDepartmentURL @"depurl"
+#define kDepartmentKey @"depkey"
 
 @implementation DepartmentListViewController
 
@@ -22,9 +24,24 @@
     self.searchResults = [[NSMutableArray alloc] init];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self loadDepartments];
-    });
+    
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDepartmentKey];
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
+    {
+        NSLog(@"loading departments");
+        dispatch_async(queue, ^{
+            [self loadDepartments];
+        });
+    }
+    else
+    {
+        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
+        [unarchiver finishDecoding];
+    }
+    
     dispatch_async(queue, ^{
         [self loadCourses];
     });
@@ -58,13 +75,26 @@
     {
         Department *newDep = [[Department alloc] init];
         newDep.title = [currentDep objectForKey:@"name"];
-        newDep.urlExtension = [currentDep objectForKey:@"resource_uri"];
+        newDep.departmentID = [currentDep objectForKey:@"id"];
         [self.departments addObject:newDep];
     }
     [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
         return [obj1.title caseInsensitiveCompare:obj2.title];
     }];
-    [self.tableView reloadData];
+    [self saveDepartments];
+    
+    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+}
+
+- (void)saveDepartments
+{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self.departments forKey:kDepartmentData];
+    [archiver finishEncoding];
+    [data writeToFile:kDepartmentURL atomically:YES];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDepartmentKey];
 }
 
 #pragma mark - Table view data source
@@ -95,7 +125,10 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
     
     if (tableView == self.tableView)
         cell.textLabel.text = [[self.departments objectAtIndex:indexPath.row] title];
@@ -136,6 +169,27 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
                                       objectAtIndex:searchOption]];
     
     return YES;
+}
+
+#pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"department"])
+    {
+        ClassListViewController *viewController = [segue destinationViewController];
+        UITableView *table = (UITableView*)sender;
+        viewController.title = [table cellForRowAtIndexPath:[table indexPathForSelectedRow]].textLabel.text;
+        if (table == self.tableView)
+            viewController.departmentURL = [[self.departments objectAtIndex:[self.tableView indexPathForSelectedRow].row] departmentID];
+        else
+            viewController.departmentURL = [[self.searchResults objectAtIndex:[self.tableView indexPathForSelectedRow].row] departmentID];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"department" sender:tableView];
 }
 
 @end

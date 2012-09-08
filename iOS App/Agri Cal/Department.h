@@ -11,6 +11,6 @@
 @interface Department : NSObject <NSCoding>
 
 @property (copy, nonatomic) NSString *title;
-@property (copy, nonatomic) NSString *urlExtension;
+@property (copy, nonatomic) NSString *departmentID;
 
 @end

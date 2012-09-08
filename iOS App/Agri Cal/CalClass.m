@@ -12,7 +12,7 @@
 #define kCCNKey @"ccn" 
 #define kTimesKey @"times" 
 #define kEnrolledKey @"enrolled" 
-#define kEnrolledLimit @"limit" 
+#define kEnrolledLimit @"enrolledlimit" 
 #define kWebcastKey @"web" 
 #define kSectionsKey @"sections" 
 
@@ -39,7 +39,7 @@
     [aCoder encodeObject:self.times forKey:kTimesKey];
     [aCoder encodeObject:self.title forKey:kTitleKey];
     [aCoder encodeObject:self.ccn forKey:kCCNKey];
-    [aCoder encodeObject:self.enrolled forKey:kEnrolledLimit];
+    [aCoder encodeObject:self.enrolled forKey:kEnrolledKey];
     [aCoder encodeObject:self.enrolledLimit forKey:kEnrolledLimit];
     [aCoder encodeObject:self.sections forKey:kSectionsKey];
 }

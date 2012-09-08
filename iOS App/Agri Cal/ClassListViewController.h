@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClassListViewController : UIViewController
+@interface ClassListViewController : UITableViewController
+
+@property (nonatomic, retain) NSMutableArray *classes;
+@property (nonatomic, retain) NSString *departmentURL;
 
 @end

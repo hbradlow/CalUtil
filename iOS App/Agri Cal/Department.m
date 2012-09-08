@@ -18,7 +18,7 @@
     if ((self = [super init]))
     {
         self.title = [aDecoder decodeObjectForKey:kTitleKey];
-        self.urlExtension = [aDecoder decodeObjectForKey:kExtensionKey];
+        self.departmentID = [aDecoder decodeObjectForKey:kExtensionKey];
     }
     return self;
 }
@@ -26,7 +26,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.title forKey:kTitleKey];
-    [aCoder encodeObject:self.urlExtension forKey:kExtensionKey];
+    [aCoder encodeObject:self.departmentID forKey:kExtensionKey];
 }
 
 @end

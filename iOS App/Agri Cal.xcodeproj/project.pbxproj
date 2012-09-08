@@ -70,7 +70,7 @@
 		63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */; };
 		63C28D3415F95B9E00E212F0 /* Department.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3315F95B9E00E212F0 /* Department.m */; };
 		63C28D3A15F9602700E212F0 /* CalClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3915F9602700E212F0 /* CalClass.m */; };
-		63C28D3D15F9E41200E212F0 /* ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3C15F9E41200E212F0 /* ClassListViewController.m */; };
+		63C28D4015FAD72C00E212F0 /* ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3F15FAD72B00E212F0 /* ClassListViewController.m */; };
 		63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
 		63DE52BB1539332C00F9ECFB /* berkeleyThaiHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */; };
@@ -218,8 +218,8 @@
 		63C28D3315F95B9E00E212F0 /* Department.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Department.m; sourceTree = "<group>"; };
 		63C28D3815F9602700E212F0 /* CalClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalClass.h; sourceTree = "<group>"; };
 		63C28D3915F9602700E212F0 /* CalClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalClass.m; sourceTree = "<group>"; };
-		63C28D3B15F9E41200E212F0 /* ClassListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassListViewController.h; sourceTree = "<group>"; };
-		63C28D3C15F9E41200E212F0 /* ClassListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListViewController.m; sourceTree = "<group>"; };
+		63C28D3E15FAD72B00E212F0 /* ClassListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassListViewController.h; sourceTree = "<group>"; };
+		63C28D3F15FAD72B00E212F0 /* ClassListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListViewController.m; sourceTree = "<group>"; };
 		63D6146515EECA9F00931A59 /* DisclosureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureAnnotationView.h; sourceTree = "<group>"; };
 		63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureAnnotationView.m; sourceTree = "<group>"; };
 		63DE52B71539330C00F9ECFB /* bearbasics.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bearbasics.jpg; sourceTree = "<group>"; };
@@ -507,8 +507,8 @@
 			children = (
 				63C28D2D15F95A8300E212F0 /* DepartmentListViewController.h */,
 				63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */,
-				63C28D3B15F9E41200E212F0 /* ClassListViewController.h */,
-				63C28D3C15F9E41200E212F0 /* ClassListViewController.m */,
+				63C28D3E15FAD72B00E212F0 /* ClassListViewController.h */,
+				63C28D3F15FAD72B00E212F0 /* ClassListViewController.m */,
 				63C28D3215F95B9E00E212F0 /* Department.h */,
 				63C28D3315F95B9E00E212F0 /* Department.m */,
 				63C28D3815F9602700E212F0 /* CalClass.h */,
@@ -719,7 +719,7 @@
 				63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */,
 				63C28D3415F95B9E00E212F0 /* Department.m in Sources */,
 				63C28D3A15F9602700E212F0 /* CalClass.m in Sources */,
-				63C28D3D15F9E41200E212F0 /* ClassListViewController.m in Sources */,
+				63C28D4015FAD72C00E212F0 /* ClassListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
