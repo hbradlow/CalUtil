@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6326ABA115211429005F1537 /* CourseInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6326ABA015211429005F1537 /* CourseInfoViewController.m */; };
 		6326ABA515226E51005F1537 /* WebcastListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6326ABA415226E51005F1537 /* WebcastListViewController.m */; };
 		6326ABA815227213005F1537 /* WebcastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6326ABA715227213005F1537 /* WebcastViewController.m */; };
 		63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63389DD915F0230F00953A01 /* NextBusViewController.m */; };
@@ -61,8 +60,6 @@
 		63999506152BDA9E00356F87 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63999505152BDA9E00356F87 /* Icon@2x.png */; };
 		6399950D152C1AD100356F87 /* monitor.png in Resources */ = {isa = PBXBuildFile; fileRef = 6399950B152C1AD100356F87 /* monitor.png */; };
 		6399950E152C1AD100356F87 /* monitor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6399950C152C1AD100356F87 /* monitor@2x.png */; };
-		63B2E3EC15204BBF00AA7848 /* CourseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2E3EB15204BBF00AA7848 /* CourseViewController.m */; };
-		63B2E3EF1520642000AA7848 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */; };
 		63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C187B7152D90B000FF4AF1 /* InfoViewController.m */; };
 		63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */; };
 		63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */; };
@@ -127,8 +124,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6326AB9F15211429005F1537 /* CourseInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseInfoViewController.h; sourceTree = "<group>"; };
-		6326ABA015211429005F1537 /* CourseInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseInfoViewController.m; sourceTree = "<group>"; };
 		6326ABA315226E51005F1537 /* WebcastListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebcastListViewController.h; sourceTree = "<group>"; };
 		6326ABA415226E51005F1537 /* WebcastListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebcastListViewController.m; sourceTree = "<group>"; };
 		6326ABA615227212005F1537 /* WebcastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebcastViewController.h; sourceTree = "<group>"; };
@@ -199,10 +194,6 @@
 		63999505152BDA9E00356F87 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		6399950B152C1AD100356F87 /* monitor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monitor.png; sourceTree = "<group>"; };
 		6399950C152C1AD100356F87 /* monitor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "monitor@2x.png"; sourceTree = "<group>"; };
-		63B2E3EA15204BBF00AA7848 /* CourseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseViewController.h; sourceTree = "<group>"; };
-		63B2E3EB15204BBF00AA7848 /* CourseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseViewController.m; sourceTree = "<group>"; };
-		63B2E3ED1520642000AA7848 /* CourseDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseDetailViewController.h; sourceTree = "<group>"; };
-		63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseDetailViewController.m; sourceTree = "<group>"; };
 		63C187B6152D90B000FF4AF1 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
 		63C187B7152D90B000FF4AF1 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
 		63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cal1CardViewController.h; sourceTree = "<group>"; };
@@ -343,12 +334,6 @@
 				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
 				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
 				63C28D3115F95B7700E212F0 /* Schedule Information */,
-				63B2E3EA15204BBF00AA7848 /* CourseViewController.h */,
-				63B2E3EB15204BBF00AA7848 /* CourseViewController.m */,
-				63B2E3ED1520642000AA7848 /* CourseDetailViewController.h */,
-				63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */,
-				6326AB9F15211429005F1537 /* CourseInfoViewController.h */,
-				6326ABA015211429005F1537 /* CourseInfoViewController.m */,
 				6326ABA315226E51005F1537 /* WebcastListViewController.h */,
 				6326ABA415226E51005F1537 /* WebcastListViewController.m */,
 				6326ABA615227212005F1537 /* WebcastViewController.h */,
@@ -722,9 +707,6 @@
 				638F42DD150C68620031A9F6 /* DiningMainViewController.m in Sources */,
 				638F42E1150C6D3E0031A9F6 /* DiningDetailViewController.m in Sources */,
 				638F42E7150CB96C0031A9F6 /* SettingsViewController.m in Sources */,
-				63B2E3EC15204BBF00AA7848 /* CourseViewController.m in Sources */,
-				63B2E3EF1520642000AA7848 /* CourseDetailViewController.m in Sources */,
-				6326ABA115211429005F1537 /* CourseInfoViewController.m in Sources */,
 				6326ABA515226E51005F1537 /* WebcastListViewController.m in Sources */,
 				6326ABA815227213005F1537 /* WebcastViewController.m in Sources */,
 				6D489920152C33D20060CBA6 /* MealViewController.m in Sources */,
