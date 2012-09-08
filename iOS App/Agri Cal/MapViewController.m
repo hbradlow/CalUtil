@@ -51,20 +51,20 @@ static float LongitudeDelta = 0.015;
     // Loading the cal1card locations
     queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
-    //if (![[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
-    //{
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
+    {
         dispatch_async(queue, ^{
             [self loadCal1CardLocations];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
         });
-    /*}
+    }
     else
     {
         NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
         [unarchiver finishDecoding];
-    }*/
+    }
 }
 
 - (void)loadCal1CardLocations

@@ -67,6 +67,10 @@
 		63B2E3EF1520642000AA7848 /* CourseDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B2E3EE1520642000AA7848 /* CourseDetailViewController.m */; };
 		63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C187B7152D90B000FF4AF1 /* InfoViewController.m */; };
 		63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */; };
+		63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */; };
+		63C28D3415F95B9E00E212F0 /* Department.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3315F95B9E00E212F0 /* Department.m */; };
+		63C28D3A15F9602700E212F0 /* CalClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3915F9602700E212F0 /* CalClass.m */; };
+		63C28D3D15F9E41200E212F0 /* ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3C15F9E41200E212F0 /* ClassListViewController.m */; };
 		63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
 		63DE52BB1539332C00F9ECFB /* berkeleyThaiHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */; };
@@ -208,6 +212,14 @@
 		63C187B7152D90B000FF4AF1 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
 		63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cal1CardViewController.h; sourceTree = "<group>"; };
 		63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cal1CardViewController.m; sourceTree = "<group>"; };
+		63C28D2D15F95A8300E212F0 /* DepartmentListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentListViewController.h; sourceTree = "<group>"; };
+		63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentListViewController.m; sourceTree = "<group>"; };
+		63C28D3215F95B9E00E212F0 /* Department.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Department.h; sourceTree = "<group>"; };
+		63C28D3315F95B9E00E212F0 /* Department.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Department.m; sourceTree = "<group>"; };
+		63C28D3815F9602700E212F0 /* CalClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalClass.h; sourceTree = "<group>"; };
+		63C28D3915F9602700E212F0 /* CalClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalClass.m; sourceTree = "<group>"; };
+		63C28D3B15F9E41200E212F0 /* ClassListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassListViewController.h; sourceTree = "<group>"; };
+		63C28D3C15F9E41200E212F0 /* ClassListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassListViewController.m; sourceTree = "<group>"; };
 		63D6146515EECA9F00931A59 /* DisclosureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureAnnotationView.h; sourceTree = "<group>"; };
 		63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureAnnotationView.m; sourceTree = "<group>"; };
 		63DE52B71539330C00F9ECFB /* bearbasics.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bearbasics.jpg; sourceTree = "<group>"; };
@@ -343,6 +355,7 @@
 				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
 				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
 				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
+				63C28D3115F95B7700E212F0 /* Schedule Information */,
 				63B2E3EA15204BBF00AA7848 /* CourseViewController.h */,
 				63B2E3EB15204BBF00AA7848 /* CourseViewController.m */,
 				63B2E3ED1520642000AA7848 /* CourseDetailViewController.h */,
@@ -487,6 +500,21 @@
 				638934DB153247A90051919C /* homepage@2x.png */,
 			);
 			name = "Tabbar images";
+			sourceTree = "<group>";
+		};
+		63C28D3115F95B7700E212F0 /* Schedule Information */ = {
+			isa = PBXGroup;
+			children = (
+				63C28D2D15F95A8300E212F0 /* DepartmentListViewController.h */,
+				63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */,
+				63C28D3B15F9E41200E212F0 /* ClassListViewController.h */,
+				63C28D3C15F9E41200E212F0 /* ClassListViewController.m */,
+				63C28D3215F95B9E00E212F0 /* Department.h */,
+				63C28D3315F95B9E00E212F0 /* Department.m */,
+				63C28D3815F9602700E212F0 /* CalClass.h */,
+				63C28D3915F9602700E212F0 /* CalClass.m */,
+			);
+			name = "Schedule Information";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -688,6 +716,10 @@
 				63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */,
 				63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */,
 				63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */,
+				63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */,
+				63C28D3415F95B9E00E212F0 /* Department.m in Sources */,
+				63C28D3A15F9602700E212F0 /* CalClass.m in Sources */,
+				63C28D3D15F9E41200E212F0 /* ClassListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
