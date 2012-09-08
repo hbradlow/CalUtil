@@ -21,6 +21,9 @@ class CalOneCardLocationResource(ModelResource):
 
 class CourseResource(ModelResource):
     department = fields.ToOneField("api.API.DepartmentResource","department")
+    def dehydrate(self, bundle):
+        bundle.data['webcast_flag'] = bundle.obj.webcast_set.count() > 0
+        return bundle
     class Meta:
         queryset = Course.objects.all()
         resource_name = "course"
