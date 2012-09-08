@@ -22,6 +22,7 @@
 #define kWaitlist @"wait"
 #define kKey @"key"
 #define kNumber @"number"
+#define kFinalExam @"finalexam"
 
 @implementation CalClass
 
@@ -43,6 +44,7 @@
         self.availableSeats = [aDecoder decodeObjectForKey:kAvailableSeats];
         self.uniqueID = [aDecoder decodeObjectForKey:kKey];
         self.number = [aDecoder decodeObjectForKey:kNumber];
+        self.finalExamGroup = [aDecoder decodeObjectForKey:kFinalExam];
     }
     return self;
 }
@@ -63,6 +65,7 @@
     [aCoder encodeObject:self.availableSeats forKey:kAvailableSeats];
     [aCoder encodeObject:self.uniqueID forKey:kKey];
     [aCoder encodeObject:self.number forKey:kNumber];
+    [aCoder encodeObject:self.finalExamGroup forKey:kFinalExam];
 }
 
 @end

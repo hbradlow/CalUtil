@@ -23,6 +23,7 @@
 @property (nonatomic, copy) NSString *waitlist;
 @property (nonatomic, copy) NSString *uniqueID;
 @property (nonatomic, copy) NSString *number;
+@property (nonatomic, copy) NSString *finalExamGroup;
 @property BOOL hasWebcast;
 
 @end

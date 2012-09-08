@@ -20,11 +20,16 @@
 
 @implementation ClassListViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.classes = [[NSMutableArray alloc] init];
+    self.searchResults = [[NSMutableArray alloc] init];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.classes = [[NSMutableArray alloc] init];
-    self.searchResults = [[NSMutableArray alloc] init];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
@@ -72,6 +77,7 @@
         newClass.units = [currentClass objectForKey:@"units"];
         newClass.waitlist = [currentClass objectForKey:@"waitlist"];
         newClass.number = [currentClass objectForKey:@"number"];
+        newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
         [self.classes addObject:newClass];
     }
     
@@ -130,10 +136,17 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
+    CalClass *theClass;
     if (tableView == self.tableView)
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.classes objectAtIndex:indexPath.row] number], [[self.classes objectAtIndex:indexPath.row] title]];
+        theClass = [self.classes objectAtIndex:indexPath.row];
     else
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.searchResults objectAtIndex:indexPath.row] number], [[self.searchResults objectAtIndex:indexPath.row] title]];
+        theClass = [self.searchResults objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[theClass number], [theClass title]];
+    if (theClass.hasWebcast)
+        cell.imageView.image = [UIImage imageNamed:@"monitor.png"];
+    else
+        cell.imageView.image = nil;
     
     return cell;
 }

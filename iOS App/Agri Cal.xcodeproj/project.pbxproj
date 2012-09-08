@@ -339,7 +339,6 @@
 				6326ABA615227212005F1537 /* WebcastViewController.h */,
 				6326ABA715227213005F1537 /* WebcastViewController.m */,
 				639994E4152BCFBC00356F87 /* Tabbar images */,
-				6393DE5D15030FC5003B77F5 /* Models */,
 				63C28D4C15FAF42A00E212F0 /* Images */,
 				6393DE0F150301F3003B77F5 /* Supporting Files */,
 			);
@@ -393,13 +392,6 @@
 				6393DE7F15033E09003B77F5 /* Cal1CardAnnotation.m */,
 			);
 			name = "Map Annotations";
-			sourceTree = "<group>";
-		};
-		6393DE5D15030FC5003B77F5 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Models;
 			sourceTree = "<group>";
 		};
 		639994E4152BCFBC00356F87 /* Tabbar images */ = {
