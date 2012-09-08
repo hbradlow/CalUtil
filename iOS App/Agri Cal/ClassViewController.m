@@ -90,6 +90,7 @@
     if (indexPath.row == 9 && self.currentClass.hasWebcast)
     {
         [self performSegueWithIdentifier:@"webcast" sender:nil];
+        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
     }
 }
 

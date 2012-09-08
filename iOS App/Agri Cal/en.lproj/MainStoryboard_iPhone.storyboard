@@ -857,9 +857,6 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <connections>
-                                    <segue destination="QLr-83-24k" kind="push" identifier="view" id="9BF-5u-Onv"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -868,6 +865,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="FeP-xx-Te6"/>
+                    <connections>
+                        <segue destination="QLr-83-24k" kind="push" identifier="view" id="ci4-XK-ijS"/>
+                    </connections>
                 </tableViewController>
             </objects>
             <point key="canvasLocation" x="2505" y="1682"/>

@@ -98,17 +98,15 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:@"view" sender:tableView];
-    NSLog(@"did select row");
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     WebcastViewController *destination = [segue destinationViewController];
     destination.url = [self.webcasts objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-    NSLog(@"preparing for segue");
 }
 
 @end
