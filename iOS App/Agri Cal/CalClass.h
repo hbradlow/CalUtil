@@ -16,6 +16,13 @@
 @property (nonatomic, copy) NSString *times;
 @property (nonatomic, copy) NSString *enrolled;
 @property (nonatomic, copy) NSString *enrolledLimit;
+@property (nonatomic, copy) NSString *location;
+@property (nonatomic, copy) NSString *instructor;
+@property (nonatomic, copy) NSString *availableSeats;
+@property (nonatomic, copy) NSString *units;
+@property (nonatomic, copy) NSString *waitlist;
+@property (nonatomic, copy) NSString *uniqueID;
+@property (nonatomic, copy) NSString *number;
 @property BOOL hasWebcast;
 
 @end

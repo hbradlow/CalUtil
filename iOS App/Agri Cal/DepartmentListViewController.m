@@ -10,7 +10,7 @@
 #import "ClassListViewController.h"
 
 #define kDepartmentData @"depdata"
-#define kDepartmentURL @"depurl"
+#define kDepartmentURL [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"departments"]
 #define kDepartmentKey @"depkey"
 
 @implementation DepartmentListViewController
@@ -25,11 +25,8 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kDepartmentKey];
-    
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
     {
-        NSLog(@"loading departments");
         dispatch_async(queue, ^{
             [self loadDepartments];
         });

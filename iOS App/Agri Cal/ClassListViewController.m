@@ -9,9 +9,9 @@
 #import "ClassListViewController.h"
 #import "CalClass.h"
 
-#define kClassesPath self.departmentURL
+#define kClassesPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:self.departmentURL]
 #define kClassesData @"classdata"
-#define kClassesKey @"classkey"
+#define kClassesKey self.departmentURL
 
 @interface ClassListViewController ()
 
@@ -26,12 +26,10 @@
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kClassesKey];
-    
     if (![[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
     {
         dispatch_async(queue, ^{
-            [self loadCourses];
+            [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
         });
     }
     else
@@ -43,9 +41,9 @@
     }
 }
 
-- (void)loadCourses
+- (void)loadCoursesWithExtension:(NSString*)extension
 {
-    NSString *queryString = [NSString stringWithFormat:@"%@/api/course/?format=json&department=%@", ServerURL, self.departmentURL];
+    NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL,extension];
     NSLog(@"%@", queryString);
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
@@ -64,15 +62,28 @@
     {
         CalClass *newClass = [[CalClass alloc] init];
         newClass.title = [currentClass objectForKey:@"abbreviation"];
+        newClass.times = [currentClass objectForKey:@"days"];
+        newClass.instructor = [currentClass objectForKey:@"instructor"];
+        newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
+        newClass.enrolled = [currentClass objectForKey:@"enrolled"];
+        newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
+        newClass.units = [currentClass objectForKey:@"units"];
+        newClass.waitlist = [currentClass objectForKey:@"waitlist"];
+        newClass.number = [currentClass objectForKey:@"number"];
         [self.classes addObject:newClass];
     }
-    [self.classes sortUsingComparator:(NSComparator)^(CalClass *obj1, CalClass *obj2){
-        return [obj1.title caseInsensitiveCompare:obj2.title];
-    }];
-    [self saveCourses];
     
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+        [self loadCoursesWithExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"]];
+    else
+    {
+        [self.classes sortUsingComparator:(NSComparator)^(CalClass *obj1, CalClass *obj2){
+            return [obj1.number compare:obj2.number options:NSNumericSearch];
+        }];
+        [self saveCourses];
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    }
 }
 
 - (void)saveCourses
@@ -112,7 +123,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellAccessoryDisclosureIndicator reuseIdentifier:CellIdentifier];
     }
-    cell.textLabel.text = [[self.classes objectAtIndex:indexPath.row] title];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[[self.classes objectAtIndex:indexPath.row] number], [[self.classes objectAtIndex:indexPath.row] title]];
     
     return cell;
 }
