@@ -257,6 +257,53 @@ def bus_stops():
             bus_direction.line = line
             bus_direction.save()
 
+def get_schedule(username,password):
+    from twill.commands import *
+    import twill
+
+    b = twill.get_browser() #  make it so that twill can handle xhtml  
+    b._browser._factory.is_html = True
+    twill.browser = b
+
+    config("acknowledge_equiv_refresh",0) #turn of redirection i think... (https://twill.jottit.com/command)
+
+    b.clear_cookies()
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
+    try:
+        fv("1","username",username)
+        fv("1","password",password)
+        submit('0')
+        submit('0')
+    except:
+        pass
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
+    soup = bs4.BeautifulSoup(show())
+    classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
+    cs = [] 
+    header = [c.contents[0] for c in classes[0].findAll("th")]
+    for c in classes[1:len(classes)]:
+        try:
+            print clean(c.findAll("td")[0].contents[0])
+            tmp = Course.objects.get(ccn=clean(str(c.findAll("td")[0].contents[0])))
+            cs.append(tmp)
+        except:
+            """
+            tmp = Course()
+            tmp.ccn = clean(str(c.findAll("td")[0].contents[0])) 
+            tmp.abbreviation = clean(str(c.findAll("td")[1].contents[0])) 
+            tmp.number = clean(str(c.findAll("td")[2].contents[0])) 
+            tmp.type = clean(str(c.findAll("td")[3].contents[0])) 
+            tmp.section = clean(str(c.findAll("td")[4].contents[0])) 
+            tmp.title = clean(str(c.findAll("td")[5].contents[0])) 
+            tmp.instructor = clean(str(c.findAll("td")[6].contents[0])) 
+            tmp.pnp = clean(str(c.findAll("td")[7].contents[0])) 
+            tmp.units = clean(str(c.findAll("td")[8].contents[0])) 
+            tmp.days = clean(str(c.findAll("td")[9].contents[0])) 
+            tmp.time = clean(str(c.findAll("td")[10].contents[0])) 
+            tmp.location = clean(str(c.findAll("td")[11].contents[0])) 
+            """
+    return cs 
+
 ###############################OLD########################################
 def scrape_class(c):
 	br = mechanize.Browser()
@@ -470,52 +517,6 @@ def update_course_data():
 					count += 1
 
 
-def get_schedule(username,password):
-    from twill.commands import *
-    import twill
-
-    b = twill.get_browser() #  make it so that twill can handle xhtml  
-    b._browser._factory.is_html = True
-    twill.browser = b
-
-    config("acknowledge_equiv_refresh",0) #turn of redirection i think... (https://twill.jottit.com/command)
-
-    b.clear_cookies()
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
-    try:
-        fv("1","username",username)
-        fv("1","password",password)
-        submit('0')
-        submit('0')
-    except:
-        pass
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
-    soup = bs4.BeautifulSoup(show())
-    classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
-    cs = [] 
-    header = [c.contents[0] for c in classes[0].findAll("th")]
-    for c in classes[1:len(classes)]:
-        try:
-            print clean(c.findAll("td")[0].contents[0])
-            tmp = Course.objects.get(ccn=clean(str(c.findAll("td")[0].contents[0])))
-            cs.append(tmp)
-        except:
-            """
-            tmp = Course()
-            tmp.ccn = clean(str(c.findAll("td")[0].contents[0])) 
-            tmp.abbreviation = clean(str(c.findAll("td")[1].contents[0])) 
-            tmp.number = clean(str(c.findAll("td")[2].contents[0])) 
-            tmp.type = clean(str(c.findAll("td")[3].contents[0])) 
-            tmp.section = clean(str(c.findAll("td")[4].contents[0])) 
-            tmp.title = clean(str(c.findAll("td")[5].contents[0])) 
-            tmp.instructor = clean(str(c.findAll("td")[6].contents[0])) 
-            tmp.pnp = clean(str(c.findAll("td")[7].contents[0])) 
-            tmp.units = clean(str(c.findAll("td")[8].contents[0])) 
-            tmp.days = clean(str(c.findAll("td")[9].contents[0])) 
-            tmp.time = clean(str(c.findAll("td")[10].contents[0])) 
-            tmp.location = clean(str(c.findAll("td")[11].contents[0])) 
-            """
-    return cs 
 
 def enrollment_info(ccn):
 	url = "http://osoc.berkeley.edu/OSOC/osoc?y=1&p_ccn=" + ccn + "&p_term=SP&p_deptname=--+Choose+a+Department+Name+--&p_classif=--+Choose+a+Course+Classification+--&p_presuf=--+Choose+a+Course+Prefix%2fSuffix+--&x=67"
