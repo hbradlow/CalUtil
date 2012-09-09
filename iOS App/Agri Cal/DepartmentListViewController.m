@@ -5,16 +5,17 @@
 //  Created by Kevin Lindkvist on 9/6/12.
 //
 //
-#warning Add abbreviation to departments 
+#warning Add abbreviation to departments
 #import "DepartmentListViewController.h"
 #import "ClassListViewController.h"
+#import "ClassViewController.h"
 #import "CalClass.h"
 
 #define kDepartmentData @"depdata"
 #define kDepartmentURL [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"departments"]
 #define kDepartmentKey @"depkey"
 #define kIndividualClassPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"individualclasses"]
-#define kIndividualKey @"indkey" 
+#define kIndividualKey @"indkey"
 #define kIndividualData @"inddata"
 
 static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -60,7 +61,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (void)loadCourses
 {
-    NSString *queryString = [NSString stringWithFormat:@"%@/personal_schedule/?username=%@&password=%@", ServerURL, @"kevinlindkvist", @"19910721Kl"];
+    NSString *queryString = [NSString stringWithFormat:@"%@/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     NSError *error = nil;
@@ -255,28 +256,37 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    UITableView *table = (UITableView*)sender;
+    NSIndexPath *indexPath = [table indexPathForSelectedRow];
     if ([[segue identifier] isEqualToString:@"department"])
     {
         ClassListViewController *viewController = [segue destinationViewController];
-        UITableView *table = (UITableView*)sender;
         viewController.title = [table cellForRowAtIndexPath:[table indexPathForSelectedRow]].textLabel.text;
         if (table == self.tableView)
         {
-            NSIndexPath *indexPath = [table indexPathForSelectedRow];
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
                                             [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
             NSMutableArray *sectionArray = [NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]];
-            viewController.departmentURL = [[sectionArray objectAtIndex:[table indexPathForSelectedRow].row] departmentID];
+            viewController.departmentURL = [[sectionArray objectAtIndex:indexPath.row] departmentID];
         }
         else
-            viewController.departmentURL = [[self.searchResults objectAtIndex:[table indexPathForSelectedRow].row] departmentID];
+            viewController.departmentURL = [[self.searchResults objectAtIndex:indexPath.row] departmentID];
+    }
+    else
+    {
+        ClassViewController *classViewController = [segue destinationViewController];
+        classViewController.currentClass = [self.enrolledCourses objectAtIndex:indexPath.row];
+        classViewController.title = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"department" sender:tableView];
+    if (tableView == self.tableView && indexPath.section)
+        [self performSegueWithIdentifier:@"department" sender:tableView];
+    else
+        [self performSegueWithIdentifier:@"Course" sender:tableView];
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {

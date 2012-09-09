@@ -708,6 +708,7 @@
                     <navigationItem key="navigationItem" title="Schedule" id="iB2-3C-97u"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="OIP-Ra-Xkx" id="D5r-uY-FLS"/>
+                        <segue destination="WQt-s6-aOT" kind="push" identifier="Course" id="RHq-s3-GyW"/>
                     </connections>
                 </tableViewController>
                 <searchDisplayController id="OIP-Ra-Xkx">
@@ -720,7 +721,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1257" y="1692"/>
+            <point key="canvasLocation" x="1257" y="1602"/>
         </scene>
         <!--Class List View Controller-->
         <scene sceneID="WOo-nv-QFd">
@@ -773,7 +774,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1661" y="1682"/>
+            <point key="canvasLocation" x="1643" y="1651"/>
         </scene>
         <!--Class View Controller-->
         <scene sceneID="f5n-MP-aYp">
@@ -1359,6 +1360,7 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="5c8-IH-Kfv"/>
         <segue reference="Jez-VB-6wb"/>
     </inferredMetricsTieBreakers>
 </document>

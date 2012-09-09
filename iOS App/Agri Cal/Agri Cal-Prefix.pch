@@ -19,4 +19,6 @@
     #define kCalCardLoaded @"loadedcalcard"
     #define kCalFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"calfile"]
     #define kCalDataKey @"caldata"
+    #define kUserName @"username"
+    #define kPassword @"password"
 #endif
