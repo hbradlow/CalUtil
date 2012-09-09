@@ -11,6 +11,10 @@
 		63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63389DD915F0230F00953A01 /* NextBusViewController.m */; };
 		635647E315FB408C00896111 /* WebcastListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647E215FB408C00896111 /* WebcastListViewController.m */; };
 		635647E615FBEC5C00896111 /* Webcast.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647E515FBEC5C00896111 /* Webcast.m */; };
+		635647E915FC121B00896111 /* DiningCommonListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647E815FC121B00896111 /* DiningCommonListViewController.m */; };
+		635647EC15FC192A00896111 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647EB15FC192A00896111 /* Menu.m */; };
+		635647EF15FC193400896111 /* Dish.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647EE15FC193400896111 /* Dish.m */; };
+		635647F215FC3DC300896111 /* DishDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647F115FC3DC300896111 /* DishDetailsViewController.m */; };
 		6387FF4A1538157A00EA4A15 /* mapkey.png in Resources */ = {isa = PBXBuildFile; fileRef = 6387FF481538157A00EA4A15 /* mapkey.png */; };
 		6387FF4B1538157A00EA4A15 /* mapkey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6387FF491538157A00EA4A15 /* mapkey@2x.png */; };
 		638934DC153247A90051919C /* homepage.png in Resources */ = {isa = PBXBuildFile; fileRef = 638934DA153247A90051919C /* homepage.png */; };
@@ -19,8 +23,6 @@
 		638DD19315384D46009EA87A /* infoimage.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19115384D46009EA87A /* infoimage.png */; };
 		638DD19415384D46009EA87A /* infoimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19215384D46009EA87A /* infoimage@2x.png */; };
 		638DD1961538F12B009EA87A /* doe.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 638DD1951538F12B009EA87A /* doe.jpg */; };
-		638F42DD150C68620031A9F6 /* DiningMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42DC150C68620031A9F6 /* DiningMainViewController.m */; };
-		638F42E1150C6D3E0031A9F6 /* DiningDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */; };
 		638F42E7150CB96C0031A9F6 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638F42E6150CB96B0031A9F6 /* SettingsViewController.m */; };
 		6393DE09150301F3003B77F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6393DE08150301F3003B77F5 /* UIKit.framework */; };
 		6393DE0B150301F3003B77F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6393DE0A150301F3003B77F5 /* Foundation.framework */; };
@@ -111,7 +113,6 @@
 		63DE5308153940C100F9ECFB /* bancroft.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52F9153940C100F9ECFB /* bancroft.jpg */; };
 		63DE5309153940C100F9ECFB /* anthro.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52FA153940C100F9ECFB /* anthro.jpeg */; };
 		63DE5314153BF9E100F9ECFB /* InfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63DE5313153BF9E100F9ECFB /* InfoView.xib */; };
-		6D489920152C33D20060CBA6 /* MealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D48991F152C33D20060CBA6 /* MealViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +134,14 @@
 		635647E215FB408C00896111 /* WebcastListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebcastListViewController.m; sourceTree = "<group>"; };
 		635647E415FBEC5C00896111 /* Webcast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Webcast.h; sourceTree = "<group>"; };
 		635647E515FBEC5C00896111 /* Webcast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Webcast.m; sourceTree = "<group>"; };
+		635647E715FC121B00896111 /* DiningCommonListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningCommonListViewController.h; sourceTree = "<group>"; };
+		635647E815FC121B00896111 /* DiningCommonListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningCommonListViewController.m; sourceTree = "<group>"; };
+		635647EA15FC192A00896111 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		635647EB15FC192A00896111 /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
+		635647ED15FC193400896111 /* Dish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dish.h; sourceTree = "<group>"; };
+		635647EE15FC193400896111 /* Dish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dish.m; sourceTree = "<group>"; };
+		635647F015FC3DC300896111 /* DishDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DishDetailsViewController.h; sourceTree = "<group>"; };
+		635647F115FC3DC300896111 /* DishDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DishDetailsViewController.m; sourceTree = "<group>"; };
 		6387FF481538157A00EA4A15 /* mapkey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapkey.png; sourceTree = "<group>"; };
 		6387FF491538157A00EA4A15 /* mapkey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mapkey@2x.png"; sourceTree = "<group>"; };
 		638934DA153247A90051919C /* homepage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homepage.png; sourceTree = "<group>"; };
@@ -142,10 +151,6 @@
 		638DD19115384D46009EA87A /* infoimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoimage.png; sourceTree = "<group>"; };
 		638DD19215384D46009EA87A /* infoimage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoimage@2x.png"; sourceTree = "<group>"; };
 		638DD1951538F12B009EA87A /* doe.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = doe.jpg; sourceTree = "<group>"; };
-		638F42DB150C68620031A9F6 /* DiningMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningMainViewController.h; sourceTree = "<group>"; };
-		638F42DC150C68620031A9F6 /* DiningMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningMainViewController.m; sourceTree = "<group>"; };
-		638F42DF150C6D3E0031A9F6 /* DiningDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningDetailViewController.h; sourceTree = "<group>"; };
-		638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningDetailViewController.m; sourceTree = "<group>"; };
 		638F42E5150CB96B0031A9F6 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		638F42E6150CB96B0031A9F6 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		6393DE04150301F3003B77F5 /* Agri Cal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agri Cal.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -255,8 +260,6 @@
 		63DE52F9153940C100F9ECFB /* bancroft.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bancroft.jpg; sourceTree = "<group>"; };
 		63DE52FA153940C100F9ECFB /* anthro.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = anthro.jpeg; sourceTree = "<group>"; };
 		63DE5313153BF9E100F9ECFB /* InfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoView.xib; sourceTree = "<group>"; };
-		6D48991E152C33D20060CBA6 /* MealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MealViewController.h; sourceTree = "<group>"; };
-		6D48991F152C33D20060CBA6 /* MealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MealViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,16 +329,16 @@
 				6393DE18150301F3003B77F5 /* AppDelegate.m */,
 				6393DE1A150301F3003B77F5 /* MainStoryboard_iPhone.storyboard */,
 				6393DE1D150301F3003B77F5 /* MainStoryboard_iPad.storyboard */,
+				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
+				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
+				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
+				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
 				638DD18E15384A95009EA87A /* InfoView.h */,
 				638DD18F15384A95009EA87A /* InfoView.m */,
 				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
 				63C28D4B15FAF40C00E212F0 /* Maps */,
 				63C28D4A15FAF3FB00E212F0 /* Dining */,
 				6393DE5C15030FA5003B77F5 /* Map Annotations */,
-				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
-				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
-				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
-				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
 				63C28D3115F95B7700E212F0 /* Schedule Information */,
 				639994E4152BCFBC00356F87 /* Tabbar images */,
 				63C28D4C15FAF42A00E212F0 /* Images */,
@@ -404,8 +407,6 @@
 				639994EF152BD09900356F87 /* Calendar-Month.png */,
 				639994F5152BD3C400356F87 /* crossroads.png */,
 				639994F6152BD3C500356F87 /* crossroads@2x.png */,
-				6399950B152C1AD100356F87 /* monitor.png */,
-				6399950C152C1AD100356F87 /* monitor@2x.png */,
 				638934DA153247A90051919C /* homepage.png */,
 				638934DB153247A90051919C /* homepage@2x.png */,
 			);
@@ -438,12 +439,14 @@
 		63C28D4A15FAF3FB00E212F0 /* Dining */ = {
 			isa = PBXGroup;
 			children = (
-				638F42DB150C68620031A9F6 /* DiningMainViewController.h */,
-				638F42DC150C68620031A9F6 /* DiningMainViewController.m */,
-				638F42DF150C6D3E0031A9F6 /* DiningDetailViewController.h */,
-				638F42E0150C6D3E0031A9F6 /* DiningDetailViewController.m */,
-				6D48991E152C33D20060CBA6 /* MealViewController.h */,
-				6D48991F152C33D20060CBA6 /* MealViewController.m */,
+				635647E715FC121B00896111 /* DiningCommonListViewController.h */,
+				635647E815FC121B00896111 /* DiningCommonListViewController.m */,
+				635647F015FC3DC300896111 /* DishDetailsViewController.h */,
+				635647F115FC3DC300896111 /* DishDetailsViewController.m */,
+				635647EA15FC192A00896111 /* Menu.h */,
+				635647EB15FC192A00896111 /* Menu.m */,
+				635647ED15FC193400896111 /* Dish.h */,
+				635647EE15FC193400896111 /* Dish.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -464,6 +467,8 @@
 		63C28D4C15FAF42A00E212F0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6399950B152C1AD100356F87 /* monitor.png */,
+				6399950C152C1AD100356F87 /* monitor@2x.png */,
 				6393DE23150301F3003B77F5 /* first.png */,
 				6393DE25150301F3003B77F5 /* first@2x.png */,
 				6393DE2A150301F3003B77F5 /* second.png */,
@@ -701,11 +706,8 @@
 				6393DE52150303A8003B77F5 /* BasicMapAnnotationView.m in Sources */,
 				6393DE55150303B8003B77F5 /* BusStopAnnotation.m in Sources */,
 				6393DE8015033E09003B77F5 /* Cal1CardAnnotation.m in Sources */,
-				638F42DD150C68620031A9F6 /* DiningMainViewController.m in Sources */,
-				638F42E1150C6D3E0031A9F6 /* DiningDetailViewController.m in Sources */,
 				638F42E7150CB96C0031A9F6 /* SettingsViewController.m in Sources */,
 				6326ABA815227213005F1537 /* WebcastViewController.m in Sources */,
-				6D489920152C33D20060CBA6 /* MealViewController.m in Sources */,
 				63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */,
 				638DD19015384A95009EA87A /* InfoView.m in Sources */,
 				63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */,
@@ -718,6 +720,10 @@
 				63C28D4715FAF00A00E212F0 /* ClassViewController.m in Sources */,
 				635647E315FB408C00896111 /* WebcastListViewController.m in Sources */,
 				635647E615FBEC5C00896111 /* Webcast.m in Sources */,
+				635647E915FC121B00896111 /* DiningCommonListViewController.m in Sources */,
+				635647EC15FC192A00896111 /* Menu.m in Sources */,
+				635647EF15FC193400896111 /* Dish.m in Sources */,
+				635647F215FC3DC300896111 /* DishDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

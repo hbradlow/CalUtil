@@ -167,35 +167,6 @@
             </objects>
             <point key="canvasLocation" x="1835" y="-147"/>
         </scene>
-        <!--Dining Main View Controller - Dining Commons-->
-        <scene sceneID="g5H-WC-Prc">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oO9-TF-MNE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="ZaM-5r-CNr" customClass="DiningMainViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="rTD-xv-q7M">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Custom" rowHeight="44" id="P4G-2c-aPU">
-                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="280" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <connections>
-                                    <segue destination="dR8-P8-sZR" kind="push" id="0Ov-0u-zMH"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Dining Commons" id="rI0-C9-5kG"/>
-                </tableViewController>
-            </objects>
-            <point key="canvasLocation" x="1187" y="449"/>
-        </scene>
         <!--Navigation Controller - Item-->
         <scene sceneID="a5G-7a-Dii">
             <objects>
@@ -214,73 +185,6 @@
             </objects>
             <point key="canvasLocation" x="573" y="-135"/>
         </scene>
-        <!--Dining Detail View Controller-->
-        <scene sceneID="kNy-yn-E8P">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="R1O-VW-284" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="dR8-P8-sZR" customClass="DiningDetailViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9Kt-J0-bF7">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="bgN-dZ-LbV" detailTextLabel="ovZ-HJ-fyX" style="IBUITableViewCellStyleSubtitle" id="Q9V-ge-IiS">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="bgN-dZ-LbV">
-                                            <rect key="frame" x="10" y="2" width="38" height="22"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="ovZ-HJ-fyX">
-                                            <rect key="frame" x="10" y="24" width="47" height="18"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <connections>
-                                    <segue destination="k0D-8S-cAo" kind="push" id="NkM-70-iPj"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="dR8-P8-sZR" id="dAJ-zt-6DJ"/>
-                            <outlet property="delegate" destination="dR8-P8-sZR" id="AgM-hG-iQM"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="iBg-ee-UpX"/>
-                    <connections>
-                        <outlet property="view" destination="9Kt-J0-bF7" id="mN2-hI-ueG"/>
-                    </connections>
-                </tableViewController>
-            </objects>
-            <point key="canvasLocation" x="1621" y="449"/>
-        </scene>
-        <!--Meal View Controller - Nutritional Info-->
-        <scene sceneID="r4R-Uc-abw">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Cvi-Vi-mHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="k0D-8S-cAo" customClass="MealViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="fuA-LF-ayx">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Nutritional Info" id="lVc-FO-vdM"/>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="2060" y="455"/>
-        </scene>
         <!--Navigation Controller - Dining-->
         <scene sceneID="D45-Jf-ObL">
             <objects>
@@ -293,11 +197,72 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ZaM-5r-CNr" kind="relationship" relationship="rootViewController" id="jEN-qq-61C"/>
+                        <segue destination="Mhp-cR-Msi" kind="relationship" relationship="rootViewController" id="hUB-iY-07R"/>
                     </connections>
                 </navigationController>
             </objects>
             <point key="canvasLocation" x="653" y="449"/>
+        </scene>
+        <!--Dining Common List View Controller-->
+        <scene sceneID="xy1-78-Znu">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DmG-mn-gnY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="Mhp-cR-Msi" customClass="DiningCommonListViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="I7a-fn-aBl">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mlv-Ie-jJB">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Mhp-cR-Msi" id="ejJ-xc-Iz8"/>
+                                    <outlet property="delegate" destination="Mhp-cR-Msi" id="bzb-Nw-rAG"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="0Qu-bF-fsf">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="ai7-HM-GYk">
+                            <rect key="frame" x="5" y="7" width="310" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Crossroads"/>
+                                <segment title="CKC"/>
+                                <segment title="Cafè 3"/>
+                                <segment title="Foothill"/>
+                            </segments>
+                            <connections>
+                                <action selector="locationDidChange:" destination="Mhp-cR-Msi" eventType="valueChanged" id="xin-PS-YwB"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="locationSelector" destination="ai7-HM-GYk" id="7At-P6-6e3"/>
+                        <outlet property="tableView" destination="mlv-Ie-jJB" id="gGM-QC-WRN"/>
+                        <segue destination="T6x-cN-Mxl" kind="push" identifier="details" id="ape-oj-o0F"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1073" y="454"/>
+        </scene>
+        <!--Dish Details View Controller-->
+        <scene sceneID="oIk-ur-38P">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zN3-az-u5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="T6x-cN-Mxl" customClass="DishDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FPb-2T-5Uh">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ccN-ud-Mle"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1460" y="490"/>
         </scene>
         <!--Settings View Controller - Settings-->
         <scene sceneID="WBt-NJ-Udj">
@@ -704,7 +669,7 @@
             </objects>
             <point key="canvasLocation" x="1187" y="1063"/>
         </scene>
-        <!--Department List View Controller - Departments-->
+        <!--Department List View Controller - Schedule-->
         <scene sceneID="tks-r2-8BD">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z8X-Ur-9lb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -740,7 +705,7 @@
                             <outlet property="delegate" destination="B0D-sq-Lmh" id="Lab-0P-WqJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Departments" id="iB2-3C-97u"/>
+                    <navigationItem key="navigationItem" title="Schedule" id="iB2-3C-97u"/>
                     <connections>
                         <outlet property="searchDisplayController" destination="OIP-Ra-Xkx" id="D5r-uY-FLS"/>
                     </connections>
@@ -1326,11 +1291,16 @@
         <class className="DepartmentListViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
         </class>
-        <class className="DiningDetailViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningDetailViewController.h"/>
+        <class className="DiningCommonListViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="locationDidChange:"/>
+                <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
         </class>
-        <class className="DiningMainViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningMainViewController.h"/>
+        <class className="DishDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DishDetailsViewController.h"/>
         </class>
         <class className="InfoView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoView.h"/>
@@ -1359,9 +1329,6 @@
                 <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
                 <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
-        </class>
-        <class className="MealViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MealViewController.h"/>
         </class>
         <class className="NextBusViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NextBusViewController.h"/>
