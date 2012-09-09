@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from tastypie import fields
-from tastypie.resources import ModelResource,ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource,ALL_WITH_RELATIONS,ALL
 from api.models import BusStop, BusLine,CalOneCardLocation, Course, Department, Webcast,Menu, MenuItem, Location
 
 class BusLineResource(ModelResource):
@@ -30,7 +30,8 @@ class CourseResource(ModelResource):
         filtering = {
             'department':['exact'],
             'limit':['exact'],
-            'offset':['exact']
+            'offset':['exact'],
+            'id':ALL,
         }
 class DepartmentResource(ModelResource):
     class Meta:
