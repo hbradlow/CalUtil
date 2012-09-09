@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from tastypie import fields
 from tastypie.resources import ModelResource,ALL_WITH_RELATIONS
-from api.models import BusStop, BusLine,CalOneCardLocation, Course, Department, Webcast,Menu, MenuItem
+from api.models import BusStop, BusLine,CalOneCardLocation, Course, Department, Webcast,Menu, MenuItem, Location
 
 class BusLineResource(ModelResource):
     class Meta:
@@ -52,10 +52,19 @@ class MenuItemResource(ModelResource):
     class Meta:
         queryset = MenuItem.objects.all()
         resource_name = "menu_item"
+class TimeResource(ModelResource):
+    class Meta:
+        queryset = Location.objects.all()
+        resource_name = "location"
+class LocationResource(ModelResource):
+    class Meta:
+        queryset = Location.objects.all()
+        resource_name = "location"
 class MenuResource(ModelResource):
     breakfast_items = fields.ToManyField("api.API.MenuItemResource","breakfast",full=True)
     lunch_items = fields.ToManyField("api.API.MenuItemResource","lunch",full=True)
     dinner_items = fields.ToManyField("api.API.MenuItemResource","dinner",full=True)
+    location = fields.ToOneField("api.API.LocationResource","location",full=True)
     class Meta:
         queryset = Menu.objects.all()
         resource_name = "menu"
