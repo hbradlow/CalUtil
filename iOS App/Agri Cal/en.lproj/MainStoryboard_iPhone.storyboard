@@ -578,74 +578,9 @@
             <point key="canvasLocation" x="734" y="1723"/>
         </scene>
         <!--Department List View Controller-->
-        <scene sceneID="tks-r2-8BD">
-            <objects>
-                <tableViewController id="B0D-sq-Lmh" customClass="DepartmentListViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="GgS-eT-NYA">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="blackOpaque" id="r3p-gJ-lKj">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="B0D-sq-Lmh" id="VCc-cs-K8D"/>
-                            </connections>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="bTw-SP-iMJ">
-                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <connections>
-                                    <segue destination="LQu-RD-LLd" kind="push" identifier="department" id="99a-WO-9uI"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="B0D-sq-Lmh" id="3Es-yE-cxz"/>
-                            <outlet property="delegate" destination="B0D-sq-Lmh" id="Lab-0P-WqJ"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="iB2-3C-97u">
-                        <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="xXJ-ik-yvh">
-                            <rect key="frame" x="96" y="7" width="128" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="First"/>
-                                <segment title="Second"/>
-                            </segments>
-                        </segmentedControl>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="OIP-Ra-Xkx" id="D5r-uY-FLS"/>
-                        <outlet property="sessionSelector" destination="xXJ-ik-yvh" id="oR9-Z0-HoC"/>
-                        <segue destination="WQt-s6-aOT" kind="push" identifier="Course" id="RHq-s3-GyW"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8X-Ur-9lb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="OIP-Ra-Xkx">
-                    <connections>
-                        <outlet property="delegate" destination="B0D-sq-Lmh" id="8HS-fJ-hJT"/>
-                        <outlet property="searchBar" destination="r3p-gJ-lKj" id="8jj-gf-pM0"/>
-                        <outlet property="searchContentsController" destination="B0D-sq-Lmh" id="W15-yJ-Fxi"/>
-                        <outlet property="searchResultsDataSource" destination="B0D-sq-Lmh" id="Y0P-1o-6sz"/>
-                        <outlet property="searchResultsDelegate" destination="B0D-sq-Lmh" id="QA6-D3-F44"/>
-                    </connections>
-                </searchDisplayController>
-            </objects>
-            <point key="canvasLocation" x="1108" y="1058"/>
-        </scene>
-        <!--View Controller-->
         <scene sceneID="m7s-SY-QhP">
             <objects>
-                <viewController id="ChF-dU-Qok" sceneMemberID="viewController">
+                <viewController id="ChF-dU-Qok" customClass="DepartmentListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mMq-mG-ADK">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -654,6 +589,21 @@
                                 <rect key="frame" x="0.0" y="44" width="320" height="323"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" id="euF-ZX-A8z">
+                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="ChF-dU-Qok" id="hVG-U9-WWJ"/>
+                                    <outlet property="delegate" destination="ChF-dU-Qok" id="Ptw-Ht-fQj"/>
+                                </connections>
                             </tableView>
                             <searchBar contentMode="redraw" id="tZf-xy-vse">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -666,9 +616,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="4bi-EY-i8w"/>
+                    <navigationItem key="navigationItem" id="4bi-EY-i8w">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="mOZ-8W-6rE">
+                            <rect key="frame" x="90" y="7" width="139" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Fall 12"/>
+                                <segment title="Spring 13"/>
+                            </segments>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="zK5-kS-7ai" id="wiY-ds-RoE"/>
+                        <outlet property="tableView" destination="BUA-ar-We0" id="1HP-Gg-sb3"/>
+                        <segue destination="ZYh-en-Qbe" kind="push" identifier="department" id="0Vp-IH-TAS"/>
+                        <segue destination="WQt-s6-aOT" kind="push" identifier="Course" id="hJh-bh-VzS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b1y-aV-vai" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -682,71 +645,66 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1199" y="1640"/>
+            <point key="canvasLocation" x="1169" y="1144"/>
         </scene>
         <!--Class List View Controller-->
-        <scene sceneID="WOo-nv-QFd">
+        <scene sceneID="fnQ-ZX-zp5">
             <objects>
-                <tableViewController id="LQu-RD-LLd" customClass="ClassListViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="kaT-6U-qhI">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="blackOpaque" id="wan-Q3-Jm7">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="LQu-RD-LLd" id="NUT-cE-cTH"/>
-                            </connections>
-                        </searchBar>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="BVI-ja-tyV">
-                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
+                <viewController id="ZYh-en-Qbe" customClass="ClassListViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bL2-yt-Ynt">
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="rMH-GI-mmg">
+                                <rect key="frame" x="0.0" y="44" width="320" height="323"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="WQt-s6-aOT" kind="push" identifier="class" id="5c8-IH-Kfv"/>
+                                    <outlet property="dataSource" destination="ZYh-en-Qbe" id="eXV-r9-OLn"/>
+                                    <outlet property="delegate" destination="ZYh-en-Qbe" id="CRU-nM-eYO"/>
                                 </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="LQu-RD-LLd" id="6yp-hw-wT2"/>
-                            <outlet property="delegate" destination="LQu-RD-LLd" id="Est-Ne-uF3"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="rxs-qx-cYs"/>
+                            </tableView>
+                            <searchBar contentMode="redraw" id="Hvr-vO-pu5">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ZYh-en-Qbe" id="Rny-n4-dBV"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iGF-jW-Dkx"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="Pe7-Zm-G0g" id="bcb-Bf-KOo"/>
+                        <outlet property="searchDisplayController" destination="tNw-dt-DOY" id="HQ4-Yh-rug"/>
+                        <outlet property="tableView" destination="rMH-GI-mmg" id="VwM-vq-JxA"/>
+                        <segue destination="WQt-s6-aOT" kind="push" identifier="class" id="NcP-cs-OgF"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7Tw-VD-oab" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="Pe7-Zm-G0g">
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Ro-AD-dlv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="tNw-dt-DOY">
                     <connections>
-                        <outlet property="delegate" destination="LQu-RD-LLd" id="L9l-Tg-sU0"/>
-                        <outlet property="searchBar" destination="wan-Q3-Jm7" id="uGQ-VT-qTt"/>
-                        <outlet property="searchContentsController" destination="LQu-RD-LLd" id="7JU-G8-l97"/>
-                        <outlet property="searchResultsDataSource" destination="LQu-RD-LLd" id="am3-aA-MFA"/>
-                        <outlet property="searchResultsDelegate" destination="LQu-RD-LLd" id="yp7-Bu-BY8"/>
+                        <outlet property="delegate" destination="ZYh-en-Qbe" id="lmc-43-M23"/>
+                        <outlet property="searchBar" destination="Hvr-vO-pu5" id="2xK-kX-kuo"/>
+                        <outlet property="searchContentsController" destination="ZYh-en-Qbe" id="k6b-jD-FCm"/>
+                        <outlet property="searchResultsDataSource" destination="ZYh-en-Qbe" id="r0N-ST-iiZ"/>
+                        <outlet property="searchResultsDelegate" destination="ZYh-en-Qbe" id="g8e-Sd-s5s"/>
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1531" y="1067"/>
+            <point key="canvasLocation" x="1585" y="1448"/>
         </scene>
         <!--Class View Controller-->
         <scene sceneID="f5n-MP-aYp">
             <objects>
                 <viewController id="WQt-s6-aOT" customClass="ClassViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="imo-0O-R33">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6sO-CY-igX">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
@@ -771,7 +729,7 @@
             <objects>
                 <tableViewController id="8pJ-d4-tCa" customClass="WebcastListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3mr-cH-SZy">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -804,11 +762,11 @@
             <objects>
                 <viewController id="QLr-83-24k" customClass="WebcastViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h3D-g8-2cN">
-                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" id="xtp-Rl-Y9w">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -910,16 +868,20 @@
                 <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
             </relationships>
         </class>
-        <class className="ClassListViewController" superclassName="UITableViewController">
+        <class className="ClassListViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassListViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
         </class>
         <class className="ClassViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassViewController.h"/>
         </class>
-        <class className="DepartmentListViewController" superclassName="UITableViewController">
+        <class className="DepartmentListViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="sessionSelector" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
         <class className="DiningCommonListViewController" superclassName="UIViewController">
@@ -990,6 +952,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="RHq-s3-GyW"/>
+        <segue reference="NcP-cs-OgF"/>
     </inferredMetricsTieBreakers>
 </document>
