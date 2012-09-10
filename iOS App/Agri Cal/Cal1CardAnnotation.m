@@ -8,6 +8,10 @@
 
 #import "Cal1CardAnnotation.h"
 
+#define kImageUrl @"imageurl"
+#define kInfo @"info"
+#define kTimes @"times"
+
 @implementation Cal1CardAnnotation
 
 - (id)initWithLatitude:(CLLocationDegrees)latitude
@@ -25,6 +29,25 @@
         self.info = info;
 	}
 	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if ((self = [super initWithCoder:aDecoder]))
+    {
+        self.imageURL = [aDecoder decodeObjectForKey:kImageUrl];
+        self.info = [aDecoder decodeObjectForKey:kInfo];
+        self.times = [aDecoder decodeObjectForKey:kTimes];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [super encodeWithCoder:aCoder];
+    [aCoder encodeObject:self.imageURL forKey:kImageUrl];
+    [aCoder encodeObject:self.times forKey:kTimes];
+    [aCoder encodeObject:self.info forKey:kInfo];
 }
 
 @end

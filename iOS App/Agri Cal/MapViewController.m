@@ -62,6 +62,7 @@ static float LongitudeDelta = 0.015;
         }
         if (!calData)
         {
+            NSLog(@"loading caldata");
             [self loadCal1CardLocations];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
         }
@@ -216,21 +217,7 @@ static float LongitudeDelta = 0.015;
     if (([self.busStopAnnotations containsObject:view.annotation] || [self.calCardAnnotations containsObject:view.annotation])
         && self.selectedAnnotation == nil)
     {
-        if (!self.selectedAnnotation)
-        {
-            self.selectedAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:view.annotation.coordinate.latitude
-                                                                      andLongitude:view.annotation.coordinate.longitude];
-            self.selectedAnnotation.title = view.annotation.title;
-            self.selectedAnnotation.subtitle = view.annotation.subtitle;
-        }
-        else
-        {
-            self.selectedAnnotation.coordinate = view.annotation.coordinate;
-            self.selectedAnnotation.title = view.annotation.title;
-            self.selectedAnnotation.subtitle = view.annotation.subtitle;
-        }
-        [self.mapView addAnnotation:self.selectedAnnotation];
-        self.selectedAnnotationView = (MKPinAnnotationView*)view;
+        self.selectedAnnotation = (BasicMapAnnotation*)view.annotation;
     }
 }
 
@@ -247,25 +234,16 @@ static float LongitudeDelta = 0.015;
 {
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
-    if (annotation == self.selectedAnnotation)
-    {
-        DisclosureAnnotationView *callout = (DisclosureAnnotationView*)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"callout"];
-        if (!callout)
-        {
-            callout = [[DisclosureAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"callout"];
-            callout.contentHeight = 39.0f;
-        }
-        callout.parentAnnotationView = self.selectedAnnotationView;
-        callout.textLabel.text = self.selectedAnnotation.title;
-        callout.subtitleLabel.text = self.selectedAnnotation.subtitle;
-        callout.mapView = self.mapView;
-        return callout;
-    }
-    else if ([self.busStopAnnotations containsObject:annotation])
+    if ([self.busStopAnnotations containsObject:annotation])
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"BusPin"];
         annotationView.canShowCallout = NO;
         annotationView.pinColor = MKPinAnnotationColorGreen;
+        annotationView.canShowCallout = YES;
+        annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [button addTarget:self action:@selector(displayInfo:) forControlEvents:UIControlEventTouchUpInside];
+        annotationView.rightCalloutAccessoryView = button;
         return annotationView;
     }
     else if ([self.calCardAnnotations containsObject:annotation])
@@ -273,6 +251,10 @@ static float LongitudeDelta = 0.015;
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
         annotationView.canShowCallout = NO;
         annotationView.pinColor = MKPinAnnotationColorRed;
+        annotationView.canShowCallout = YES;
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        [button addTarget:self action:@selector(displayInfo:) forControlEvents:UIControlEventTouchUpInside];
+        annotationView.rightCalloutAccessoryView = button;
         return annotationView;
     }
     return nil;
@@ -297,13 +279,14 @@ static float LongitudeDelta = 0.015;
 
 - (void)displayInfo:(id)sender
 {
-    if ([self.busStopAnnotations containsObject:sender])
+    NSLog(@"display info %@", self.selectedAnnotation);
+    if ([self.busStopAnnotations containsObject:self.selectedAnnotation])
     {
-        [self performSegueWithIdentifier:@"bus" sender:sender];
+        [self performSegueWithIdentifier:@"bus" sender:self.selectedAnnotation];
     }
-    else if ([self.calCardAnnotations containsObject:sender])
+    else if ([self.calCardAnnotations containsObject:self.selectedAnnotation])
     {
-        [self performSegueWithIdentifier:@"calcard" sender:sender];
+        [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
 }
 
@@ -329,7 +312,16 @@ static float LongitudeDelta = 0.015;
 
 - (IBAction)switchAnnotations:(id)sender
 {
-    if ([self.annotationSelector selectedSegmentIndex])
+    NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
+    if (selectedIndex == 0)
+    {
+        [self.mapView removeAnnotations:self.calCardAnnotations];
+        if (self.buildingAnnotation)
+            [self.mapView removeAnnotation:self.buildingAnnotation];
+        if (self.selectedAnnotation)
+            [self.mapView removeAnnotation:self.selectedAnnotation];
+    }
+    else if (selectedIndex == 1)
     {
         [self.mapView removeAnnotations:self.busStopAnnotations];
         if (self.buildingAnnotation)
@@ -337,11 +329,10 @@ static float LongitudeDelta = 0.015;
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
     }
-    else
+    else if (selectedIndex == 2)
     {
+        [self.mapView removeAnnotations:self.busStopAnnotations];
         [self.mapView removeAnnotations:self.calCardAnnotations];
-        if (self.buildingAnnotation)
-            [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
     }
@@ -372,7 +363,6 @@ static float LongitudeDelta = 0.015;
             }
             case 2:
             {
-                [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
                 [self.searchBar setHidden:NO];
                 break;
             }

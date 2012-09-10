@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BasicMapAnnotation.h"
 
-@interface Cal1CardAnnotation : BasicMapAnnotation
+@interface Cal1CardAnnotation : BasicMapAnnotation <NSCoding>
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *times;

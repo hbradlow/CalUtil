@@ -43,6 +43,7 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"%@ %@", self.annotation.times, self.annotation.info);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
@@ -51,11 +52,11 @@
     if (indexPath.section)
     {
         cell.textLabel.text = self.annotation.info;
-        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:16];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:14];
     }
     else
     {
-        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:12];
+        cell.textLabel.font = [UIFont fontWithName:@"Arial" size:14];
         cell.textLabel.text = self.annotation.times;
     }
     return cell;
@@ -64,19 +65,21 @@
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGSize detailSize;
+    float returnValue = 0;
     switch (indexPath.section) {
         case 0:
-            detailSize = [self.annotation.times sizeWithFont:[UIFont systemFontOfSize:12]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
-            return detailSize.height + 4;
+            detailSize = [self.annotation.times sizeWithFont:[UIFont systemFontOfSize:14]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
+            returnValue = detailSize.height + 4;
             break;
         case 1:
-            detailSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:16]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
-            return detailSize.height + 4;
-            break;
-        default:
-            return tableView.frame.size.height;
+            detailSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:14]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
+            returnValue = detailSize.height + 4;
             break;
     }
+    if (returnValue == 4 || !returnValue)
+        return 0;
+    else
+        return returnValue;
 }
 - (void)viewDidUnload {
     [self setImageView:nil];
