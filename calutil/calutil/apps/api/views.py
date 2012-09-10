@@ -38,3 +38,14 @@ def cal1card_balance(request):
         password = request.GET['password']
     return HttpResponse(scraper.get_cal_balance(username,password))
 
+def nutrition(request,item_id):
+    import requests
+    import bs4
+    item = MenuItem.objects.get(id=item_id)
+    soup = bs4.BeautifulSoup(requests.get(item.link).text)
+    soup("form")[0].extract()
+    soup("body")[0]("div",recursive=False)[0].extract()
+    soup("body")[0]("table",recursive=False)[2].extract()
+    soup("body")[0]("table",recursive=False)[0]['width'] = "600"
+    soup("body")[0]("table",recursive=False)[1]['width'] = "600"
+    return HttpResponse(str(soup))
