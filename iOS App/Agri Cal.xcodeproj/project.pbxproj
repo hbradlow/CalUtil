@@ -338,7 +338,6 @@
 				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
 				63C28D4B15FAF40C00E212F0 /* Maps */,
 				63C28D4A15FAF3FB00E212F0 /* Dining */,
-				6393DE5C15030FA5003B77F5 /* Map Annotations */,
 				63C28D3115F95B7700E212F0 /* Schedule Information */,
 				639994E4152BCFBC00356F87 /* Tabbar images */,
 				63C28D4C15FAF42A00E212F0 /* Images */,
@@ -460,6 +459,7 @@
 				63389DD915F0230F00953A01 /* NextBusViewController.m */,
 				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
 				63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */,
+				6393DE5C15030FA5003B77F5 /* Map Annotations */,
 			);
 			name = Maps;
 			sourceTree = "<group>";

@@ -21,4 +21,5 @@
     #define kCalDataKey @"caldata"
     #define kUserName @"username"
     #define kPassword @"password"
+    #define TABLE_BACKGROUND [UIColor blackColor]
 #endif
