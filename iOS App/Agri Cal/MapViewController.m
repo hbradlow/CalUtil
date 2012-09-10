@@ -193,7 +193,10 @@ static float LongitudeDelta = 0.015;
 }
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
-    
+    if (!self.previousUserLocation.latitude
+        || abs(self.previousUserLocation.latitude - aUserLocation.location.coordinate.latitude) > 0.005/2
+        || abs(self.previousUserLocation.longitude - aUserLocation.location.coordinate.longitude) > 0.005/2)
+    {
     MKCoordinateRegion region;
     MKCoordinateSpan span;
     span.latitudeDelta = 0.005;
@@ -204,6 +207,8 @@ static float LongitudeDelta = 0.015;
     region.span = span;
     region.center = location;
     [aMapView setRegion:region animated:YES];
+        self.previousUserLocation = location;
+}
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
@@ -252,7 +257,6 @@ static float LongitudeDelta = 0.015;
         }
         callout.parentAnnotationView = self.selectedAnnotationView;
         callout.textLabel.text = self.selectedAnnotation.title;
-        NSLog(@"subtitle: %@", self.selectedAnnotation.subtitle);
         callout.subtitleLabel.text = self.selectedAnnotation.subtitle;
         callout.mapView = self.mapView;
         return callout;

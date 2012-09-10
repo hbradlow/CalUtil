@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mapKeyImageView;
 @property (strong, nonatomic) IBOutlet InfoView *infoView;
 
+@property CLLocationCoordinate2D previousUserLocation;
+
 - (IBAction)switchAnnotations:(id)sender;
 - (IBAction)displayMapKey:(id)sender;
 - (void)displayInfo:(id)sender;
