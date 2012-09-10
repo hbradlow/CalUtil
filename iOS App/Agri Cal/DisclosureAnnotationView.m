@@ -50,7 +50,7 @@
 - (id) initWithAnnotation:(id <MKAnnotation>)annotation reuseIdentifier:(NSString *)reuseIdentifier {
 	if (self = [super initWithAnnotation:annotation reuseIdentifier:reuseIdentifier]) {
         self.contentHeight = 80.0;
-		self.offsetFromParent = CGPointMake(8, -14); //this works for MKPinAnnotationView
+		self.offsetFromParent = CGPointMake(0, -14); //this works for MKPinAnnotationView
 		self.enabled = NO;
 		self.backgroundColor = [UIColor clearColor];
 		self.accessory = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
@@ -168,6 +168,7 @@
 //if the pin is too close to the edge of the map view we need to shift the map view so the callout will fit.
 - (void)adjustMapRegionIfNeeded {
 	//Longitude
+    
 	CGFloat xPixelShift = 0;
 	if ([self relativeParentXPosition] < 38) {
 		xPixelShift = 38 - [self relativeParentXPosition];
@@ -208,6 +209,7 @@
 		//fix for later (after zoom or other action that resets the frame)
 		self.centerOffset = CGPointMake(self.centerOffset.x - xPixelShift, self.centerOffset.y);
 	}
+     
 }
 
 - (CGFloat)xTransformForScale:(CGFloat)scale {
