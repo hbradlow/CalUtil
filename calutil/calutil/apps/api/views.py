@@ -26,3 +26,15 @@ def personal_schedule(request):
     fake_request.GET['id__in'] = ','.join([str(c.id) for c in schedule])
     resource = CourseResource()
     return resource.get_list(fake_request)
+
+def cal1card_balance(request):
+    username = ""
+    password = ""
+    if request.method=="POST":
+        username = request.POST['username']
+        password = request.POST['password']
+    if request.method=="GET":
+        username = request.GET['username']
+        password = request.GET['password']
+    return HttpResponse(scraper.get_cal_balance(username,password))
+
