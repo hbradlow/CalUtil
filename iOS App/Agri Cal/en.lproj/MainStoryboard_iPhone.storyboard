@@ -887,7 +887,6 @@
         <class className="DiningCommonListViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
-                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
