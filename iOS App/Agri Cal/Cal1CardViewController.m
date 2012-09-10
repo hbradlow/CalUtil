@@ -21,17 +21,24 @@
     UIImage * img = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ServerURL, self.annotation.imageURL]]]];
     self.imageView.image = img;
     self.navigationController.title = self.annotation.title;
-    NSLog(@"%@ %@", self.annotation.info, self.annotation.times);
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return self.annotation.type;
+    if (section)
+        return @"Description";
+    else
+        return @"Hours of operation";
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -41,7 +48,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 100;
-    if (indexPath.row)
+    if (indexPath.section)
     {
         cell.textLabel.text = self.annotation.info;
         cell.textLabel.font = [UIFont fontWithName:@"Arial" size:16];
@@ -57,7 +64,7 @@
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGSize detailSize;
-    switch (indexPath.row) {
+    switch (indexPath.section) {
         case 0:
             detailSize = [self.annotation.times sizeWithFont:[UIFont systemFontOfSize:12]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
             return detailSize.height + 4;
@@ -67,7 +74,7 @@
             return detailSize.height + 4;
             break;
         default:
-            return 0;
+            return tableView.frame.size.height;
             break;
     }
 }

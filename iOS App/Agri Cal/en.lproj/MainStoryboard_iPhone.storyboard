@@ -1,55 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12B19" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2829" systemVersion="12B19" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="4">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1914"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller - Campus Map-->
+        <!--Map View Controller - Map-->
         <scene sceneID="11">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
                 <viewController id="2" customClass="MapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="16">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="N0G-e7-n14">
-                                <rect key="frame" x="0.0" y="44" width="320" height="323"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="2" id="icH-kF-kn8"/>
                                 </connections>
                             </mapView>
-                            <webView hidden="YES" contentMode="scaleToFill" id="VHt-Z8-l7l">
-                                <rect key="frame" x="0.0" y="44" width="320" height="367"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </webView>
-                            <navigationBar contentMode="scaleToFill" barStyle="blackOpaque" id="4xD-0X-DmL">
+                            <searchBar hidden="YES" contentMode="redraw" barStyle="blackOpaque" text="" id="8ge-Fv-ljt">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <items>
-                                    <navigationItem id="46P-ou-ml2">
-                                        <nil key="title"/>
-                                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="y3h-eM-3Vd">
-                                            <rect key="frame" x="10" y="7" width="300" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <segments>
-                                                <segment title="Bus Schedule"/>
-                                                <segment title="Cal1Card"/>
-                                                <segment title="Buildings"/>
-                                            </segments>
-                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="switchAnnotations:" destination="2" eventType="valueChanged" id="1t8-X6-n0h"/>
-                                            </connections>
-                                        </segmentedControl>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
-                            <searchBar hidden="YES" contentMode="redraw" barStyle="blackOpaque" id="8ge-Fv-ljt">
-                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -79,20 +51,34 @@
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="world.png" id="7"/>
-                    <navigationItem key="navigationItem" title="Campus Map" id="UMW-eg-V7p"/>
+                    <navigationItem key="navigationItem" id="UMW-eg-V7p">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="y3h-eM-3Vd">
+                            <rect key="frame" x="10" y="7" width="300" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="Buses"/>
+                                <segment title="Cal1Card"/>
+                                <segment title="Buildings"/>
+                            </segments>
+                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="switchAnnotations:" destination="2" eventType="valueChanged" id="1t8-X6-n0h"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="annotationSelector" destination="y3h-eM-3Vd" id="IFS-h8-zdL"/>
                         <outlet property="infoButton" destination="IOo-X9-pkg" id="5Zj-Mw-tC6"/>
                         <outlet property="mapKeyImageView" destination="wjr-dH-aWC" id="C8p-m3-W9P"/>
                         <outlet property="mapView" destination="N0G-e7-n14" id="7dI-kL-pDk"/>
-                        <outlet property="navigationBar" destination="46P-ou-ml2" id="gLK-OB-gaN"/>
                         <outlet property="searchBar" destination="8ge-Fv-ljt" id="076-F2-Skb"/>
                         <outlet property="searchDisplayController" destination="HnC-EA-YeH" id="9bK-Jg-qh6"/>
-                        <outlet property="webView" destination="VHt-Z8-l7l" id="d7l-gd-28D"/>
                         <segue destination="HRo-jH-eTq" kind="push" identifier="bus" id="0DT-nr-lPZ"/>
                         <segue destination="cKu-Yf-HLn" kind="push" identifier="calcard" id="qIU-mA-3HA"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="HnC-EA-YeH">
                     <connections>
                         <outlet property="delegate" destination="2" id="cFt-XV-Qud"/>
@@ -108,7 +94,6 @@
         <!--Next Bus View Controller-->
         <scene sceneID="li1-nG-iBH">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9Ul-kT-DSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="HRo-jH-eTq" customClass="NextBusViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="470-Lr-Blp">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -131,13 +116,13 @@
                         <outlet property="tableView" destination="MJp-KQ-ut6" id="5I6-TZ-7Wm"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Ul-kT-DSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1453" y="-147"/>
         </scene>
         <!--Cal1 Card View Controller-->
         <scene sceneID="1lj-xh-Bel">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bHk-Yh-fib" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="cKu-Yf-HLn" customClass="Cal1CardViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Gnu-5n-H0d">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -164,13 +149,13 @@
                         <outlet property="imageView" destination="HSW-Ax-rOk" id="ksM-kT-wl3"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bHk-Yh-fib" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1835" y="-147"/>
         </scene>
         <!--Navigation Controller - Item-->
         <scene sceneID="a5G-7a-Dii">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="u7g-Rc-tQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="P4T-yU-CXV" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="cA1-YU-dZb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
@@ -182,13 +167,13 @@
                         <segue destination="2" kind="relationship" relationship="rootViewController" id="9lm-Ec-cAo"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u7g-Rc-tQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="573" y="-135"/>
         </scene>
         <!--Navigation Controller - Dining-->
         <scene sceneID="D45-Jf-ObL">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5d7-Ud-BVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="Zey-bX-XrF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Dining" image="crossroads.png" id="eiA-xN-HHm"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
@@ -200,13 +185,13 @@
                         <segue destination="Mhp-cR-Msi" kind="relationship" relationship="rootViewController" id="hUB-iY-07R"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5d7-Ud-BVx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="653" y="449"/>
         </scene>
         <!--Dining Common List View Controller-->
         <scene sceneID="xy1-78-Znu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DmG-mn-gnY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Mhp-cR-Msi" customClass="DiningCommonListViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="I7a-fn-aBl">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -246,28 +231,28 @@
                         <segue destination="T6x-cN-Mxl" kind="push" identifier="details" id="ape-oj-o0F"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DmG-mn-gnY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1073" y="454"/>
         </scene>
-        <!--Dish Details View Controller-->
+        <!--Dish Details View Controller - Nutritional Info-->
         <scene sceneID="oIk-ur-38P">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zN3-az-u5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="T6x-cN-Mxl" customClass="DishDetailsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FPb-2T-5Uh">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="ccN-ud-Mle"/>
+                    <navigationItem key="navigationItem" title="Nutritional Info" id="ccN-ud-Mle"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zN3-az-u5T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1460" y="490"/>
         </scene>
         <!--Settings View Controller - Settings-->
         <scene sceneID="WBt-NJ-Udj">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8v9-f1-f6Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="sI7-Zk-JCc" customClass="SettingsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qo3-N7-Kf0">
                         <rect key="frame" x="0.0" y="20" width="320" height="411"/>
@@ -281,9 +266,9 @@
                                 <rect key="frame" x="20" y="164" width="280" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.25459447894421727" green="0.24716696950647349" blue="0.27805989980697632" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits"/>
                                 <color key="textColor" red="0.90588235289999997" green="0.76078431369999999" blue="0.3294117647" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="sI7-Zk-JCc" id="EEy-87-Njr"/>
                                 </connections>
@@ -292,9 +277,9 @@
                                 <rect key="frame" x="20" y="203" width="280" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.25459447889999998" green="0.2471669695" blue="0.27805989980000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <color key="textColor" red="0.90588235289999997" green="0.76078431369999999" blue="0.3294117647" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="sI7-Zk-JCc" id="Z2o-W8-wE2"/>
                                 </connections>
@@ -323,13 +308,13 @@
                         <outlet property="username" destination="qiy-rg-fME" id="BFr-6T-Iwh"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8v9-f1-f6Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="48" y="1109"/>
         </scene>
         <!--Info View Controller - Campus Information-->
         <scene sceneID="ZQq-eq-tnl">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2xa-rd-grj" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="M45-BM-d3W" customClass="InfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="X4t-d7-lr1">
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
@@ -345,19 +330,19 @@
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Bear Walk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="NxM-4y-382">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Bear Walk" autoshrinkMode="minimumFontSize" id="NxM-4y-382">
                                                     <rect key="frame" x="10" y="2" width="88" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="510-642-9255 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="8Th-Kp-37y">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="510-642-9255 " autoshrinkMode="minimumFontSize" id="8Th-Kp-37y">
                                                     <rect key="frame" x="10" y="24" width="92" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -370,19 +355,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="UCPD Non-Emergency" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="i9C-kG-lEc">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="UCPD Non-Emergency" autoshrinkMode="minimumFontSize" id="i9C-kG-lEc">
                                                     <rect key="frame" x="10" y="2" width="195" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="510-642‑6760" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="YNW-mN-FTL">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="510-642‑6760" autoshrinkMode="minimumFontSize" id="YNW-mN-FTL">
                                                     <rect key="frame" x="10" y="24" width="88" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -395,19 +380,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Tang Center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="Hej-Sz-GGJ">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Tang Center" autoshrinkMode="minimumFontSize" id="Hej-Sz-GGJ">
                                                     <rect key="frame" x="10" y="2" width="106" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="510-642-2000 " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="hjA-IJ-oB9">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="510-642-2000 " autoshrinkMode="minimumFontSize" id="hjA-IJ-oB9">
                                                     <rect key="frame" x="10" y="24" width="92" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -424,19 +409,19 @@
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Cal Bears" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="Pib-6l-QME">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Cal Bears" autoshrinkMode="minimumFontSize" id="Pib-6l-QME">
                                                     <rect key="frame" x="10" y="2" width="84" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="http://www.calbears.com/" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="lH0-Kl-I06">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="http://www.calbears.com/" autoshrinkMode="minimumFontSize" id="lH0-Kl-I06">
                                                     <rect key="frame" x="10" y="24" width="157" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -449,19 +434,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="NinjaCourses" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="eK6-Zr-nJL">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="NinjaCourses" autoshrinkMode="minimumFontSize" id="eK6-Zr-nJL">
                                                     <rect key="frame" x="10" y="2" width="117" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="http://ninjacourses.com/" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="aEr-cj-Y9q">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="http://ninjacourses.com/" autoshrinkMode="minimumFontSize" id="aEr-cj-Y9q">
                                                     <rect key="frame" x="10" y="24" width="148" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -474,19 +459,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Telebears" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="U0s-j1-rDH">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Telebears" autoshrinkMode="minimumFontSize" id="U0s-j1-rDH">
                                                     <rect key="frame" x="10" y="2" width="85" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="https://telebears.berkeley.edu" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="8XH-KR-bpw">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="https://telebears.berkeley.edu" autoshrinkMode="minimumFontSize" id="8XH-KR-bpw">
                                                     <rect key="frame" x="10" y="24" width="184" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -499,19 +484,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Wikipedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="C49-Wc-Lm5">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Wikipedia" autoshrinkMode="minimumFontSize" id="C49-Wc-Lm5">
                                                     <rect key="frame" x="10" y="2" width="85" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="http://en.wikipedia.org/wiki/University_of_California,_Berkeley" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="HOH-zd-78C">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="http://en.wikipedia.org/wiki/University_of_California,_Berkeley" autoshrinkMode="minimumFontSize" id="HOH-zd-78C">
                                                     <rect key="frame" x="10" y="24" width="280" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -528,19 +513,19 @@
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Air Express Cab" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="YcT-3S-9fE">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Air Express Cab" autoshrinkMode="minimumFontSize" id="YcT-3S-9fE">
                                                     <rect key="frame" x="10" y="2" width="140" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="510-485-4848" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="bbJ-Yh-htm">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="510-485-4848" autoshrinkMode="minimumFontSize" id="bbJ-Yh-htm">
                                                     <rect key="frame" x="10" y="24" width="88" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -553,19 +538,19 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Yellow Cab Express" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="L12-gm-9nV">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Yellow Cab Express" autoshrinkMode="minimumFontSize" id="L12-gm-9nV">
                                                     <rect key="frame" x="10" y="2" width="172" height="22"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="510-234-5555" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="8l0-ok-BdN">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="510-234-5555" autoshrinkMode="minimumFontSize" id="8l0-ok-BdN">
                                                     <rect key="frame" x="10" y="24" width="88" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -588,13 +573,13 @@
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2xa-rd-grj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="734" y="1723"/>
         </scene>
         <!--Course View Controller-->
         <scene sceneID="xPg-7K-pPB">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K2N-nP-Ynb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="Nll-gC-LOh" customClass="CourseViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dbT-7n-2rf">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -616,12 +601,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="eKU-bD-LTJ">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Title" autoshrinkMode="minimumFontSize" id="eKU-bD-LTJ">
                                             <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -657,6 +642,7 @@
                         <segue destination="sTa-t8-AvI" kind="push" identifier="Course" id="Jez-VB-6wb"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K2N-nP-Ynb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="pa6-U1-QUL">
                     <connections>
                         <outlet property="delegate" destination="Nll-gC-LOh" id="hHj-6T-3ZQ"/>
@@ -669,10 +655,9 @@
             </objects>
             <point key="canvasLocation" x="1187" y="1063"/>
         </scene>
-        <!--Department List View Controller - Schedule-->
+        <!--Department List View Controller-->
         <scene sceneID="tks-r2-8BD">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8X-Ur-9lb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="B0D-sq-Lmh" customClass="DepartmentListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="GgS-eT-NYA">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -705,12 +690,24 @@
                             <outlet property="delegate" destination="B0D-sq-Lmh" id="Lab-0P-WqJ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Schedule" id="iB2-3C-97u"/>
+                    <navigationItem key="navigationItem" id="iB2-3C-97u">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="xXJ-ik-yvh">
+                            <rect key="frame" x="96" y="7" width="128" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="OIP-Ra-Xkx" id="D5r-uY-FLS"/>
+                        <outlet property="sessionSelector" destination="xXJ-ik-yvh" id="oR9-Z0-HoC"/>
                         <segue destination="WQt-s6-aOT" kind="push" identifier="Course" id="RHq-s3-GyW"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z8X-Ur-9lb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="OIP-Ra-Xkx">
                     <connections>
                         <outlet property="delegate" destination="B0D-sq-Lmh" id="8HS-fJ-hJT"/>
@@ -721,12 +718,11 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1257" y="1602"/>
+            <point key="canvasLocation" x="1220" y="1642"/>
         </scene>
         <!--Class List View Controller-->
         <scene sceneID="WOo-nv-QFd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7Tw-VD-oab" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="LQu-RD-LLd" customClass="ClassListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="kaT-6U-qhI">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -764,6 +760,7 @@
                         <outlet property="searchDisplayController" destination="Pe7-Zm-G0g" id="bcb-Bf-KOo"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Tw-VD-oab" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="Pe7-Zm-G0g">
                     <connections>
                         <outlet property="delegate" destination="LQu-RD-LLd" id="L9l-Tg-sU0"/>
@@ -779,7 +776,6 @@
         <!--Class View Controller-->
         <scene sceneID="f5n-MP-aYp">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gyQ-FB-r0f" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="WQt-s6-aOT" customClass="ClassViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="imo-0O-R33">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -802,13 +798,13 @@
                         <segue destination="8pJ-d4-tCa" kind="push" identifier="webcast" id="J9n-7O-ULf"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gyQ-FB-r0f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2066" y="1682"/>
         </scene>
         <!--Webcast List View Controller-->
         <scene sceneID="Lec-VQ-gnr">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="n85-fj-Yd1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="8pJ-d4-tCa" customClass="WebcastListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="3mr-cH-SZy">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -835,13 +831,13 @@
                         <segue destination="QLr-83-24k" kind="push" identifier="view" id="ci4-XK-ijS"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="n85-fj-Yd1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2505" y="1682"/>
         </scene>
         <!--Course Detail View Controller-->
         <scene sceneID="1yZ-Ap-zGB">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0JO-Hl-4AQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="DEi-B4-Ejo" customClass="CourseDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="xz4-3d-4xv">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -863,19 +859,19 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="6wV-i4-fKH">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Title" autoshrinkMode="minimumFontSize" id="6wV-i4-fKH">
                                             <rect key="frame" x="10" y="2" width="38" height="22"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="dV9-Fn-CVo">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Subtitle" autoshrinkMode="minimumFontSize" id="dV9-Fn-CVo">
                                             <rect key="frame" x="10" y="24" width="47" height="18"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -896,6 +892,7 @@
                         <outlet property="searchDisplayController" destination="QLC-mq-LXN" id="pMT-zW-b1v"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0JO-Hl-4AQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <searchDisplayController id="QLC-mq-LXN">
                     <connections>
                         <outlet property="delegate" destination="DEi-B4-Ejo" id="MaQ-Zk-aPC"/>
@@ -911,7 +908,6 @@
         <!--Course Info View Controller-->
         <scene sceneID="qY3-lg-KQU">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tkY-nG-Yfx" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="sTa-t8-AvI" customClass="CourseInfoViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ecH-oR-MmF">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -925,19 +921,19 @@
                                     <rect key="frame" x="10" y="1" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="beP-G5-zm1">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Title" textAlignment="right" autoshrinkMode="minimumFontSize" id="beP-G5-zm1">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="qXI-jO-IfZ">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="qXI-jO-IfZ">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -950,19 +946,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="v77-XI-sB5">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Time" textAlignment="right" autoshrinkMode="minimumFontSize" id="v77-XI-sB5">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="xCT-cM-91N">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="xCT-cM-91N">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -975,19 +971,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Instructor" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="1SR-nm-ZMp">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Instructor" textAlignment="right" autoshrinkMode="minimumFontSize" id="1SR-nm-ZMp">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="dIG-b1-Usk">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="dIG-b1-Usk">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1000,19 +996,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Location" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="XRs-wV-f8n">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Location" textAlignment="right" autoshrinkMode="minimumFontSize" id="XRs-wV-f8n">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="ueR-jS-rdw">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="ueR-jS-rdw">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1025,19 +1021,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="ccn" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="XxY-CI-F5h">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="ccn" textAlignment="right" autoshrinkMode="minimumFontSize" id="XxY-CI-F5h">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="PL3-Fm-JFY">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="PL3-Fm-JFY">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1050,19 +1046,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Units" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="36E-Yy-6nP">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Units" textAlignment="right" autoshrinkMode="minimumFontSize" id="36E-Yy-6nP">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="X9c-SK-xuD">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="X9c-SK-xuD">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1075,19 +1071,19 @@
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Exam Group" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="lil-BY-NOX">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Exam Group" textAlignment="right" autoshrinkMode="minimumFontSize" id="lil-BY-NOX">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="vR6-qf-bNX">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="vR6-qf-bNX">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1100,19 +1096,19 @@
                                     <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Exam Group" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="Pcj-cQ-CCb">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Exam Group" textAlignment="right" autoshrinkMode="minimumFontSize" id="Pcj-cQ-CCb">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="wTz-l2-w0M">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Detail" autoshrinkMode="minimumFontSize" id="wTz-l2-w0M">
                                             <rect key="frame" x="83" y="12" width="41" height="19"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1130,13 +1126,13 @@
                         <segue destination="N1k-hp-GBX" kind="push" identifier="test" id="8NZ-MF-qI4"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tkY-nG-Yfx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2002" y="1063"/>
         </scene>
         <!--Webcast List View Controller-->
         <scene sceneID="akf-Ub-M7b">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qNX-No-DLu" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="N1k-hp-GBX" customClass="WebcastListViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="EJ6-be-egW">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -1150,12 +1146,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="a6L-xv-hF5">
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" text="Title" autoshrinkMode="minimumFontSize" id="a6L-xv-hF5">
                                             <rect key="frame" x="10" y="0.0" width="280" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1169,13 +1165,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="C2X-sF-LdZ"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qNX-No-DLu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2372" y="1063"/>
         </scene>
         <!--Webcast View Controller-->
         <scene sceneID="JCV-ob-ZPd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Dd6-Oe-fSF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="QLr-83-24k" customClass="WebcastViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="h3D-g8-2cN">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
@@ -1189,12 +1185,12 @@
                                     <outlet property="delegate" destination="QLr-83-24k" id="tHQ-Hc-aPS"/>
                                 </connections>
                             </webView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Loading webcast..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Req-yh-D5n">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" text="Loading webcast..." textAlignment="center" autoshrinkMode="minimumFontSize" id="Req-yh-D5n">
                                 <rect key="frame" x="88" y="173" width="145" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -1204,13 +1200,13 @@
                         <outlet property="webView" destination="xtp-Rl-Y9w" id="j3m-fQ-xxa"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dd6-Oe-fSF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3037" y="1717"/>
+            <point key="canvasLocation" x="2971" y="1682"/>
         </scene>
         <!--Navigation Controller - Schedule-->
         <scene sceneID="fYG-hs-fqY">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cTZ-OM-bTV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="Qyj-L5-9jW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Schedule" image="Calendar-Month.png" id="tUZ-02-P0y"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
@@ -1222,13 +1218,13 @@
                         <segue destination="B0D-sq-Lmh" kind="relationship" relationship="rootViewController" id="U3F-Ka-kiR"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cTZ-OM-bTV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="653" y="1051"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="15">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
                 <tabBarController id="4" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="5">
@@ -1243,13 +1239,13 @@
                         <segue destination="P4T-yU-CXV" kind="relationship" relationship="viewControllers" id="eWG-6h-TSl"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="48" y="344"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ASC-1r-Sth">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aGF-gl-UbR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="i7R-XG-n7t" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
@@ -1264,6 +1260,7 @@
                         <segue destination="M45-BM-d3W" kind="relationship" relationship="rootViewController" id="WB4-Tu-1Nf"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aGF-gl-UbR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="48" y="1723"/>
         </scene>
@@ -1291,6 +1288,9 @@
         </class>
         <class className="DepartmentListViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="sessionSelector" candidateClass="UISegmentedControl"/>
+            </relationships>
         </class>
         <class className="DiningCommonListViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>

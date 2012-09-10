@@ -10,7 +10,7 @@
 #import "CalClass.h"
 #import "ClassViewController.h"
 
-#define kClassesPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:self.departmentURL]
+#define kClassesPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:[NSString stringWithFormat:@"/course%@",self.departmentURL]]
 #define kClassesData @"classdata"
 #define kClassesKey self.departmentURL
 
@@ -32,19 +32,19 @@
     [super viewWillAppear:animated];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
+    NSData *data;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
+    {
+        data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.classes = [unarchiver decodeObjectForKey:kClassesData];
+        [unarchiver finishDecoding];
+    }
+    if (!data)
     {
         dispatch_async(queue, ^{
             [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
         });
-    }
-    else
-    {
-        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.classes = [unarchiver decodeObjectForKey:kClassesData];
-        [unarchiver finishDecoding];
     }
 }
 
@@ -97,6 +97,7 @@
 
 - (void)saveCourses
 {
+    NSLog(@"saving courses to %@", kClassesPath);
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:self.classes forKey:kClassesData];
@@ -120,6 +121,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"number of rows %i", [self.classes count]);
     if (tableView == self.tableView)
         return [self.classes count];
     else

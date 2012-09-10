@@ -32,8 +32,16 @@ static float LongitudeDelta = 0.015;
     
     // Loading the stops
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
+    NSData *data;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
+    {
+        data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
+        [unarchiver finishDecoding];
+        [self.mapView addAnnotations:self.busStopAnnotations];
+    }
+    if (!data)
     {
         dispatch_async(queue, ^{
             
@@ -41,31 +49,23 @@ static float LongitudeDelta = 0.015;
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
         });
     }
-    else
-    {
-        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
-        [unarchiver finishDecoding];
-        [self.mapView addAnnotations:self.busStopAnnotations];
-    }
     
     // Loading the cal1card locations
     queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
+    NSData *calData;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
+    {
+        calData = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
+        self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
+        [unarchiver finishDecoding];
+    }
+    if (!calData)
     {
         dispatch_async(queue, ^{
             [self loadCal1CardLocations];
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
         });
-    }
-    else
-    {
-        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
-        [unarchiver finishDecoding];
     }
 }
 
@@ -104,6 +104,11 @@ static float LongitudeDelta = 0.015;
             [self.calCardAnnotations addObject:annotation];
         }
     }
+    if ([self.annotationSelector selectedSegmentIndex] == 1)
+    {
+        [self.mapView removeAnnotations:self.mapView.annotations];
+        [self.mapView addAnnotations:self.calCardAnnotations];
+    }
     [self saveCalCardLocationsToFile];
 }
 
@@ -129,7 +134,7 @@ static float LongitudeDelta = 0.015;
 {
     NSString *queryString = [NSString stringWithFormat:@"%@%@",ServerURL, urlExtension];
     queryString = [queryString lowercaseString];
-    
+    NSLog(@"loading buses %@", queryString);
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
     
@@ -163,20 +168,33 @@ static float LongitudeDelta = 0.015;
     }
     
     if (!([[dict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+    {
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^{
+            if ([self.annotationSelector selectedSegmentIndex] == 0)
+            {
+                [self.mapView removeAnnotations:self.busStopAnnotations];
+                [self.mapView addAnnotations:self.busStopAnnotations];
+            }
+        });
         [self loadBusStopsWithExtension:[[dict objectForKey:@"meta"] objectForKey:@"next"]];
+    }
     else
     {
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^{
             if ([self.annotationSelector selectedSegmentIndex] == 0)
+            {
+                [self.mapView removeAnnotations:self.busStopAnnotations];
                 [self.mapView addAnnotations:self.busStopAnnotations];
+            }
         });
         [self saveBusesToFile];
     }
 }
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
-    /*
+    
      MKCoordinateRegion region;
      MKCoordinateSpan span;
      span.latitudeDelta = 0.01;
@@ -186,7 +204,7 @@ static float LongitudeDelta = 0.015;
      location.longitude = aUserLocation.coordinate.longitude;
      region.span = span;
      region.center = location;
-     [aMapView setRegion:region animated:YES];*/
+     [aMapView setRegion:region animated:YES];
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
@@ -302,11 +320,13 @@ static float LongitudeDelta = 0.015;
     {
         Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];
         nextController.annotation = (Cal1CardAnnotation*)sender;
+        nextController.navigationItem.title = ((Cal1CardAnnotation*)sender).title;
     }
 }
 
 - (IBAction)switchAnnotations:(id)sender
 {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     [self.mapView removeAnnotations:self.calCardAnnotations];
     [self.mapView removeAnnotations:self.busStopAnnotations];
     
@@ -320,15 +340,49 @@ static float LongitudeDelta = 0.015;
     switch ([self.annotationSelector selectedSegmentIndex]) {
         case 0:
             [self.mapView addAnnotations:self.busStopAnnotations];
+            [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
             break;
         case 1:
+        {
             [self.mapView addAnnotations:self.calCardAnnotations];
+            dispatch_async(queue, ^(){[self updateCal1Balance];});
             break;
+        }
         case 2:
+            [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
             [self.searchBar setHidden:NO];
             break;
         default:
             break;
+    }
+}
+
+- (void)updateCal1Balance
+{
+    NSString *queryString = [NSString stringWithFormat:@"%@/balance/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
+    NSLog(@"%@", queryString);
+    NSURL *requestURL = [NSURL URLWithString:queryString];
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    
+    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+    
+    NSData *receivedData;
+    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                         returningResponse:&response
+                                                     error:&error];
+    
+     NSString *result = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+    
+    if ([self.annotationSelector selectedSegmentIndex] == 1)
+    {
+        if ([result isEqualToString:@""] || [result isEqual:[NSNull null]] || !result)
+        {
+            [self.annotationSelector setTitle:@"Loading..." forSegmentAtIndex:1];
+            [self updateCal1Balance];
+        }
+        else
+            [self.annotationSelector setTitle:result forSegmentAtIndex:1];
     }
 }
 

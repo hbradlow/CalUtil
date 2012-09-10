@@ -12,16 +12,26 @@
 #import "CalClass.h"
 
 #define kDepartmentData @"depdata"
-#define kDepartmentURL [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"departments"]
+#define kDepartmentURL [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/departments"]
 #define kDepartmentKey @"depkey"
-#define kIndividualClassPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"individualclasses"]
+#define kIndividualClassPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/individualclasses"]
 #define kIndividualKey @"indkey"
 #define kIndividualData @"inddata"
 
 static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 @implementation DepartmentListViewController
+@synthesize sessionSelector;
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        [self loadCourses];
+    });
+}
 
 - (void)viewDidLoad
 {
@@ -32,24 +42,26 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
+    NSData *departmentData;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
+    {
+        departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
+        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
+        [unarchiver finishDecoding];
+    }
+    if (!departmentData)
     {
         dispatch_async(queue, ^{
             [self loadDepartments];
         });
     }
-    else
-    {
-        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
-        [unarchiver finishDecoding];
-    }
-    
+    NSData *calData;
     if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
     {
-        NSData *data = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
         self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
         [unarchiver finishDecoding];
     }
@@ -115,18 +127,21 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
     NSArray *arr = [receivedDict objectForKey:@"objects"];
     
+    NSMutableArray *tempDepartments = [[NSMutableArray alloc] init];
+    
     for (NSDictionary *currentDep in arr)
     {
         Department *newDep = [[Department alloc] init];
         newDep.title = [currentDep objectForKey:@"name"];
         newDep.departmentID = [currentDep objectForKey:@"id"];
-        [self.departments addObject:newDep];
+        [tempDepartments addObject:newDep];
     }
+    self.departments = tempDepartments;
     [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
         return [obj1.title caseInsensitiveCompare:obj2.title];
     }];
     [self saveDepartments];
-    
+    NSLog(@"loaded departments");
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
     dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
 }
@@ -163,13 +178,17 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return @"Your registered courses";
-        default:
-            return [alphabet substringWithRange:NSMakeRange(section-1, 1)];
+    if (tableView == self.tableView)
+    {
+        switch (section) {
+            case 0:
+                return @"Your registered courses";
+            default:
+                return [alphabet substringWithRange:NSMakeRange(section-1, 1)];
+        }
     }
-    return @"";
+    else
+        return @"Search results";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -258,6 +277,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
     UITableView *table = (UITableView*)sender;
     NSIndexPath *indexPath = [table indexPathForSelectedRow];
+    NSLog(@"performing segue with id: %@", [segue identifier]);
     if ([[segue identifier] isEqualToString:@"department"])
     {
         ClassListViewController *viewController = [segue destinationViewController];
@@ -271,7 +291,9 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
             viewController.departmentURL = [[sectionArray objectAtIndex:indexPath.row] departmentID];
         }
         else
+        {
             viewController.departmentURL = [[self.searchResults objectAtIndex:indexPath.row] departmentID];
+        }
     }
     else
     {
@@ -283,7 +305,10 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"did select row at indexpath %i and %i", indexPath.row, tableView == self.tableView);
     if (tableView == self.tableView && indexPath.section)
+        [self performSegueWithIdentifier:@"department" sender:tableView];
+    else if (tableView != self.tableView)
         [self performSegueWithIdentifier:@"department" sender:tableView];
     else
         [self performSegueWithIdentifier:@"Course" sender:tableView];
@@ -305,4 +330,8 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     return index;
 }
 
+- (void)viewDidUnload {
+    [self setSessionSelector:nil];
+    [super viewDidUnload];
+}
 @end
