@@ -124,14 +124,45 @@ def get_first_or_none(list):
     if list:
         return list[0].strip()
     return None
-def process_table(course,table):
+def process_table(course,table,debug=False):
+    course.location = get_first_or_none(table("tr")[2]("td")[1]("tt")[0].contents)
+
+    try:
+        building_name = ""
+        try:
+            building_name = re.match(r'^.*, \w+ (.*?)$',course.location).group(1).strip()
+        except:
+            if debug:
+                print "Failed to parse: " + course.location
+        try:
+            building_name = re.match(r'^(.*?)( [(].*)?$',building_name).group(1).strip()
+        except:
+            if debug:
+                print "Failed to clean: " + building_name
+        try:
+            course.building = Building.objects.get(name=building_name)
+        except Building.DoesNotExist:
+            course.building = Building.objects.create(name=building_name)
+    except AttributeError:
+        pass #building not available
+
     course.instructor = get_first_or_none(table("tr")[3]("td")[1]("tt")[0].contents)
     course.ccn = get_first_or_none(table("tr")[5]("td")[1]("tt")[0].contents)
     course.units = get_first_or_none(table("tr")[6]("td")[1]("tt")[0].contents)
     course.exam_group = get_first_or_none(table("tr")[7]("td")[1]("tt")[0].contents)
+
+    try:
+        enrollment = get_first_or_none(table("tr")[10]("td")[1]("tt")[0].contents)
+        course.limit = re.match(r'^.*?Limit:(\d+).*?$',enrollment).group(1)
+        course.enrolled = re.match(r'^.*?Enrolled:(\d+).*?$',enrollment).group(1)
+        course.waitlist = re.match(r'^.*?Waitlist:(\d+).*?$',enrollment).group(1)
+        course.available_seats = re.match(r'^.*?Avail Seats:(\d+).*?$',enrollment).group(1)
+    except AttributeError:
+        pass #enrollment not available
+
     course.save()
 
-def full_courses(chunk_size=70):
+def full_courses(chunk_size=70,debug=False):
     import grequests
     courses = Course.objects.all()
     base_url = "http://osoc.berkeley.edu/OSOC/osoc"
@@ -146,7 +177,7 @@ def full_courses(chunk_size=70):
             soup = bs4.BeautifulSoup(r.text)
             try:
                 for table in [soup("table")[1]]:
-                    process_table(course,table)
+                    process_table(course,table,debug=debug)
             except:
                 print "FAIL on course:"
                 print course.type + " " + course.number
@@ -205,9 +236,10 @@ def get_cal_balance(username,password):
     soup = bs4.BeautifulSoup(show())
     try:
         balance = soup("table")[0]("tr")[4]("td")[0]("b")[0].string
-        return balance
+        points = soup("table")[0]("tr")[5]("td")[0]("b")[0].string
+        return (balance,points)
     except:
-        return False
+        return (False,False)
 
 def bus_lines():
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)

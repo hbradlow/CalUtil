@@ -23,6 +23,15 @@ class CourseResource(ModelResource):
     department = fields.ToOneField("api.API.DepartmentResource","department")
     def dehydrate(self, bundle):
         bundle.data['webcast_flag'] = bundle.obj.webcast_set.count() > 0
+        try:
+            bundle.data['building'] = bundle.obj.building.name
+        except:
+            pass
+        try:
+            bundle.data['latitude'] = bundle.obj.building.latitude
+            bundle.data['longitude'] = bundle.obj.building.longitude
+        except:
+            pass #probably obj doesnt have a building
         return bundle
     class Meta:
         queryset = Course.objects.all()

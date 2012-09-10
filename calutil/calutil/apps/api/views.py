@@ -36,7 +36,11 @@ def cal1card_balance(request):
     if request.method=="GET":
         username = request.GET['username']
         password = request.GET['password']
-    return HttpResponse(scraper.get_cal_balance(username,password))
+    data = {}
+    b = scraper.get_cal_balance(username,password)
+    data['balance'] = b[0]
+    data['meal_points'] = b[1]
+    return HttpResponse(json.dumps(data))
 
 def nutrition(request,item_id):
     import requests

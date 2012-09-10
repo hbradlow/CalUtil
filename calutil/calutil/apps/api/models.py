@@ -15,6 +15,14 @@ class Department(models.Model):
     slug = AutoSlugField(populate_from="name",unique=True)
     def __unicode__(self):
         return self.name
+class Building(models.Model):
+    name = models.CharField(max_length=300)
+    slug = AutoSlugField(populate_from="name",unique=True)
+    image_url = models.URLField(null=True)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+    def __unicode__(self):
+        return self.name
 class Course(models.Model):
     semester = models.CharField(max_length=30,default="FL",null=True)
     year = models.CharField(max_length=20,default="",null=True)
@@ -26,12 +34,13 @@ class Course(models.Model):
     title = models.CharField(max_length=500,default="",null=True)
     instructor = models.CharField(max_length=100,default="",null=True)
     time = models.CharField(max_length=100,default="",null=True)
-    location = models.CharField(max_length=100,default="",null=True)
+    location = models.CharField(max_length=300,default="",null=True)
     units = models.CharField(max_length=20,default="",null=True)
     exam_group = models.CharField(max_length=200,default="",null=True)
     days = models.CharField(max_length=100,default="",null=True)
     pnp = models.CharField(max_length=10,default="",null=True)
     department = models.ForeignKey(Department,null=True)
+    building = models.ForeignKey(Building,null=True)
 
     limit = models.CharField(max_length=10,default="",null=True)
     enrolled = models.CharField(max_length=10,default="",null=True)
@@ -314,3 +323,4 @@ admin.site.register(Section)
 admin.site.register(BusStop)
 admin.site.register(BusStopDirection)
 admin.site.register(CalOneCardLocation)
+admin.site.register(Building)
