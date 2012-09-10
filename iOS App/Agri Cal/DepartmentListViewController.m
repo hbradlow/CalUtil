@@ -27,10 +27,15 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self loadCourses];
-    });
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            [self loadCourses];
+        });
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error laoding personal courses");
+    }
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -41,35 +46,40 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
     
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    NSData *departmentData;
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
-    {
-        departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
-        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
-        [unarchiver finishDecoding];
-    }
-    if (!departmentData)
-    {
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        
+        NSData *departmentData;
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
+        {
+            departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
+            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
+            self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
+            [unarchiver finishDecoding];
+        }
+        if (!departmentData)
+        {
+            dispatch_async(queue, ^{
+                [self loadDepartments];
+            });
+        }
+        NSData *calData;
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
+        {
+            calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
+            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
+            self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
+            [unarchiver finishDecoding];
+        }
+        
         dispatch_async(queue, ^{
-            [self loadDepartments];
+            [self loadCourses];
         });
     }
-    NSData *calData;
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
-    {
-        calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
-        self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
-        [unarchiver finishDecoding];
+    @catch (NSException *exception) {
+        NSLog(@"Error loading departments");
     }
-    
-    dispatch_async(queue, ^{
-        [self loadCourses];
-    });
 }
 
 - (void)loadCourses

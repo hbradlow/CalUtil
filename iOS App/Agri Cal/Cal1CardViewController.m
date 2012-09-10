@@ -18,8 +18,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    UIImage * img = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ServerURL, self.annotation.imageURL]]]];
-    self.imageView.image = img;
+    @try {
+        UIImage * img = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ServerURL, self.annotation.imageURL]]]];
+        self.imageView.image = img;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading image");
+    }
     self.navigationController.title = self.annotation.title;
 }
 
@@ -43,7 +48,6 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%@ %@", self.annotation.times, self.annotation.info);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];

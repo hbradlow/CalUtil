@@ -34,11 +34,15 @@
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self updateTimes:self.annotation.stopID withTag:[currentLine objectForKey:@"tag"] atIndex:indexPath.row];
-    });
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            [self updateTimes:self.annotation.stopID withTag:[currentLine objectForKey:@"tag"] atIndex:indexPath.row];
+        });
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading times");
+    }
     return cell;
 }
 

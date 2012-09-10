@@ -28,10 +28,15 @@
     [super viewDidLoad];
     self.locations = [[NSMutableArray alloc] init];
     self.locations = [NSMutableArray arrayWithArray:@[ @"",@"",@"",@"" ]];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self loadMenus];
-    });
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            [self loadMenus];
+        });
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading menus");
+    }
 }
 
 - (void)loadMenus
@@ -67,7 +72,7 @@
             Dish *currentDish = [[Dish alloc] init];
             currentDish.name = [currentItem objectForKey:@"name"];
             currentDish.type = [currentItem objectForKey:@"type"];
-            currentDish.nutritionURL = [currentItem objectForKey:@"link"];
+            currentDish.nutritionURL = [currentItem objectForKey:@"id"];
             [currentMenu.breakfast addObject:currentDish];
         }
         
@@ -76,7 +81,7 @@
             Dish *currentDish = [[Dish alloc] init];
             currentDish.name = [currentItem objectForKey:@"name"];
             currentDish.type = [currentItem objectForKey:@"type"];
-            currentDish.nutritionURL = [currentItem objectForKey:@"link"];
+            currentDish.nutritionURL = [currentItem objectForKey:@"id"];
             [currentMenu.lunch addObject:currentDish];
         }
         
@@ -85,7 +90,7 @@
             Dish *currentDish = [[Dish alloc] init];
             currentDish.name = [currentItem objectForKey:@"name"];
             currentDish.type = [currentItem objectForKey:@"type"];
-            currentDish.nutritionURL = [currentItem objectForKey:@"link"];
+            currentDish.nutritionURL = [currentItem objectForKey:@"id"];
             [currentMenu.dinner addObject:currentDish];
         }
         if ([locationName isEqualToString:@"crossroads"])

@@ -13,8 +13,7 @@ static float CenterOfCampusLong = -122.259481;
 static float LatitudeDelta = 0.015;
 static float LongitudeDelta = 0.015;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
     
     self.busStopAnnotations = [[NSMutableArray alloc] init];
@@ -30,47 +29,51 @@ static float LongitudeDelta = 0.015;
     MKCoordinateRegion region = {coord, span};
     [self.mapView setRegion:region];
     
-    // Loading the stops
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        NSData *data;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
-        {
-            data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-            self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
-            [unarchiver finishDecoding];
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^{
-                [self.mapView addAnnotations:self.busStopAnnotations];
-            });
-        }
-        if (!data)
-        {
-            [self loadBusStopsWithExtension:@"/api/bus_stop/?format=json"];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
-        }
-        
-        // Loading the cal1card locations
-        NSData *calData;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
-        {
-            calData = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
-            self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
-            [unarchiver finishDecoding];
-        }
-        if (!calData)
-        {
-            NSLog(@"loading caldata");
-            [self loadCal1CardLocations];
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
-        }
-    });
+    @try {
+        // Loading the stops
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            NSData *data;
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
+            {
+                data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+                self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
+                [unarchiver finishDecoding];
+                dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+                dispatch_async(updateUIQueue, ^{
+                    [self.mapView addAnnotations:self.busStopAnnotations];
+                });
+            }
+            if (!data)
+            {
+                [self loadBusStopsWithExtension:@"/api/bus_stop/?format=json"];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
+            }
+            
+            // Loading the cal1card locations
+            NSData *calData;
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
+            {
+                calData = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
+                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
+                self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
+                [unarchiver finishDecoding];
+            }
+            if (!calData)
+            {
+                NSLog(@"loading caldata");
+                [self loadCal1CardLocations];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
+            }
+        });
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading map annotations");
+    }
 }
 
-- (void)loadCal1CardLocations
-{
+- (void)loadCal1CardLocations{
     NSString *queryString = [NSString stringWithFormat:@"%@/api/cal_one_card/?format=json", ServerURL];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
@@ -112,8 +115,7 @@ static float LongitudeDelta = 0.015;
     [self saveCalCardLocationsToFile];
 }
 
-- (void)saveCalCardLocationsToFile
-{
+- (void)saveCalCardLocationsToFile{
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:self.calCardAnnotations forKey:kCalDataKey];
@@ -121,8 +123,7 @@ static float LongitudeDelta = 0.015;
     [data writeToFile:kCalFilePath atomically:YES];
 }
 
-- (void)saveBusesToFile
-{
+- (void)saveBusesToFile{
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
     [archiver encodeObject:self.busStopAnnotations forKey:kBusDataKey];
@@ -130,8 +131,7 @@ static float LongitudeDelta = 0.015;
     [data writeToFile:kBusFilePath atomically:YES];
 }
 
-- (void)loadBusStopsWithExtension:(NSString*)urlExtension
-{
+- (void)loadBusStopsWithExtension:(NSString*)urlExtension{
     NSString *queryString = [NSString stringWithFormat:@"%@%@",ServerURL, urlExtension];
     queryString = [queryString lowercaseString];
     NSLog(@"loading buses %@", queryString);
@@ -212,8 +212,7 @@ static float LongitudeDelta = 0.015;
 }
 }
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-{
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
     if (([self.busStopAnnotations containsObject:view.annotation] || [self.calCardAnnotations containsObject:view.annotation])
         && self.selectedAnnotation == nil)
     {
@@ -221,8 +220,7 @@ static float LongitudeDelta = 0.015;
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
-{
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
     if (self.selectedAnnotation && !((BasicMapAnnotationView*)view).preventSelectionChange)
     {
         [self.mapView removeAnnotation:self.selectedAnnotation];
@@ -230,8 +228,7 @@ static float LongitudeDelta = 0.015;
     }
 }
 
--(MKAnnotationView*)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
-{
+-(MKAnnotationView*)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation{
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
     if ([self.busStopAnnotations containsObject:annotation])
@@ -277,8 +274,7 @@ static float LongitudeDelta = 0.015;
     [UIView commitAnimations];
 }
 
-- (void)displayInfo:(id)sender
-{
+- (void)displayInfo:(id)sender{
     NSLog(@"display info %@", self.selectedAnnotation);
     if ([self.busStopAnnotations containsObject:self.selectedAnnotation])
     {
@@ -290,8 +286,7 @@ static float LongitudeDelta = 0.015;
     }
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([[segue identifier] isEqualToString:@"bus"])
     {
         NextBusViewController *nextController = (NextBusViewController*)[segue destinationViewController];
@@ -310,8 +305,7 @@ static float LongitudeDelta = 0.015;
     }
 }
 
-- (IBAction)switchAnnotations:(id)sender
-{
+- (IBAction)switchAnnotations:(id)sender{
     NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
     if (selectedIndex == 0)
     {
@@ -328,6 +322,8 @@ static float LongitudeDelta = 0.015;
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
+            [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
     }
     else if (selectedIndex == 2)
     {
@@ -336,7 +332,6 @@ static float LongitudeDelta = 0.015;
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
     }
-    [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^(){
@@ -358,7 +353,6 @@ static float LongitudeDelta = 0.015;
                 dispatch_async(updateUIQueue, ^{
                     [self.mapView addAnnotations:self.calCardAnnotations];
                 });
-                [self updateCal1Balance];
                 break;
             }
             case 2:
@@ -372,30 +366,7 @@ static float LongitudeDelta = 0.015;
     });
 }
 
-- (void)updateCal1Balance
-{
-    NSString *queryString = [NSString stringWithFormat:@"%@/balance/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSError *error = nil;
-    
-    NSString *result = [NSString stringWithContentsOfURL:requestURL encoding:NSUTF8StringEncoding error:&error];
-    if (!error)
-    {
-        if ([self.annotationSelector selectedSegmentIndex] == 1)
-        {
-            if ([result isEqualToString:@""] || [result isEqual:[NSNull null]] || !result)
-            {
-                [self.annotationSelector setTitle:@"Loading..." forSegmentAtIndex:1];
-                [self updateCal1Balance];
-            }
-            else
-                [self.annotationSelector setTitle:[NSString stringWithFormat:@"$%@",result] forSegmentAtIndex:1];
-        }
-    }
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchForBuilding) object:nil];
     [self performSelector:@selector(searchForBuilding)];
 }
@@ -403,8 +374,7 @@ static float LongitudeDelta = 0.015;
 /*
  Uses the google maps api to search for buldings in Berkeley.
  */
--(void)searchForBuilding
-{
+-(void)searchForBuilding{
     NSString *searchString = self.searchDisplayController.searchBar.text;
     searchString = [NSString stringWithFormat:@"%@ %@", searchString, @"berkeley"];
     searchString = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -430,8 +400,7 @@ static float LongitudeDelta = 0.015;
     }
 }
 
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchForBuilding) object:nil];
     [self performSelector:@selector(searchForBuilding) withObject:nil afterDelay:1.0];
 }
@@ -440,18 +409,15 @@ static float LongitudeDelta = 0.015;
  Everything below here is related to the table view, and just handles
  the customization of the cells etc.
  */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.searchResults count];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
@@ -476,8 +442,7 @@ static float LongitudeDelta = 0.015;
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.buildingAnnotation)
     {
         [self.mapView deselectAnnotation:self.buildingAnnotation animated:NO];
@@ -495,13 +460,11 @@ static float LongitudeDelta = 0.015;
     [self performSelector:@selector(selectBuilding) withObject:nil afterDelay:0.7];
 }
 
--(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+-(NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     return @"Map Key";
 }
 
--(void)selectBuilding
-{
+-(void)selectBuilding{
     [self.mapView selectAnnotation:self.buildingAnnotation animated:YES];
 }
 

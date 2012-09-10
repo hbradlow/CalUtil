@@ -24,10 +24,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self loadWebcasts];
-    });
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(queue, ^{
+            [self loadWebcasts];
+        });
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading webcast lists");
+    }
 }
 
 - (void)loadWebcasts

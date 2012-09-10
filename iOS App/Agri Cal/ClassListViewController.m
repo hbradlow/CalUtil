@@ -31,20 +31,25 @@
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    NSData *data;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
-    {
-        data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.classes = [unarchiver decodeObjectForKey:kClassesData];
-        [unarchiver finishDecoding];
+    @try {
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        NSData *data;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
+        {
+            data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
+            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+            self.classes = [unarchiver decodeObjectForKey:kClassesData];
+            [unarchiver finishDecoding];
+        }
+        if (!data)
+        {
+            dispatch_async(queue, ^{
+                [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
+            });
+        }
     }
-    if (!data)
-    {
-        dispatch_async(queue, ^{
-            [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
-        });
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading list of classes");
     }
 }
 
