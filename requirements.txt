@@ -5,6 +5,7 @@ dj-database-url==0.2.1
 django-extensions==0.9
 django-tastypie==0.9.11
 docutils==0.9.1
+feedparser==5.1.2
 gdata==2.0.17
 gevent==0.13.7
 greenlet==0.4.0
