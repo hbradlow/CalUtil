@@ -53,3 +53,11 @@ def nutrition(request,item_id):
     soup("body")[0]("table",recursive=False)[0]['width'] = "600"
     soup("body")[0]("table",recursive=False)[1]['width'] = "600"
     return HttpResponse(str(soup))
+def dailycal(request,entries):
+    if not entries:
+        entries = 10
+    import feedparser
+    import json
+    d = feedparser.parse("http://dailycalifornian.ca.newsmemory.com/rss.php?edition=The%20Daily%20Californian&section=allsections&device=std&images=small&content=full")
+    parsed_removed = [{k: v} for i in d['entries'][0:int(entries)] for k,v in i.items()  if v.__class__.__name__ != "struct_time"]
+    return HttpResponse(json.dumps(parsed_removed))
