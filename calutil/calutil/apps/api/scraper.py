@@ -88,6 +88,7 @@ def courses(term="FL"):
     soup = bs4.BeautifulSoup(data.text)
     rows = soup("table")[0]("table")[0]("tr")[1:]
     current_title = rows[0]("b")[0].string
+    year = soup("form",{"id":"mainform"})[0]("font")[0]("b")[0].string.strip().split(" ")[-1]
     department = None
     for row in rows:
         try:
@@ -108,12 +109,13 @@ def courses(term="FL"):
             course.number = number
             course.department = department
             course.semester = term
+            course.year = year
             try:
                 course.abbreviation = re.match(r'^(.*?)(\.\.\.)?$',row("td")[2]("label")[0].string.strip()).group(1)
             except:
                 course.abbreviation = ""
             course.save()
-            print "Course: " + course.type + " " + course.number + " >> " + course.abbreviation
+            print course.year + "Course: " + course.type + " " + course.number + " >> " + course.abbreviation
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
-from api.API import BusStopResource,BusLineResource, CalOneCardLocationResource, CourseResource, DepartmentResource, WebcastResource, MenuItemResource, MenuResource, LocationResource
+from api.API import *
 
 from django.contrib import admin
 admin.autodiscover()
@@ -15,6 +15,7 @@ api.register(WebcastResource())
 api.register(MenuItemResource())
 api.register(MenuResource())
 api.register(LocationResource())
+api.register(SectionResource())
 
 urlpatterns = patterns('',
     #django
