@@ -45,7 +45,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.departments = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
-    
+
     @try {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         
@@ -67,6 +67,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         NSData *calData;
         if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
         {
+            NSLog(@"Loading the individual courses");
             calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
             NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
             self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
@@ -118,6 +119,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.enrolledCourses = tempArray;
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
     dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    [self saveCourses];
 }
 
 - (void)loadDepartments
@@ -143,7 +145,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     for (NSDictionary *currentDep in arr)
     {
         Department *newDep = [[Department alloc] init];
-        newDep.title = [currentDep objectForKey:@"name"];
+        newDep.title = [[currentDep objectForKey:@"name"] capitalizedString];
         newDep.departmentID = [currentDep objectForKey:@"id"];
         [tempDepartments addObject:newDep];
     }
@@ -171,7 +173,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 {
     NSMutableData *data = [[NSMutableData alloc]init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self.departments forKey:kIndividualData];
+    [archiver encodeObject:self.enrolledCourses forKey:kIndividualData];
     [archiver finishEncoding];
     [data writeToFile:kIndividualClassPath atomically:YES];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kIndividualKey];
@@ -230,11 +232,15 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
-    
+    cell.imageView.image = nil;
     if (tableView == self.tableView)
     {
         if (indexPath.section == 0)
+        {
             cell.textLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
+            if ([[self.enrolledCourses objectAtIndex:indexPath.row] hasWebcast])
+                cell.imageView.image = [UIImage imageNamed:@"monitor"];
+        }
         else
         {
             NSPredicate *resultPredicate = [NSPredicate

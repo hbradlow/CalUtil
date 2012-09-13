@@ -30,7 +30,11 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"LineCell"];
     if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"LineCell"];
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LineCell"];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+    }
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
@@ -66,6 +70,11 @@
         subtitle = [subtitle stringByAppendingString:@" minutes"];
         [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]].detailTextLabel.text = subtitle;
     });
+}
+
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40;
 }
 
 - (void)viewDidUnload {

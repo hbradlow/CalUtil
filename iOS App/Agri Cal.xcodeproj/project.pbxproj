@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		630F206415FEAC5C00D1E447 /* NewsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630F206315FEAC5C00D1E447 /* NewsListViewController.m */; };
+		630F206D15FEB1C300D1E447 /* BackgroundCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 630F206C15FEB1C300D1E447 /* BackgroundCell.m */; };
 		6326ABA815227213005F1537 /* WebcastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6326ABA715227213005F1537 /* WebcastViewController.m */; };
 		63389DDA15F0230F00953A01 /* NextBusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63389DD915F0230F00953A01 /* NextBusViewController.m */; };
 		635647E315FB408C00896111 /* WebcastListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647E215FB408C00896111 /* WebcastListViewController.m */; };
@@ -15,6 +17,35 @@
 		635647EC15FC192A00896111 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647EB15FC192A00896111 /* Menu.m */; };
 		635647EF15FC193400896111 /* Dish.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647EE15FC193400896111 /* Dish.m */; };
 		635647F215FC3DC300896111 /* DishDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 635647F115FC3DC300896111 /* DishDetailsViewController.m */; };
+		637164F915FF1F73006BC4AC /* Radio-Tower@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 637164F815FF1F73006BC4AC /* Radio-Tower@2x.png */; };
+		637164FC15FF1F7E006BC4AC /* Radio-Tower.png in Resources */ = {isa = PBXBuildFile; fileRef = 637164FB15FF1F7E006BC4AC /* Radio-Tower.png */; };
+		63716503160180E4006BC4AC /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 63716502160180E4006BC4AC /* NewsStory.m */; };
+		6371651216019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650516019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf */; };
+		6371651316019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650616019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf */; };
+		6371651416019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650716019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf */; };
+		6371651516019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650816019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf */; };
+		6371651616019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650916019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf */; };
+		6371651716019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650A16019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf */; };
+		6371651816019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650B16019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf */; };
+		6371651916019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650C16019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf */; };
+		6371651A16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650D16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf */; };
+		6371651B16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650E16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf */; };
+		6371651C16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650F16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf */; };
+		6371651D16019CF5006BC4AC /* UCBerkeleyOS-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371651016019CF5006BC4AC /* UCBerkeleyOS-Black.ttf */; };
+		6371651E16019CF5006BC4AC /* UCBerkeleyOS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371651116019CF5006BC4AC /* UCBerkeleyOS.ttf */; };
+		6371651F1601AE45006BC4AC /* UCBerkeleyOS-TitlingBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650516019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf */; };
+		637165201601AE45006BC4AC /* UCBerkeleyOS-SignTitling.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650616019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf */; };
+		637165211601AE45006BC4AC /* UCBerkeleyOS-Titling.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650716019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf */; };
+		637165221601AE45006BC4AC /* UCBerkeleyOS-SignItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650816019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf */; };
+		637165231601AE45006BC4AC /* UCBerkeleyOS-Sign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650916019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf */; };
+		637165241601AE45006BC4AC /* UCBerkeleyOS-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650A16019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf */; };
+		637165251601AE45006BC4AC /* UCBerkeleyOS-DemiItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650B16019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf */; };
+		637165261601AE45006BC4AC /* UCBerkeleyOS-Demi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650C16019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf */; };
+		637165271601AE45006BC4AC /* UCBerkeleyOS-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650D16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf */; };
+		637165281601AE45006BC4AC /* UCBerkeleyOS-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650E16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf */; };
+		637165291601AE45006BC4AC /* UCBerkeleyOS-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371650F16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf */; };
+		6371652A1601AE45006BC4AC /* UCBerkeleyOS-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371651016019CF5006BC4AC /* UCBerkeleyOS-Black.ttf */; };
+		6371652B1601AE45006BC4AC /* UCBerkeleyOS.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6371651116019CF5006BC4AC /* UCBerkeleyOS.ttf */; };
 		6387FF4A1538157A00EA4A15 /* mapkey.png in Resources */ = {isa = PBXBuildFile; fileRef = 6387FF481538157A00EA4A15 /* mapkey.png */; };
 		6387FF4B1538157A00EA4A15 /* mapkey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6387FF491538157A00EA4A15 /* mapkey@2x.png */; };
 		638934DC153247A90051919C /* homepage.png in Resources */ = {isa = PBXBuildFile; fileRef = 638934DA153247A90051919C /* homepage.png */; };
@@ -63,6 +94,12 @@
 		63999506152BDA9E00356F87 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63999505152BDA9E00356F87 /* Icon@2x.png */; };
 		6399950D152C1AD100356F87 /* monitor.png in Resources */ = {isa = PBXBuildFile; fileRef = 6399950B152C1AD100356F87 /* monitor.png */; };
 		6399950E152C1AD100356F87 /* monitor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6399950C152C1AD100356F87 /* monitor@2x.png */; };
+		63B33DA61601BB960044E7DE /* Gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DA51601BB960044E7DE /* Gear.png */; };
+		63B33DA81601BBA00044E7DE /* Gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DA71601BBA00044E7DE /* Gear@2x.png */; };
+		63B33DAB1601E8320044E7DE /* SplashScreenAnimated.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DA91601E8320044E7DE /* SplashScreenAnimated.png */; };
+		63B33DAC1601E8320044E7DE /* SplashScreenAnimated@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAA1601E8320044E7DE /* SplashScreenAnimated@2x.png */; };
+		63B33DAF1601EA8E0044E7DE /* ucseal_line_540.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAD1601EA8E0044E7DE /* ucseal_line_540.png */; };
+		63B33DB01601EA8E0044E7DE /* ucseal_line_540@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAE1601EA8E0044E7DE /* ucseal_line_540@2x.png */; };
 		63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C187B7152D90B000FF4AF1 /* InfoViewController.m */; };
 		63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */; };
 		63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */; };
@@ -126,6 +163,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		630F206215FEAC5B00D1E447 /* NewsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsListViewController.h; sourceTree = "<group>"; };
+		630F206315FEAC5C00D1E447 /* NewsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsListViewController.m; sourceTree = "<group>"; };
+		630F206B15FEB1C300D1E447 /* BackgroundCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundCell.h; sourceTree = "<group>"; };
+		630F206C15FEB1C300D1E447 /* BackgroundCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundCell.m; sourceTree = "<group>"; };
 		6326ABA615227212005F1537 /* WebcastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebcastViewController.h; sourceTree = "<group>"; };
 		6326ABA715227213005F1537 /* WebcastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebcastViewController.m; sourceTree = "<group>"; };
 		63389DD815F0230F00953A01 /* NextBusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusViewController.h; sourceTree = "<group>"; };
@@ -142,6 +183,23 @@
 		635647EE15FC193400896111 /* Dish.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Dish.m; sourceTree = "<group>"; };
 		635647F015FC3DC300896111 /* DishDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DishDetailsViewController.h; sourceTree = "<group>"; };
 		635647F115FC3DC300896111 /* DishDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DishDetailsViewController.m; sourceTree = "<group>"; };
+		637164F815FF1F73006BC4AC /* Radio-Tower@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Radio-Tower@2x.png"; sourceTree = "<group>"; };
+		637164FB15FF1F7E006BC4AC /* Radio-Tower.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Radio-Tower.png"; sourceTree = "<group>"; };
+		63716501160180E4006BC4AC /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
+		63716502160180E4006BC4AC /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
+		6371650516019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-TitlingBold.ttf"; sourceTree = "<group>"; };
+		6371650616019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-SignTitling.ttf"; sourceTree = "<group>"; };
+		6371650716019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Titling.ttf"; sourceTree = "<group>"; };
+		6371650816019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-SignItalic.ttf"; sourceTree = "<group>"; };
+		6371650916019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Sign.ttf"; sourceTree = "<group>"; };
+		6371650A16019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Italic.ttf"; sourceTree = "<group>"; };
+		6371650B16019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-DemiItalic.ttf"; sourceTree = "<group>"; };
+		6371650C16019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Demi.ttf"; sourceTree = "<group>"; };
+		6371650D16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Bold.ttf"; sourceTree = "<group>"; };
+		6371650E16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-BoldItalic.ttf"; sourceTree = "<group>"; };
+		6371650F16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-BlackItalic.ttf"; sourceTree = "<group>"; };
+		6371651016019CF5006BC4AC /* UCBerkeleyOS-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "UCBerkeleyOS-Black.ttf"; sourceTree = "<group>"; };
+		6371651116019CF5006BC4AC /* UCBerkeleyOS.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = UCBerkeleyOS.ttf; sourceTree = "<group>"; };
 		6387FF481538157A00EA4A15 /* mapkey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapkey.png; sourceTree = "<group>"; };
 		6387FF491538157A00EA4A15 /* mapkey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mapkey@2x.png"; sourceTree = "<group>"; };
 		638934DA153247A90051919C /* homepage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homepage.png; sourceTree = "<group>"; };
@@ -202,6 +260,12 @@
 		63999505152BDA9E00356F87 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		6399950B152C1AD100356F87 /* monitor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monitor.png; sourceTree = "<group>"; };
 		6399950C152C1AD100356F87 /* monitor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "monitor@2x.png"; sourceTree = "<group>"; };
+		63B33DA51601BB960044E7DE /* Gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gear.png; sourceTree = "<group>"; };
+		63B33DA71601BBA00044E7DE /* Gear@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Gear@2x.png"; sourceTree = "<group>"; };
+		63B33DA91601E8320044E7DE /* SplashScreenAnimated.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashScreenAnimated.png; sourceTree = "<group>"; };
+		63B33DAA1601E8320044E7DE /* SplashScreenAnimated@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreenAnimated@2x.png"; sourceTree = "<group>"; };
+		63B33DAD1601EA8E0044E7DE /* ucseal_line_540.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ucseal_line_540.png; sourceTree = "<group>"; };
+		63B33DAE1601EA8E0044E7DE /* ucseal_line_540@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ucseal_line_540@2x.png"; sourceTree = "<group>"; };
 		63C187B6152D90B000FF4AF1 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
 		63C187B7152D90B000FF4AF1 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
 		63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cal1CardViewController.h; sourceTree = "<group>"; };
@@ -287,6 +351,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		630F206915FEB13C00D1E447 /* News and settings */ = {
+			isa = PBXGroup;
+			children = (
+				630F206215FEAC5B00D1E447 /* NewsListViewController.h */,
+				630F206315FEAC5C00D1E447 /* NewsListViewController.m */,
+				63716501160180E4006BC4AC /* NewsStory.h */,
+				63716502160180E4006BC4AC /* NewsStory.m */,
+				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
+				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
+				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
+				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
+				638DD18E15384A95009EA87A /* InfoView.h */,
+				638DD18F15384A95009EA87A /* InfoView.m */,
+				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
+			);
+			name = "News and settings";
+			sourceTree = "<group>";
+		};
+		630F206A15FEB19A00D1E447 /* App wide files */ = {
+			isa = PBXGroup;
+			children = (
+				6393DE17150301F3003B77F5 /* AppDelegate.h */,
+				6393DE18150301F3003B77F5 /* AppDelegate.m */,
+				630F206B15FEB1C300D1E447 /* BackgroundCell.h */,
+				630F206C15FEB1C300D1E447 /* BackgroundCell.m */,
+			);
+			name = "App wide files";
+			sourceTree = "<group>";
+		};
+		6371650416019CE3006BC4AC /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				6371650516019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf */,
+				6371650616019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf */,
+				6371650716019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf */,
+				6371650816019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf */,
+				6371650916019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf */,
+				6371650A16019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf */,
+				6371650B16019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf */,
+				6371650C16019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf */,
+				6371650D16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf */,
+				6371650E16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf */,
+				6371650F16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf */,
+				6371651016019CF5006BC4AC /* UCBerkeleyOS-Black.ttf */,
+				6371651116019CF5006BC4AC /* UCBerkeleyOS.ttf */,
+			);
+			name = Font;
+			sourceTree = "<group>";
+		};
 		6393DDF9150301F3003B77F5 = {
 			isa = PBXGroup;
 			children = (
@@ -325,17 +438,10 @@
 		6393DE0E150301F3003B77F5 /* Agri Cal */ = {
 			isa = PBXGroup;
 			children = (
-				6393DE17150301F3003B77F5 /* AppDelegate.h */,
-				6393DE18150301F3003B77F5 /* AppDelegate.m */,
+				630F206A15FEB19A00D1E447 /* App wide files */,
 				6393DE1A150301F3003B77F5 /* MainStoryboard_iPhone.storyboard */,
 				6393DE1D150301F3003B77F5 /* MainStoryboard_iPad.storyboard */,
-				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
-				638F42E6150CB96B0031A9F6 /* SettingsViewController.m */,
-				63C187B6152D90B000FF4AF1 /* InfoViewController.h */,
-				63C187B7152D90B000FF4AF1 /* InfoViewController.m */,
-				638DD18E15384A95009EA87A /* InfoView.h */,
-				638DD18F15384A95009EA87A /* InfoView.m */,
-				63DE5313153BF9E100F9ECFB /* InfoView.xib */,
+				630F206915FEB13C00D1E447 /* News and settings */,
 				63C28D4B15FAF40C00E212F0 /* Maps */,
 				63C28D4A15FAF3FB00E212F0 /* Dining */,
 				63C28D3115F95B7700E212F0 /* Schedule Information */,
@@ -349,6 +455,7 @@
 		6393DE0F150301F3003B77F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6371650416019CE3006BC4AC /* Font */,
 				6393DE10150301F3003B77F5 /* Agri Cal-Info.plist */,
 				6393DE65150310D5003B77F5 /* Stops.plist */,
 				6393DE7015033473003B77F5 /* Cal1CardLocations.plist */,
@@ -398,6 +505,8 @@
 		639994E4152BCFBC00356F87 /* Tabbar images */ = {
 			isa = PBXGroup;
 			children = (
+				637164F815FF1F73006BC4AC /* Radio-Tower@2x.png */,
+				637164FB15FF1F7E006BC4AC /* Radio-Tower.png */,
 				639994E5152BCFCD00356F87 /* preferences@2x.png */,
 				639994E7152BD01A00356F87 /* preferences.png */,
 				639994E9152BD03F00356F87 /* world@2x.png */,
@@ -467,6 +576,12 @@
 		63C28D4C15FAF42A00E212F0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				63B33DAD1601EA8E0044E7DE /* ucseal_line_540.png */,
+				63B33DAE1601EA8E0044E7DE /* ucseal_line_540@2x.png */,
+				63B33DA91601E8320044E7DE /* SplashScreenAnimated.png */,
+				63B33DAA1601E8320044E7DE /* SplashScreenAnimated@2x.png */,
+				63B33DA51601BB960044E7DE /* Gear.png */,
+				63B33DA71601BBA00044E7DE /* Gear@2x.png */,
 				6399950B152C1AD100356F87 /* monitor.png */,
 				6399950C152C1AD100356F87 /* monitor@2x.png */,
 				6393DE23150301F3003B77F5 /* first.png */,
@@ -593,6 +708,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6371651F1601AE45006BC4AC /* UCBerkeleyOS-TitlingBold.ttf in Resources */,
+				637165201601AE45006BC4AC /* UCBerkeleyOS-SignTitling.ttf in Resources */,
+				637165211601AE45006BC4AC /* UCBerkeleyOS-Titling.ttf in Resources */,
+				637165221601AE45006BC4AC /* UCBerkeleyOS-SignItalic.ttf in Resources */,
+				637165231601AE45006BC4AC /* UCBerkeleyOS-Sign.ttf in Resources */,
+				637165241601AE45006BC4AC /* UCBerkeleyOS-Italic.ttf in Resources */,
+				637165251601AE45006BC4AC /* UCBerkeleyOS-DemiItalic.ttf in Resources */,
+				637165261601AE45006BC4AC /* UCBerkeleyOS-Demi.ttf in Resources */,
+				637165271601AE45006BC4AC /* UCBerkeleyOS-Bold.ttf in Resources */,
+				637165281601AE45006BC4AC /* UCBerkeleyOS-BoldItalic.ttf in Resources */,
+				637165291601AE45006BC4AC /* UCBerkeleyOS-BlackItalic.ttf in Resources */,
+				6371652A1601AE45006BC4AC /* UCBerkeleyOS-Black.ttf in Resources */,
+				6371652B1601AE45006BC4AC /* UCBerkeleyOS.ttf in Resources */,
 				6393DE13150301F3003B77F5 /* InfoPlist.strings in Resources */,
 				6393DE1C150301F3003B77F5 /* MainStoryboard_iPhone.storyboard in Resources */,
 				6393DE1F150301F3003B77F5 /* MainStoryboard_iPad.storyboard in Resources */,
@@ -665,6 +793,14 @@
 				63DE5308153940C100F9ECFB /* bancroft.jpg in Resources */,
 				63DE5309153940C100F9ECFB /* anthro.jpeg in Resources */,
 				63DE5314153BF9E100F9ECFB /* InfoView.xib in Resources */,
+				637164F915FF1F73006BC4AC /* Radio-Tower@2x.png in Resources */,
+				637164FC15FF1F7E006BC4AC /* Radio-Tower.png in Resources */,
+				63B33DA61601BB960044E7DE /* Gear.png in Resources */,
+				63B33DA81601BBA00044E7DE /* Gear@2x.png in Resources */,
+				63B33DAB1601E8320044E7DE /* SplashScreenAnimated.png in Resources */,
+				63B33DAC1601E8320044E7DE /* SplashScreenAnimated@2x.png in Resources */,
+				63B33DAF1601EA8E0044E7DE /* ucseal_line_540.png in Resources */,
+				63B33DB01601EA8E0044E7DE /* ucseal_line_540@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,6 +809,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				6393DE3F150301F3003B77F5 /* InfoPlist.strings in Resources */,
+				6371651216019CF5006BC4AC /* UCBerkeleyOS-TitlingBold.ttf in Resources */,
+				6371651316019CF5006BC4AC /* UCBerkeleyOS-SignTitling.ttf in Resources */,
+				6371651416019CF5006BC4AC /* UCBerkeleyOS-Titling.ttf in Resources */,
+				6371651516019CF5006BC4AC /* UCBerkeleyOS-SignItalic.ttf in Resources */,
+				6371651616019CF5006BC4AC /* UCBerkeleyOS-Sign.ttf in Resources */,
+				6371651716019CF5006BC4AC /* UCBerkeleyOS-Italic.ttf in Resources */,
+				6371651816019CF5006BC4AC /* UCBerkeleyOS-DemiItalic.ttf in Resources */,
+				6371651916019CF5006BC4AC /* UCBerkeleyOS-Demi.ttf in Resources */,
+				6371651A16019CF5006BC4AC /* UCBerkeleyOS-Bold.ttf in Resources */,
+				6371651B16019CF5006BC4AC /* UCBerkeleyOS-BoldItalic.ttf in Resources */,
+				6371651C16019CF5006BC4AC /* UCBerkeleyOS-BlackItalic.ttf in Resources */,
+				6371651D16019CF5006BC4AC /* UCBerkeleyOS-Black.ttf in Resources */,
+				6371651E16019CF5006BC4AC /* UCBerkeleyOS.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +873,9 @@
 				635647EC15FC192A00896111 /* Menu.m in Sources */,
 				635647EF15FC193400896111 /* Dish.m in Sources */,
 				635647F215FC3DC300896111 /* DishDetailsViewController.m in Sources */,
+				630F206415FEAC5C00D1E447 /* NewsListViewController.m in Sources */,
+				630F206D15FEB1C300D1E447 /* BackgroundCell.m in Sources */,
+				63716503160180E4006BC4AC /* NewsStory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

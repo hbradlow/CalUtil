@@ -30,6 +30,7 @@
     NSURL *url = [NSURL URLWithString:@"https://wlan.berkeley.edu/cgi-bin/login/calnet.cgi"];
     NSURLRequest *wifiRequest = [NSURLRequest requestWithURL:url];
     [self.web loadRequest:wifiRequest];
+    
     return YES;
 }
 
