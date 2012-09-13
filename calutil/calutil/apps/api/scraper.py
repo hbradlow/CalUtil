@@ -260,7 +260,7 @@ def get_cal_balance(username,password):
         points = soup("table")[0]("tr")[5]("td")[0]("b")[0].string
         return (balance,points)
     except:
-        return (False,False)
+        return ("","")
 
 def bus_lines():
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)
