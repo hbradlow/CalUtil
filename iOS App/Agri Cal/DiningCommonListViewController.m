@@ -28,19 +28,17 @@
     [super viewDidLoad];
     self.locations = [[NSMutableArray alloc] init];
     self.locations = [NSMutableArray arrayWithArray:@[ @"",@"",@"",@"" ]];
-    @try {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         dispatch_async(queue, ^{
             [self loadMenus];
         });
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading menus");
-    }
+
 }
 
 - (void)loadMenus
 {
+    @try {
+
     NSString *queryString = [NSString stringWithFormat:@"%@/api/menu/?format=json", ServerURL];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
@@ -104,6 +102,10 @@
     }
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
     dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+}
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading menus");
+    }
 }
 
 #pragma mark - Table view data source

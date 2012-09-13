@@ -22,7 +22,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 9;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -45,7 +45,7 @@
             cell.detailTextLabel.text = self.currentClass.instructor;
             break;
         case 2:
-            cell.textLabel.text = @"Times";
+            cell.textLabel.text = @"Location";
             cell.detailTextLabel.text = self.currentClass.times;
             break;
         case 3:
@@ -61,18 +61,14 @@
             cell.detailTextLabel.text = self.currentClass.waitlist;
             break;
         case 6:
-            cell.textLabel.text = @"Location";
-            cell.detailTextLabel.text = self.currentClass.location;
-            break;
-        case 7:
             cell.textLabel.text = @"Final";
             cell.detailTextLabel.text = self.currentClass.finalExamGroup;
             break;
-        case 8:
+        case 7:
             cell.textLabel.text = @"CCN";
             cell.detailTextLabel.text = self.currentClass.ccn;
             break;
-        case 9:
+        case 8:
             cell.textLabel.text = @"Webcast";
             cell.detailTextLabel.text = self.currentClass.hasWebcast ? @"Yes" : @"No";
             cell.accessoryType = self.currentClass.hasWebcast ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;

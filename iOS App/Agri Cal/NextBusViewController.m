@@ -38,21 +38,16 @@
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
-    @try {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         dispatch_async(queue, ^{
             [self updateTimes:self.annotation.stopID withTag:[currentLine objectForKey:@"tag"] atIndex:indexPath.row];
         });
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading times");
-    }
     return cell;
 }
 
 - (void)updateTimes:(int)extension withTag:(NSString*)tag atIndex:(int)index
 {
-    
+     @try {   
     NSString *queryString = [NSString stringWithFormat:@"%@/bus_stop/predictions/%i/%@", ServerURL, extension, tag];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
@@ -70,6 +65,10 @@
         subtitle = [subtitle stringByAppendingString:@" minutes"];
         [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]].detailTextLabel.text = subtitle;
     });
+     }
+         @catch (NSException *exception) {
+             NSLog(@"Error when loading times");
+         }
 }
 
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

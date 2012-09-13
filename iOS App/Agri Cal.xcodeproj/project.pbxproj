@@ -100,6 +100,7 @@
 		63B33DAC1601E8320044E7DE /* SplashScreenAnimated@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAA1601E8320044E7DE /* SplashScreenAnimated@2x.png */; };
 		63B33DAF1601EA8E0044E7DE /* ucseal_line_540.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAD1601EA8E0044E7DE /* ucseal_line_540.png */; };
 		63B33DB01601EA8E0044E7DE /* ucseal_line_540@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63B33DAE1601EA8E0044E7DE /* ucseal_line_540@2x.png */; };
+		63B33DB3160290F20044E7DE /* NewsStoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B33DB2160290F20044E7DE /* NewsStoryViewController.m */; };
 		63C187B8152D90B000FF4AF1 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C187B7152D90B000FF4AF1 /* InfoViewController.m */; };
 		63C28D2715F9437C00E212F0 /* Cal1CardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */; };
 		63C28D2F15F95A8300E212F0 /* DepartmentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D2E15F95A8300E212F0 /* DepartmentListViewController.m */; };
@@ -266,6 +267,8 @@
 		63B33DAA1601E8320044E7DE /* SplashScreenAnimated@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SplashScreenAnimated@2x.png"; sourceTree = "<group>"; };
 		63B33DAD1601EA8E0044E7DE /* ucseal_line_540.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ucseal_line_540.png; sourceTree = "<group>"; };
 		63B33DAE1601EA8E0044E7DE /* ucseal_line_540@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ucseal_line_540@2x.png"; sourceTree = "<group>"; };
+		63B33DB1160290F20044E7DE /* NewsStoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStoryViewController.h; sourceTree = "<group>"; };
+		63B33DB2160290F20044E7DE /* NewsStoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStoryViewController.m; sourceTree = "<group>"; };
 		63C187B6152D90B000FF4AF1 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoViewController.h; sourceTree = "<group>"; };
 		63C187B7152D90B000FF4AF1 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoViewController.m; sourceTree = "<group>"; };
 		63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cal1CardViewController.h; sourceTree = "<group>"; };
@@ -356,6 +359,8 @@
 			children = (
 				630F206215FEAC5B00D1E447 /* NewsListViewController.h */,
 				630F206315FEAC5C00D1E447 /* NewsListViewController.m */,
+				63B33DB1160290F20044E7DE /* NewsStoryViewController.h */,
+				63B33DB2160290F20044E7DE /* NewsStoryViewController.m */,
 				63716501160180E4006BC4AC /* NewsStory.h */,
 				63716502160180E4006BC4AC /* NewsStory.m */,
 				638F42E5150CB96B0031A9F6 /* SettingsViewController.h */,
@@ -876,6 +881,7 @@
 				630F206415FEAC5C00D1E447 /* NewsListViewController.m in Sources */,
 				630F206D15FEB1C300D1E447 /* BackgroundCell.m in Sources */,
 				63716503160180E4006BC4AC /* NewsStory.m in Sources */,
+				63B33DB3160290F20044E7DE /* NewsStoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

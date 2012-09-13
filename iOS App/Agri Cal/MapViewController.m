@@ -223,7 +223,6 @@ static float LongitudeDelta = 0.015;
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
     if (self.selectedAnnotation && !((BasicMapAnnotationView*)view).preventSelectionChange)
     {
-        [self.mapView removeAnnotation:self.selectedAnnotation];
         self.selectedAnnotation = nil;
     }
 }
@@ -307,6 +306,8 @@ static float LongitudeDelta = 0.015;
 
 - (IBAction)switchAnnotations:(id)sender{
     NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
+    [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
+    self.searchBar.hidden = YES;
     if (selectedIndex == 0)
     {
         [self.mapView removeAnnotations:self.calCardAnnotations];
@@ -331,6 +332,7 @@ static float LongitudeDelta = 0.015;
         [self.mapView removeAnnotations:self.calCardAnnotations];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
+        self.searchBar.hidden = NO;
     }
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);

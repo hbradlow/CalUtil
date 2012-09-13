@@ -12,5 +12,6 @@
 
 @property (nonatomic, retain) NSMutableArray *rssFeed; 
 @property (nonatomic, retain) UIImageView *splashView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property BOOL hasLoaded;
 @end

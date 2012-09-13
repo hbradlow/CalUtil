@@ -45,118 +45,129 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.departments = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
-
-    @try {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        
-        NSData *departmentData;
-        
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
-        {
-            departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
-            self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
-            [unarchiver finishDecoding];
-        }
-        if (!departmentData)
-        {
-            dispatch_async(queue, ^{
-                [self loadDepartments];
-            });
-        }
-        NSData *calData;
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
-        {
-            NSLog(@"Loading the individual courses");
-            calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
-            self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
-            [unarchiver finishDecoding];
-        }
-        
+    
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    
+    NSData *departmentData;
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
+    {
+        departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
+        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
+        [unarchiver finishDecoding];
+    }
+    if (!departmentData)
+    {
         dispatch_async(queue, ^{
-            [self loadCourses];
+            [self loadDepartments];
         });
     }
-    @catch (NSException *exception) {
-        NSLog(@"Error loading departments");
+    NSData *calData;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
+    {
+        NSLog(@"Loading the individual courses");
+        calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
+        self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
+        [unarchiver finishDecoding];
     }
+    
+    dispatch_async(queue, ^{
+        [self loadCourses];
+    });
 }
 
 - (void)loadCourses
 {
-    NSString *queryString = [NSString stringWithFormat:@"%@/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSData *receivedData;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
-    NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-    for (NSDictionary *currentClass in arr)
-    {
-        CalClass *newClass = [[CalClass alloc] init];
-        newClass.title = [currentClass objectForKey:@"abbreviation"];
-        newClass.times = [currentClass objectForKey:@"days"];
-        newClass.instructor = [currentClass objectForKey:@"instructor"];
-        newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
-        newClass.enrolled = [currentClass objectForKey:@"enrolled"];
-        newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
-        newClass.units = [currentClass objectForKey:@"units"];
-        newClass.waitlist = [currentClass objectForKey:@"waitlist"];
-        newClass.number = [currentClass objectForKey:@"number"];
-        newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
-        newClass.uniqueID = [currentClass objectForKey:@"id"];
-        [tempArray addObject:newClass];
+    @try {
+        NSString *queryString = [NSString stringWithFormat:@"%@/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        
+        NSData *receivedData;
+        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                             returningResponse:&response
+                                                         error:&error];
+        
+        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        
+        NSArray *arr = [receivedDict objectForKey:@"objects"];
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+        for (NSDictionary *currentClass in arr)
+        {
+            CalClass *newClass = [[CalClass alloc] init];
+            newClass.title = [currentClass objectForKey:@"abbreviation"];
+            newClass.times = [currentClass objectForKey:@"location"];
+            newClass.instructor = [currentClass objectForKey:@"instructor"];
+            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
+            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
+            newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
+            newClass.units = [currentClass objectForKey:@"units"];
+            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
+            newClass.number = [currentClass objectForKey:@"number"];
+            newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
+            newClass.uniqueID = [currentClass objectForKey:@"id"];
+            newClass.ccn = [currentClass objectForKey:@"ccn"];
+            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
+            [tempArray addObject:newClass];
+        }
+        self.enrolledCourses = tempArray;
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+        [self saveCourses];
+        NSLog(@"loaded courses");
     }
-    self.enrolledCourses = tempArray;
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
-    [self saveCourses];
+    @catch (NSException *exception) {
+        NSLog(@"Error loading departments");
+    }
+    
 }
 
 - (void)loadDepartments
 {
-    NSString *queryString = [NSString stringWithFormat:@"%@/api/department/?format=json", ServerURL];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSData *receivedData;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
-    
-    NSMutableArray *tempDepartments = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *currentDep in arr)
-    {
-        Department *newDep = [[Department alloc] init];
-        newDep.title = [[currentDep objectForKey:@"name"] capitalizedString];
-        newDep.departmentID = [currentDep objectForKey:@"id"];
-        [tempDepartments addObject:newDep];
+    @try {
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/department/?format=json", ServerURL];
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        
+        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        
+        NSData *receivedData;
+        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                             returningResponse:&response
+                                                         error:&error];
+        
+        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        
+        NSArray *arr = [receivedDict objectForKey:@"objects"];
+        
+        NSMutableArray *tempDepartments = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary *currentDep in arr)
+        {
+            Department *newDep = [[Department alloc] init];
+            newDep.title = [[currentDep objectForKey:@"name"] capitalizedString];
+            newDep.departmentID = [currentDep objectForKey:@"id"];
+            [tempDepartments addObject:newDep];
+        }
+        self.departments = tempDepartments;
+        [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
+            return [obj1.title caseInsensitiveCompare:obj2.title];
+        }];
+        [self saveDepartments];
+        NSLog(@"loaded departments");
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
     }
-    self.departments = tempDepartments;
-    [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
-        return [obj1.title caseInsensitiveCompare:obj2.title];
-    }];
-    [self saveDepartments];
-    NSLog(@"loaded departments");
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    @catch (NSException *exception) {
+        NSLog(@"Error loading departments");
+    }
+    
 }
 
 - (void)saveDepartments
@@ -228,7 +239,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
@@ -240,6 +251,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             cell.textLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
             if ([[self.enrolledCourses objectAtIndex:indexPath.row] hasWebcast])
                 cell.imageView.image = [UIImage imageNamed:@"monitor"];
+            cell.detailTextLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] times];
         }
         else
         {
@@ -247,6 +259,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
                                             [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
             cell.textLabel.text = [[[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] objectAtIndex:indexPath.row] title];
+            cell.detailTextLabel.text = @"";
         }
     }
     else

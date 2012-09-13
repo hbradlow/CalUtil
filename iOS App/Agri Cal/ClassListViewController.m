@@ -31,7 +31,7 @@
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    @try {
+
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         NSData *data;
         if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
@@ -47,14 +47,11 @@
                 [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
             });
         }
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading list of classes");
-    }
 }
 
 - (void)loadCoursesWithExtension:(NSString*)extension
 {
+        @try {
     NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL,extension];
     NSLog(@"%@", queryString);
     NSURL *requestURL = [NSURL URLWithString:queryString];
@@ -72,9 +69,10 @@
     NSArray *arr = [receivedDict objectForKey:@"objects"];
     for (NSDictionary *currentClass in arr)
     {
+        NSLog(@"%@", currentClass);
         CalClass *newClass = [[CalClass alloc] init];
         newClass.title = [currentClass objectForKey:@"abbreviation"];
-        newClass.times = [currentClass objectForKey:@"days"];
+        newClass.times = [currentClass objectForKey:@"location"];
         newClass.instructor = [currentClass objectForKey:@"instructor"];
         newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
         newClass.enrolled = [currentClass objectForKey:@"enrolled"];
@@ -84,6 +82,8 @@
         newClass.number = [currentClass objectForKey:@"number"];
         newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
         newClass.uniqueID = [currentClass objectForKey:@"id"];
+        newClass.ccn = [currentClass objectForKey:@"ccn"];
+        newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
         [self.classes addObject:newClass];
     }
     
@@ -97,6 +97,10 @@
         [self saveCourses];
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    }
+        }
+    @catch (NSException *exception) {
+        NSLog(@"Error when loading list of classes");
     }
 }
 
@@ -151,7 +155,7 @@
         theClass = [self.searchResults objectAtIndex:indexPath.row];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[theClass number], [theClass title]];
-    cell.detailTextLabel.text = @"MWF 12-1";
+    cell.detailTextLabel.text = [theClass times];
     
     if (theClass.hasWebcast)
         cell.imageView.image = [UIImage imageNamed:@"monitor.png"];
