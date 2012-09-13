@@ -125,42 +125,61 @@ def get_first_or_none(list):
         return list[0].strip()
     return None
 def process_table(course,table,debug=False):
-    course.location = get_first_or_none(table("tr")[2]("td")[1]("tt")[0].contents)
+    type = get_first_or_none(table("tr")[0]("td")[2]("b")[0].contents).split(" ")[-1]
+    section = get_first_or_none(table("tr")[0]("td")[2]("b")[0].contents).split(" ")[-2]
+    thing = None
+    if type == "LEC" or type == "IND" or type=="SEM":
+        if course.section and section != course.section:
+            course.pk = None
+        course.section = section
+        thing = course
+    else:
+        thing = Section()
+        thing.course = course
+        thing.type = type
+        thing.section = section
+    thing.location = get_first_or_none(table("tr")[2]("td")[1]("tt")[0].contents)
 
     try:
         building_name = ""
         try:
-            building_name = re.match(r'^.*, \w+ (.*?)$',course.location).group(1).strip()
+            building_name = re.match(r'^.*, \w+ (.*?)$',thing.location).group(1).strip()
         except:
             if debug:
-                print "Failed to parse: " + course.location
+                print "Failed to parse: " + thing.location
         try:
             building_name = re.match(r'^(.*?)( [(].*)?$',building_name).group(1).strip()
         except:
             if debug:
                 print "Failed to clean: " + building_name
         try:
-            course.building = Building.objects.get(name=building_name)
+            thing.building = Building.objects.get(name=building_name)
         except Building.DoesNotExist:
-            course.building = Building.objects.create(name=building_name)
+            thing.building = Building.objects.create(name=building_name)
     except AttributeError:
         pass #building not available
 
-    course.instructor = get_first_or_none(table("tr")[3]("td")[1]("tt")[0].contents)
-    course.ccn = get_first_or_none(table("tr")[5]("td")[1]("tt")[0].contents)
-    course.units = get_first_or_none(table("tr")[6]("td")[1]("tt")[0].contents)
-    course.exam_group = get_first_or_none(table("tr")[7]("td")[1]("tt")[0].contents)
+    thing.instructor = get_first_or_none(table("tr")[3]("td")[1]("tt")[0].contents)
+    thing.ccn = get_first_or_none(table("tr")[5]("td")[1]("tt")[0].contents)
+    thing.units = get_first_or_none(table("tr")[6]("td")[1]("tt")[0].contents)
+    thing.exam_group = get_first_or_none(table("tr")[7]("td")[1]("tt")[0].contents)
 
     try:
         enrollment = get_first_or_none(table("tr")[10]("td")[1]("tt")[0].contents)
-        course.limit = re.match(r'^.*?Limit:(\d+).*?$',enrollment).group(1)
-        course.enrolled = re.match(r'^.*?Enrolled:(\d+).*?$',enrollment).group(1)
-        course.waitlist = re.match(r'^.*?Waitlist:(\d+).*?$',enrollment).group(1)
-        course.available_seats = re.match(r'^.*?Avail Seats:(\d+).*?$',enrollment).group(1)
+        thing.limit = re.match(r'^.*?Limit:(\d+).*?$',enrollment).group(1)
+        thing.enrolled = re.match(r'^.*?Enrolled:(\d+).*?$',enrollment).group(1)
+        thing.waitlist = re.match(r'^.*?Waitlist:(\d+).*?$',enrollment).group(1)
+        thing.available_seats = re.match(r'^.*?Avail Seats:(\d+).*?$',enrollment).group(1)
     except AttributeError:
         pass #enrollment not available
 
-    course.save()
+    thing.save()
+    if debug:
+        print thing
+
+    if type == "LEC" or type=="IND" or type=="SEM":
+        course = thing
+    return course
 
 def full_courses(chunk_size=70,debug=False):
     import grequests
@@ -175,12 +194,14 @@ def full_courses(chunk_size=70,debug=False):
         results = grequests.map(rs)
         for r,course in zip(results,chunk):
             soup = bs4.BeautifulSoup(r.text)
-            try:
-                for table in [soup("table")[1]]:
-                    process_table(course,table,debug=debug)
+            c = course
+            for table in soup("table")[1:-1]:
+                c = process_table(c,table,debug=debug)
+            """
             except:
                 print "FAIL on course:"
                 print course.type + " " + course.number
+            """
         print "Done chunk " + str(i) + " of " + str(num_chunks)
 
 def webcasts():
