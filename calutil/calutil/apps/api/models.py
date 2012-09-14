@@ -12,6 +12,7 @@ Cal one card locations (time, coordinates, picture)
 ###############################NEW########################################
 class Department(models.Model):
     name = models.CharField(max_length=500)
+    possible_names = models.TextField(default="")
     slug = AutoSlugField(populate_from="name",unique=True)
     def __unicode__(self):
         return self.name
@@ -329,3 +330,4 @@ admin.site.register(BusStop)
 admin.site.register(BusStopDirection)
 admin.site.register(CalOneCardLocation)
 admin.site.register(Building)
+admin.site.register(Department)

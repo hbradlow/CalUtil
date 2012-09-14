@@ -96,7 +96,7 @@ def courses(term="FL"):
             try:
                 department = Department.objects.get(name=str(current_title))
             except:
-                department = Department.objects.create(name=str(current_title))
+                department = Department.objects.create(name=str(current_title),possible_names=str(current_title))
             print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Section: " + current_title
         except:
             type = row("td")[0]("label")[0].string.strip()
@@ -230,20 +230,10 @@ def webcasts(debug=False):
                 w.description = entry.description.text
                 w.url = entry.media.content[0].url
 
-                r2 = re.match("^(.*) (.*?\d+.*?)$",r.group(1).strip())
-                try:
-                    department_name = r2.group(1).strip().upper()
-                    course_number = r2.group(2).strip()
-                    if debug:
-                        print department_name 
-                        print course_number
-                    try:
-                        w.course = Course.objects.filter(Q(type=department_name) & Q(number=course_number))[0]
-                    except:
-                        w.course = None
-                except:
-                    print "Failed to gather department/course names"
-                    print r.group(1).strip()
+                r2 = re.match("^(.*?)((\s[a-zA-Z]*)?\d+.*?)$",r.group(1).strip())
+                department_name = r2.group(1).strip().upper()
+                course_number = r2.group(2).strip()
+                w.course = list([c for c in Course.objects.filter(number=course_number) if department_name in c.department.possible_names])[0]
                 w.save()
 def get_cal_balance(username,password):
     from twill.commands import *
