@@ -231,12 +231,19 @@ def webcasts(debug=False):
                 w.url = entry.media.content[0].url
 
                 r2 = re.match("^(.*) (.*?\d+.*?)$",r.group(1).strip())
-                department_name = r2.group(1).strip().upper()
-                course_number = r2.group(2).strip()
-                if debug:
-                    print department_name 
-                    print course_number
-                w.course = Course.objects.filter(Q(type=department_name) & Q(number=course_number))[0]
+                try:
+                    department_name = r2.group(1).strip().upper()
+                    course_number = r2.group(2).strip()
+                    if debug:
+                        print department_name 
+                        print course_number
+                    try:
+                        w.course = Course.objects.filter(Q(type=department_name) & Q(number=course_number))[0]
+                    except:
+                        w.course = None
+                except:
+                    print "Failed to gather department/course names"
+                    print r.group(1).strip()
                 w.save()
 def get_cal_balance(username,password):
     from twill.commands import *

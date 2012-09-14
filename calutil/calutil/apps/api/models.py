@@ -309,7 +309,7 @@ class Webcast(models.Model):
     description = models.CharField(max_length=200,default="",null=True)
     url = models.CharField(max_length=1000,default="",null=True)
     number = models.CharField(max_length=200,default="",null=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course,null=True)
 
     def __unicode__(self):
         return self.title + ": " + self.number
