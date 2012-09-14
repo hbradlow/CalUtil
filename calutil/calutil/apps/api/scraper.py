@@ -206,7 +206,7 @@ def full_courses(chunk_size=70,debug=False):
             """
         print "Done chunk " + str(i) + " of " + str(num_chunks)
 
-def webcasts():
+def webcasts(debug=False):
     from gdata.youtube.service import *
     import re
     yt_service = gdata.youtube.service.YouTubeService()
@@ -230,13 +230,13 @@ def webcasts():
                 w.description = entry.description.text
                 w.url = entry.media.content[0].url
 
-                print s
-                print r.group(1).strip()
                 r2 = re.match("^(.*) (.*?\d+.*?)$",r.group(1).strip())
                 department_name = r2.group(1).strip().upper()
                 course_number = r2.group(2).strip()
-                print department_name 
-                w.course = Course.objects.filter(Q(department__name=department_name) & Q(number=course_number))[0]
+                if debug:
+                    print department_name 
+                    print course_number
+                w.course = Course.objects.filter(Q(type=department_name) & Q(number=course_number))[0]
                 w.save()
 def get_cal_balance(username,password):
     from twill.commands import *
