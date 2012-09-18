@@ -25,7 +25,7 @@
                     url = data.meta.next;
                     $.each(data.objects,function(index,course){
                         console.log(course);
-                        var course = new Course({name: course.abbreviation, instructor: course.instructor});
+                        var course = new Course({name: course.abbreviation, instructor: course.instructor, enrolled: course.enrolled, url: course.resource_uri});
                         courses.push(course);
                     });
                     course_view.render();
@@ -34,11 +34,14 @@
             get_courses();
             $("#more").click(function(){
                 get_courses();
+                return false;
             });
         });
     </script>
     <script type="text/template" id="course_template">
-        <h3><%= name %></h3>
-        <p><%= instructor %></p>
+        <a href="<%= url %>?format=json">
+            <h3><%= name %></h3>
+            <p><%= instructor %>, Enrolled: <%= enrolled %></p>
+        </a>
     </script>
 {% endblock %}

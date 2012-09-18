@@ -92,7 +92,7 @@
                         console.log(this.courses);
                         var e = this.el;
                         $.each(this.courses, function(index,course){
-                            var template = _.template($("#course_template").html(),{name: course.attributes.name,instructor: course.attributes.instructor});
+                            var template = _.template($("#course_template").html(),{name: course.attributes.name,instructor: course.attributes.instructor,enrolled: course.attributes.enrolled, url: course.attributes.url});
                             $(template).appendTo($(e));
                         });
                     }
@@ -107,12 +107,10 @@
                     <div class="topbar-inner">
                         <div class="container-fluid">
                             {% block brand %}
-                                <a class="brand" href="#">{% block brand_name %}WebAPP{% endblock %}</a>
+                                <a class="brand" href="#">{% block brand_name %}CalUtil{% endblock %}</a>
                             {% endblock %}
                             <ul class="nav">
                                 {% block topbar_links %}
-                                    <li><a href="#">Hello</a></li>
-                                    <li><a href="#">World</a></li>
                                 {% endblock %}
                             </ul>
                         </div>
