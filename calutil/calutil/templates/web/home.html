@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="panel scrollable">
+        <div class="row-fluid">
+            <div id="course">
+            </div>
+            <a href="#" id="more" class="btn">More</a>
+        </div>
+    </div>
+{% endblock %}
+{% block extra_script %}
+    <script>
+        $('.tabs').tabs();
+        $('.tabs').bind('change', function (e) {
+            e.target;         // activated tab
+            e.relatedTarget;  // previous tab
+        });
+        $(function(){
+            var courses = [];
+            var url = "/app_data/course/?format=json&limit=10";
+            var course_view = new CoursesView({el: $("#course"), courses: courses});
+            function get_courses(){
+                $.get(url,function(data){
+                    url = data.meta.next;
+                    $.each(data.objects,function(index,course){
+                        console.log(course);
+                        var course = new Course({name: course.abbreviation, instructor: course.instructor});
+                        courses.push(course);
+                    });
+                    course_view.render();
+                });
+            }
+            get_courses();
+            $("#more").click(function(){
+                get_courses();
+            });
+        });
+    </script>
+    <script type="text/template" id="course_template">
+        <h3><%= name %></h3>
+        <p><%= instructor %></p>
+    </script>
+{% endblock %}

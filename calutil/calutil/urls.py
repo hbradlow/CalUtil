@@ -5,7 +5,7 @@ from api.API import *
 from django.contrib import admin
 admin.autodiscover()
 
-api = Api(api_name='api')
+api = Api(api_name='app_data')
 api.register(BusLineResource())
 api.register(BusStopResource())
 api.register(CalOneCardLocationResource())
@@ -24,5 +24,6 @@ urlpatterns = patterns('',
 
     #project
     (r'^', include(api.urls)),
-    (r'^', include("api.urls")),
+    (r'^api/', include("api.urls")),
+    (r'^', include("web.urls")),
 )
