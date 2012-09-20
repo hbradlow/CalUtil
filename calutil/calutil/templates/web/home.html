@@ -11,38 +11,13 @@
 {% endblock %}
 {% block extra_script %}
     <script>
-        $('.tabs').tabs();
-        $('.tabs').bind('change', function (e) {
-            e.target;         // activated tab
-            e.relatedTarget;  // previous tab
-        });
         $(function(){
-            var courses = [];
-            var num_per_request = 50;
-            var url = "/app_data/course/?format=json&limit=" + num_per_request;
-            var courses_view = new CoursesView({el: $("#course"), courses: courses}); //the view for the list of courses
-            //adds courses to the courses_view
-            function get_courses(callback){
-                $.get(url,function(data){
-                    url = data.meta.next; //remember the next url to use for the next addition
-                    //for each course, add some content
-                    $.each(data.objects,function(index,course){
-                        console.log(course);
-                        var course = new Course({name: course.abbreviation, instructor: course.instructor, enrolled: course.enrolled, url: course.resource_uri});
-                        courses.push(course);
-                    });
-                    courses_view.render();
-                    callback(); //signal that the loading is complete
-                });
-            }
-            get_courses(); //get a few to start off
+            var courses_view = new CoursesView({el: $("#course")});
             //every time the more button is clicked, add some more courses
             $("#more").click(function(){
                 var text = $(this).html(), link = $(this);
                 $(this).html("Loading...");
-                get_courses(function(){
-                    link.html(text);
-                });
+                courses_view.fetch();
                 return false;
             });
         });

@@ -81,18 +81,34 @@
             $(function(){
                 Course = Backbone.Model.extend({
                 });
+                CourseCollection = Backbone.Collection.extend({
+                    model: Course,
+                    url: "/app_data/course/?format=json&limit=20",
+                    parse: function(data) {
+                        if (!data)
+                            return []; 
+                        this.url = data.meta.next;
+                        return data.objects;//parse out the objects list
+                    },
+                });
                 CoursesView = Backbone.View.extend({
-                    courses:[],
                     initialize: function(){
-                        this.courses = this.options.courses;
                         this.el = this.options.el;
-                        this.render();
+                        this.collection = new CourseCollection();
+                        this.fetch();
+                    },
+                    fetch: function(){
+                        var view = this;
+                        this.collection.fetch({
+                            success: function(data){
+                                view.render();
+                            },
+                        });
                     },
                     render: function(){
-                        console.log(this.courses);
                         var e = this.el;
-                        $.each(this.courses, function(index,course){
-                            var template = _.template($("#course_template").html(),{name: course.attributes.name,instructor: course.attributes.instructor,enrolled: course.attributes.enrolled, url: course.attributes.url});
+                        $.each(this.collection.models, function(index,course){
+                            var template = _.template($("#course_template").html(),{name: course.attributes.abbreviation,instructor: course.attributes.instructor,enrolled: course.attributes.enrolled, url: course.attributes.url});
                             $(template).appendTo($(e));
                         });
                     }
