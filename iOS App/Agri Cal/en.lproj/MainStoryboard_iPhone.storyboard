@@ -510,7 +510,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2xa-rd-grj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1073" y="1595"/>
+            <point key="canvasLocation" x="1073" y="1671"/>
         </scene>
         <!--News Story View Controller-->
         <scene sceneID="Kit-kc-aAT">
@@ -579,7 +579,7 @@
                     <navigationItem key="navigationItem" id="4bi-EY-i8w">
                         <nil key="title"/>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="mOZ-8W-6rE">
-                            <rect key="frame" x="5" y="7" width="310" height="30"/>
+                            <rect key="frame" x="90" y="7" width="139" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Fall 12"/>
@@ -677,6 +677,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="rOr-EH-HtJ"/>
                     <connections>
+                        <outlet property="tableView" destination="6sO-CY-igX" id="cLx-cb-9A5"/>
                         <segue destination="8pJ-d4-tCa" kind="push" identifier="webcast" id="J9n-7O-ULf"/>
                     </connections>
                 </viewController>
@@ -831,7 +832,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UcB-av-BCI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="653" y="2166"/>
+            <point key="canvasLocation" x="653" y="2146"/>
         </scene>
         <!--Navigation Controller - Item-->
         <scene sceneID="eSE-BN-A7C">
@@ -847,7 +848,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pwc-pm-QIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="68" y="1502"/>
+            <point key="canvasLocation" x="128" y="2138"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="JZl-CE-RtW">
@@ -968,6 +969,9 @@
         </class>
         <class className="ClassViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
         </class>
         <class className="DepartmentListViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>

@@ -34,7 +34,7 @@
 - (void)loadWebcasts
 {
         @try {
-    NSString *queryString = [NSString stringWithFormat:@"%@/api/webcast/?format=json&course=%@", ServerURL, self.courseID];
+    NSString *queryString = [NSString stringWithFormat:@"%@/app_data/webcast/?format=json&course=%@", ServerURL, self.courseID];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     NSError *error = nil;

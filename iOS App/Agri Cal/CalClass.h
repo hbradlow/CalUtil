@@ -10,7 +10,6 @@
 
 @interface CalClass : NSObject <NSCoding>
 
-@property (nonatomic, retain) NSMutableArray *sections;
 @property (nonatomic, copy) NSString *ccn;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *times;

@@ -17,9 +17,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
     self.web = [[UIWebView alloc] initWithFrame:self.view.frame];
     self.web.backgroundColor = [UIColor clearColor];
-    self.url = [NSString stringWithFormat:@"%@/nutrition/%@/", ServerURL, self.url];
+    self.url = [NSString stringWithFormat:@"%@/api/nutrition/%@/", ServerURL, self.url];
     NSURL *url = [NSURL URLWithString:self.url];
     [self.web loadRequest:[NSURLRequest requestWithURL:url]];
     [self.view addSubview:self.web];

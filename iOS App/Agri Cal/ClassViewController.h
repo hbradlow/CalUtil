@@ -12,5 +12,7 @@
 @interface ClassViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) CalClass *currentClass;
+@property (nonatomic, retain) NSMutableArray *sections;
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end

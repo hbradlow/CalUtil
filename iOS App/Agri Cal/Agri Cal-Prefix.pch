@@ -25,5 +25,7 @@
     #define TABLE_BACKGROUND [UIColor blackColor]
     #define kMealpoints @"mealpoints" 
     #define kCalBalance @"cal1cardbalance"
-    #define kHeaderFont = @"UCBerkeleyOS-SignTitling"
+    #define kAppFont @"Helvetica Neue"
+    #define kFontOffset UIOffsetMake(0, -2)
+    #define kTitleAdjustment -4 
 #endif

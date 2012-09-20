@@ -31,74 +31,76 @@
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        NSData *data;
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
-        {
-            data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
-            NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-            self.classes = [unarchiver decodeObjectForKey:kClassesData];
-            [unarchiver finishDecoding];
-        }
-        if (!data)
-        {
-            dispatch_async(queue, ^{
-                [self loadCoursesWithExtension:[NSString stringWithFormat:@"/api/course/?format=json&department=%@", self.departmentURL]];
-            });
-        }
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    NSData *data;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
+    {
+        data = [[NSMutableData alloc]initWithContentsOfFile:kClassesPath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.classes = [unarchiver decodeObjectForKey:kClassesData];
+        [unarchiver finishDecoding];
+    }
+    if (!data)
+    {
+        dispatch_async(queue, ^{
+            [self loadCoursesWithExtension:[NSString stringWithFormat:@"app_data/course/?format=json&department=%@", self.departmentURL]];
+        });
+    }
+    
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)loadCoursesWithExtension:(NSString*)extension
 {
-        @try {
-    NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL,extension];
-    NSLog(@"%@", queryString);
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSData *receivedData;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
-    for (NSDictionary *currentClass in arr)
-    {
-        NSLog(@"%@", currentClass);
-        CalClass *newClass = [[CalClass alloc] init];
-        newClass.title = [currentClass objectForKey:@"abbreviation"];
-        newClass.times = [currentClass objectForKey:@"location"];
-        newClass.instructor = [currentClass objectForKey:@"instructor"];
-        newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
-        newClass.enrolled = [currentClass objectForKey:@"enrolled"];
-        newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
-        newClass.units = [currentClass objectForKey:@"units"];
-        newClass.waitlist = [currentClass objectForKey:@"waitlist"];
-        newClass.number = [currentClass objectForKey:@"number"];
-        newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
-        newClass.uniqueID = [currentClass objectForKey:@"id"];
-        newClass.ccn = [currentClass objectForKey:@"ccn"];
-        newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-        [self.classes addObject:newClass];
-    }
-    
-    if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
-        [self loadCoursesWithExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"]];
-    else
-    {
-        [self.classes sortUsingComparator:(NSComparator)^(CalClass *obj1, CalClass *obj2){
-            return [obj1.number compare:obj2.number options:NSNumericSearch];
-        }];
-        [self saveCourses];
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
-    }
+    @try {
+        NSString *queryString = [NSString stringWithFormat:@"%@/%@", ServerURL,extension];
+        NSLog(@"%@", queryString);
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        
+        NSData *receivedData;
+        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                             returningResponse:&response
+                                                         error:&error];
+        
+        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        
+        NSArray *arr = [receivedDict objectForKey:@"objects"];
+        for (NSDictionary *currentClass in arr)
+        {
+            NSLog(@"%@", currentClass);
+            CalClass *newClass = [[CalClass alloc] init];
+            newClass.title = [currentClass objectForKey:@"abbreviation"];
+            newClass.times = [currentClass objectForKey:@"location"];
+            newClass.instructor = [currentClass objectForKey:@"instructor"];
+            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
+            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
+            newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
+            newClass.units = [currentClass objectForKey:@"units"];
+            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
+            newClass.number = [currentClass objectForKey:@"number"];
+            newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
+            newClass.uniqueID = [currentClass objectForKey:@"id"];
+            newClass.ccn = [currentClass objectForKey:@"ccn"];
+            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
+            [self.classes addObject:newClass];
         }
+        
+        if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+            [self loadCoursesWithExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"]];
+        else
+        {
+            [self.classes sortUsingComparator:(NSComparator)^(CalClass *obj1, CalClass *obj2){
+                return [obj1.number compare:obj2.number options:NSNumericSearch];
+            }];
+            [self saveCourses];
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+        }
+    }
     @catch (NSException *exception) {
         NSLog(@"Error when loading list of classes");
     }
@@ -132,7 +134,7 @@
 {
     NSLog(@"number of rows %i", [self.classes count]);
     if (tableView == self.tableView)
-        return [self.classes count];
+        return MAX([self.classes count], 1);
     else
         return [self.searchResults count];
 }
@@ -149,18 +151,27 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     CalClass *theClass;
-    if (tableView == self.tableView)
-        theClass = [self.classes objectAtIndex:indexPath.row];
-    else
-        theClass = [self.searchResults objectAtIndex:indexPath.row];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[theClass number], [theClass title]];
-    cell.detailTextLabel.text = [theClass times];
-    
-    if (theClass.hasWebcast)
-        cell.imageView.image = [UIImage imageNamed:@"monitor.png"];
-    else
-        cell.imageView.image = nil;
+    @try {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        if (tableView == self.tableView)
+            theClass = [self.classes objectAtIndex:indexPath.row];
+        else
+            theClass = [self.searchResults objectAtIndex:indexPath.row];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@",[theClass number], [theClass title]];
+        cell.detailTextLabel.text = [theClass times];
+        
+        if (theClass.hasWebcast)
+            cell.imageView.image = [UIImage imageNamed:@"monitor.png"];
+        else
+            cell.imageView.image = nil;
+    }
+    @catch (NSException *exception) {
+        cell.textLabel.text = @"Loading...";
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    @finally {
+    }
     
     return cell;
 }
@@ -216,6 +227,9 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading..."])
+        return;
+    
     [self performSegueWithIdentifier:@"class" sender:tableView];
 }
 

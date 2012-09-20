@@ -45,6 +45,7 @@
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)removeSplash{
@@ -54,7 +55,7 @@
 - (void)loadRSS
 {
     @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/dailycal/", ServerURL];
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/dailycal/", ServerURL];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -93,21 +94,24 @@
     if (!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     if ([self.rssFeed count])
     {
         cell.textLabel.text = [[self.rssFeed objectAtIndex:indexPath.row] title];
         cell.detailTextLabel.text = [[self.rssFeed objectAtIndex:indexPath.row] published];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     } else {
         cell.textLabel.text = @"Loading news...";
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading news..."])
+        return;
     [self performSegueWithIdentifier:@"story" sender:[NSNumber numberWithInteger:indexPath.row]];
 }
 

@@ -47,7 +47,7 @@ static float LongitudeDelta = 0.015;
             }
             if (!data)
             {
-                [self loadBusStopsWithExtension:@"/api/bus_stop/?format=json"];
+                [self loadBusStopsWithExtension:@"/app_data/bus_stop/?format=json"];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
             }
             
@@ -72,9 +72,13 @@ static float LongitudeDelta = 0.015;
         NSLog(@"Error when loading map annotations");
     }
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
+}
 - (void)loadCal1CardLocations{
-    NSString *queryString = [NSString stringWithFormat:@"%@/api/cal_one_card/?format=json", ServerURL];
+    NSString *queryString = [NSString stringWithFormat:@"%@/app_data/cal_one_card/?format=json", ServerURL];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     NSError *error = nil;
@@ -324,7 +328,12 @@ static float LongitudeDelta = 0.015;
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
         if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
-            [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
+        {
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
+                [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
+            else
+                [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:kCalBalance];
+        }
     }
     else if (selectedIndex == 2)
     {

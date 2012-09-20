@@ -54,6 +54,7 @@
 		<string>UCBerkeleyOS-SignTitling.ttf</string>
 		<string>UCBerkeleyOS-TitlingBold.ttf</string>
 		<string>UCBerkeleyOS-Titling.ttf</string>
+		<string>FontAwesome.ttf</string>
 	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>

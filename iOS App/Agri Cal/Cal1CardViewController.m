@@ -19,13 +19,14 @@
 {
     [super viewWillAppear:animated];
     @try {
-        UIImage * img = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", ServerURL, self.annotation.imageURL]]]];
+        UIImage * img = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/api/%@", ServerURL, self.annotation.imageURL]]]];
         self.imageView.image = img;
     }
     @catch (NSException *exception) {
         NSLog(@"Error when loading image");
     }
     self.navigationController.title = self.annotation.title;
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

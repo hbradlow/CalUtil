@@ -19,6 +19,7 @@
 {
     [super viewWillAppear:animated];
     self.navigationItem.title = self.annotation.title;
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -48,7 +49,7 @@
 - (void)updateTimes:(int)extension withTag:(NSString*)tag atIndex:(int)index
 {
      @try {   
-    NSString *queryString = [NSString stringWithFormat:@"%@/bus_stop/predictions/%i/%@", ServerURL, extension, tag];
+    NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/predictions/%i/%@", ServerURL, extension, tag];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     NSError *error = nil;

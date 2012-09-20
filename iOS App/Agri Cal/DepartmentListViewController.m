@@ -27,6 +27,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
     @try {
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
         dispatch_async(queue, ^{
@@ -82,7 +83,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)loadCourses
 {
     @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -115,11 +116,13 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [tempArray addObject:newClass];
         }
-        self.enrolledCourses = tempArray;
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
-        [self saveCourses];
-        NSLog(@"loaded courses");
+        if ([tempArray count])
+        {
+            self.enrolledCourses = tempArray;
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+            [self saveCourses];
+        }
     }
     @catch (NSException *exception) {
         NSLog(@"Error loading departments");
@@ -130,7 +133,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)loadDepartments
 {
     @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/department/?format=json", ServerURL];
+        NSString *queryString = [NSString stringWithFormat:@"%@/app_data/department/?format=json", ServerURL];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -335,6 +338,9 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading..."])
+        return;
+    
     NSLog(@"did select row at indexpath %i and %i", indexPath.row, tableView == self.tableView);
     if (tableView == self.tableView && indexPath.section)
         [self performSegueWithIdentifier:@"department" sender:tableView];

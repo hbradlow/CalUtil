@@ -14,7 +14,6 @@
 #define kEnrolledKey @"enrolled" 
 #define kEnrolledLimit @"enrolledlimit" 
 #define kWebcastKey @"web" 
-#define kSectionsKey @"sections" 
 #define kLocationKey @"location"
 #define kInstructorKey @"instructor"
 #define kAvailableSeats @"avs"
@@ -35,7 +34,6 @@
         self.title = [aDecoder decodeObjectForKey:kTitleKey];
         self.enrolled = [aDecoder decodeObjectForKey:kEnrolledKey];
         self.enrolledLimit = [aDecoder decodeObjectForKey:kEnrolledLimit];
-        self.sections = [aDecoder decodeObjectForKey:kSectionsKey];
         self.hasWebcast = [aDecoder decodeBoolForKey:kWebcastKey];
         self.location = [aDecoder decodeObjectForKey:kLocationKey];
         self.instructor = [aDecoder decodeObjectForKey:kInstructorKey];
@@ -57,7 +55,6 @@
     [aCoder encodeObject:self.ccn forKey:kCCNKey];
     [aCoder encodeObject:self.enrolled forKey:kEnrolledKey];
     [aCoder encodeObject:self.enrolledLimit forKey:kEnrolledLimit];
-    [aCoder encodeObject:self.sections forKey:kSectionsKey];
     [aCoder encodeObject:self.location forKey:kLocationKey];
     [aCoder encodeObject:self.instructor forKey:kInstructorKey];
     [aCoder encodeObject:self.waitlist forKey:kWaitlist];
