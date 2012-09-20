@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewsListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface NewsListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *rssFeed; 
 @property (nonatomic, retain) UIImageView *splashView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property BOOL hasLoaded;
 @end

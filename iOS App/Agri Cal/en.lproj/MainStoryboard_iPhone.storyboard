@@ -112,6 +112,7 @@
                     <navigationItem key="navigationItem" id="vVe-XU-jhu"/>
                     <connections>
                         <outlet property="tableView" destination="MJp-KQ-ut6" id="5I6-TZ-7Wm"/>
+                        <outlet property="view" destination="MJp-KQ-ut6" id="AJl-jN-njH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ul-kT-DSz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -827,6 +828,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="ehX-Qh-LiG" id="Ldm-qM-Lhg"/>
+                        <outlet property="view" destination="ehX-Qh-LiG" id="8YH-kJ-X5e"/>
                         <segue destination="ncu-iX-cG0" kind="push" identifier="story" id="Mpb-9g-cyp"/>
                     </connections>
                 </viewController>
@@ -1019,11 +1021,8 @@
                 <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
         </class>
-        <class className="NewsListViewController" superclassName="UIViewController">
+        <class className="NewsListViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsListViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
         </class>
         <class className="NewsStoryViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsStoryViewController.h"/>
@@ -1031,7 +1030,7 @@
                 <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
         </class>
-        <class className="NextBusViewController" superclassName="UIViewController">
+        <class className="NextBusViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NextBusViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
