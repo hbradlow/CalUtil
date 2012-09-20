@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="panel scrollable">
-        <ul id="department" class="nav nav-list">
+        <ul id="course" class="nav nav-list">
         </ul>
         <ul class="nav nav-list">
             <li>
@@ -14,7 +14,7 @@
 {% block extra_script %}
     <script>
         $(function(){
-            var view = new DepartmentListView({el: $("#department")});
+            var view = new CourseListView({el: $("#course"),collection:new CourseCollection({{object.id}})});
             //every time the more button is clicked, add some more courses
             $("#more").click(function(){
                 var text = $(this).html(), link = $(this);
@@ -23,13 +23,16 @@
                 view.fetch({
                     success: function(){
                         element.html(text);
+                    },
+                    complete: function(){
+                        element.remove();
                     }
                 });
                 return false;
             });
         });
     </script>
-    <script type="text/template" id="department_template">
-        {% include "web/department.html" %}
+    <script type="text/template" id="course_template">
+        {% include "web/course.html" %}
     </script>
 {% endblock %}
