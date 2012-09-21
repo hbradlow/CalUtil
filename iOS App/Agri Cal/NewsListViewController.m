@@ -23,7 +23,6 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadRSS) forControlEvents:UIControlEventValueChanged];
     self.rssFeed = [[NSMutableArray alloc] init];
-    [self loadRSS];
     UIImage* image=[UIImage imageNamed:@"SplashScreenAnimated.png"];
     if (!((AppDelegate*)[[UIApplication sharedApplication] delegate]).hasLoaded)
     {
@@ -37,13 +36,15 @@
         [UIView commitAnimations];
         ((AppDelegate*)[[UIApplication sharedApplication] delegate]).hasLoaded = YES;
     }
+    [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating news"]];
+    [self.refreshControl beginRefreshing];
+    [self loadRSS];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)removeSplash{
@@ -53,6 +54,18 @@
 - (void)loadRSS
 {
     NSLog(@"Loading newsfeed");
+    NSData *data;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kNewsLoaded])
+    {
+        data = [[NSMutableData alloc]initWithContentsOfFile:kNewsFilePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        self.rssFeed = [unarchiver decodeObjectForKey:kNewsKey];
+        [unarchiver finishDecoding];
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^{
+            [self.tableView reloadData];
+        });
+    }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
         @try {
@@ -84,13 +97,24 @@
             NSLog(@"done loading");
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+            [self saveNewsToFile];
         }
         @catch (NSException *exception) {
             NSLog(@"Error loading news");
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
         }
     });
 }
-
+- (void)saveNewsToFile
+{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    [archiver encodeObject:self.rssFeed forKey:kNewsKey];
+    [archiver finishEncoding];
+    [data writeToFile:kNewsFilePath atomically:YES];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kNewsLoaded];
+}
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];

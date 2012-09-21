@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DiningCommonListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DiningCommonListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *locationSelector;
 @property (retain, nonatomic) NSMutableArray *locations;
 

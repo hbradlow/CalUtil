@@ -15,21 +15,21 @@
 @synthesize password = _password;
 @synthesize web = _web;
 
-/*  
-    When the application finnishes launching, a POST-request is sent to the 
-    server to get Cal1Card balance, Mealpoints, and automatically log the user 
-    in to Air Bears. 
+/*
+ When the application finnishes launching, a POST-request is sent to the
+ server to get Cal1Card balance, Mealpoints, and automatically log the user
+ in to Air Bears.
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:26.0],UITextAttributeFont, nil]];
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:20.0],UITextAttributeFont, nil]];
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:0 green:63.0/255 blue:135.0/255 alpha:1]];
+    [[UINavigationBar appearance] setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
     
     [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:14.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
-    [[UISegmentedControl appearance] setContentPositionAdjustment:kFontOffset forSegmentType:UISegmentedControlSegmentAny barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setContentPositionAdjustment:kSegmentedOffset forSegmentType:UISegmentedControlSegmentAny barMetrics:UIBarMetricsDefault];
     
     [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset , [UIFont fontWithName:kAppFont size:14.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitlePositionAdjustment:kFontOffset forBarMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:kFontOffset forBarMetrics:UIBarMetricsDefault];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:12.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
@@ -42,12 +42,15 @@
     NSURL *url = [NSURL URLWithString:@"https://wlan.berkeley.edu/cgi-bin/login/calnet.cgi"];
     NSURLRequest *wifiRequest = [NSURLRequest requestWithURL:url];
     [self.web loadRequest:wifiRequest];
-    [self loadBalances];    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    dispatch_async(queue, ^(){
+        [self loadBalances];
+    });
     return YES;
 }
 
-/*  
-    The same thing happens each time the application enters the foreground
+/*
+ The same thing happens each time the application enters the foreground
  */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
@@ -57,7 +60,10 @@
     NSURL *url = [NSURL URLWithString:@"https://wlan.berkeley.edu/cgi-bin/login/calnet.cgi"];
     NSURLRequest *wifiRequest = [NSURLRequest requestWithURL:url];
     [self.web loadRequest:wifiRequest];
-    [self loadBalances];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    dispatch_async(queue, ^(){
+        [self loadBalances];
+    });
 }
 
 - (void)loadBalances
@@ -89,7 +95,7 @@
 }
 
 /*
-    This method handles the automated Air Bears login.
+ This method handles the automated Air Bears login.
  */
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {

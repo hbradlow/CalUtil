@@ -25,13 +25,21 @@
     [super viewDidLoad];
     self.classes = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl beginRefreshing];
+    [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating course list"]];
+    [self refresh];
+    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    
+}
+- (void)refresh
+{
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     NSData *data;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kClassesKey])
@@ -40,22 +48,18 @@
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         self.classes = [unarchiver decodeObjectForKey:kClassesData];
         [unarchiver finishDecoding];
-    }
-    if (!data)
-    {
-        dispatch_async(queue, ^{
-            [self loadCoursesWithExtension:[NSString stringWithFormat:@"app_data/course/?format=json&department=%@", self.departmentURL]];
-        });
+        [self.refreshControl endRefreshing];
     }
     
-    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
+    dispatch_async(queue, ^{
+        [self loadCoursesWithExtension:[NSString stringWithFormat:@"app_data/course/?format=json&department=%@", self.departmentURL]];
+    });
+    
 }
-
 - (void)loadCoursesWithExtension:(NSString*)extension
 {
     @try {
         NSString *queryString = [NSString stringWithFormat:@"%@/%@", ServerURL,extension];
-        NSLog(@"%@", queryString);
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -69,6 +73,7 @@
         NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
         
         NSArray *arr = [receivedDict objectForKey:@"objects"];
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
         for (NSDictionary *currentClass in arr)
         {
             NSLog(@"%@", currentClass);
@@ -86,8 +91,9 @@
             newClass.uniqueID = [currentClass objectForKey:@"id"];
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [self.classes addObject:newClass];
+            [tempArray addObject:newClass];
         }
+        self.classes = tempArray;
         
         if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
             [self loadCoursesWithExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"]];
@@ -98,11 +104,13 @@
             }];
             [self saveCourses];
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
         }
     }
     @catch (NSException *exception) {
         NSLog(@"Error when loading list of classes");
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     }
 }
 

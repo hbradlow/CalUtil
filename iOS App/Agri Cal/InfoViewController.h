@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InfoViewController : UITableViewController <UIAlertViewDelegate>
-
+@interface InfoViewController : UIViewController <UIAlertViewDelegate,UITableViewDataSource, UITabBarDelegate>
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic, retain) NSArray *titles;
+@property (nonatomic, retain) NSArray *detailTitles;
 @end

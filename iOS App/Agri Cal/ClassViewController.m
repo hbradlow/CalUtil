@@ -25,7 +25,6 @@
     });
     self.navigationItem.backBarButtonItem.title = @"Back";
     
-    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
 }
 
 - (void)loadSections
@@ -150,7 +149,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 9 && self.currentClass.hasWebcast)
+    if (indexPath.row == 8 && self.currentClass.hasWebcast)
     {
         [self performSegueWithIdentifier:@"webcast" sender:nil];
         [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];

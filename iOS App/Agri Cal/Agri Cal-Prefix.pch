@@ -19,6 +19,9 @@
     #define kBusesLoaded @"loaded"
     #define kCalCardLoaded @"loadedcalcard"
     #define kCalFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/calfile"]
+    #define kNewsLoaded @"newsloaded"
+    #define kNewsFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/newsfile"]
+    #define kNewsKey @"newskey"
     #define kCalDataKey @"caldata"
     #define kUserName @"username"
     #define kPassword @"password"
@@ -27,5 +30,6 @@
     #define kCalBalance @"cal1cardbalance"
     #define kAppFont @"Helvetica Neue"
     #define kFontOffset UIOffsetMake(0, -2)
+    #define kSegmentedOffset UIOffsetMake(0,0)
     #define kTitleAdjustment -4 
 #endif

@@ -8,8 +8,7 @@
     [super viewDidLoad];
     self.username.text = [[NSUserDefaults standardUserDefaults] objectForKey:kUserName];
     self.password.text = [[NSUserDefaults standardUserDefaults] objectForKey:kPassword];
-    [self.loginLabel setFont:[UIFont fontWithName:@"Helvetica Neue" size:40]];
-    [self.saveButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithRed:0 green:63.0/255 blue:135.0/255 alpha:1],UITextAttributeTextColor,[UIColor whiteColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset , [UIFont fontWithName:kAppFont size:12.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
+    [self.loginLabel setFont:[UIFont fontWithName:kAppFont size:40]];
 }
 - (void)viewDidUnload
 {
@@ -17,6 +16,7 @@
     [self setPassword:nil];
     [self setLoginLabel:nil];
     [self setSaveButton:nil];
+    [self setNavigationBar:nil];
     [super viewDidUnload];
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

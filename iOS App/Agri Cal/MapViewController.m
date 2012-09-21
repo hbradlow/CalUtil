@@ -42,7 +42,8 @@ static float LongitudeDelta = 0.015;
                 [unarchiver finishDecoding];
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:self.busStopAnnotations];
+                    if ([self.annotationSelector selectedSegmentIndex] == 0)
+                        [self.mapView addAnnotations:self.busStopAnnotations];
                 });
             }
             if (!data)
@@ -332,7 +333,7 @@ static float LongitudeDelta = 0.015;
             if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
                 [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
             else
-                [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:kCalBalance];
+                [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
         }
     }
     else if (selectedIndex == 2)

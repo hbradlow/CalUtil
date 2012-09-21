@@ -19,55 +19,61 @@
 {
     [super viewDidLoad];
     self.webcasts = [[NSMutableArray alloc] init];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(loadWebcasts) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating webcasts"]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            [self loadWebcasts];
-        });
+    [self.refreshControl beginRefreshing];
+    [self loadWebcasts];
 }
 
 - (void)loadWebcasts
 {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        
         @try {
-    NSString *queryString = [NSString stringWithFormat:@"%@/app_data/webcast/?format=json&course=%@", ServerURL, self.courseID];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSData *receivedData;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
-    
-    NSMutableArray *tempWebcasts = [[NSMutableArray alloc] init];
-    
-    for (NSDictionary *currentWebcast in arr)
-    {
-        Webcast *newCast = [[Webcast alloc] init];
-        newCast.url = [currentWebcast objectForKey:@"url"];
-        newCast.number = [currentWebcast objectForKey:@"number"];
-        [tempWebcasts addObject:newCast];
-    }
-    self.webcasts = tempWebcasts;
-    [self.webcasts sortUsingComparator:(NSComparator)^(Webcast *obj1, Webcast *obj2){
-        return [obj1.number compare:obj2.number options:NSNumericSearch];
-    }];
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+            NSString *queryString = [NSString stringWithFormat:@"%@/app_data/webcast/?format=json&course=%@", ServerURL, self.courseID];
+            NSURL *requestURL = [NSURL URLWithString:queryString];
+            NSURLResponse *response = nil;
+            NSError *error = nil;
+            NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+            
+            NSData *receivedData;
+            receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                 returningResponse:&response
+                                                             error:&error];
+            
+            NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+            
+            NSArray *arr = [receivedDict objectForKey:@"objects"];
+            
+            NSMutableArray *tempWebcasts = [[NSMutableArray alloc] init];
+            
+            for (NSDictionary *currentWebcast in arr)
+            {
+                Webcast *newCast = [[Webcast alloc] init];
+                newCast.url = [currentWebcast objectForKey:@"url"];
+                newCast.number = [currentWebcast objectForKey:@"number"];
+                [tempWebcasts addObject:newCast];
+            }
+            self.webcasts = tempWebcasts;
+            [self.webcasts sortUsingComparator:(NSComparator)^(Webcast *obj1, Webcast *obj2){
+                return [obj1.number compare:obj2.number options:NSNumericSearch];
+            }];
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl beginRefreshing];[self.tableView reloadData];});
         }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading webcast lists");
-    }
+        @catch (NSException *exception) {
+            NSLog(@"Error when loading webcast lists");
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl beginRefreshing];});
+        }
+    });
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

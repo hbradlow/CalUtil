@@ -27,16 +27,6 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
-    @try {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            [self loadCourses];
-        });
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error laoding personal courses");
-    }
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -46,8 +36,17 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.departments = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
-    
-    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl beginRefreshing];
+    [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Loading courses and departments"]];
+    [self refresh];
+    [self.searchDisplayController.searchBar setHidden:NO];
+    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+}
+
+- (void)refresh
+{
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     
     NSData *departmentData;
@@ -120,12 +119,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         {
             self.enrolledCourses = tempArray;
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
             [self saveCourses];
         }
     }
     @catch (NSException *exception) {
         NSLog(@"Error loading departments");
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     }
     
 }
@@ -198,7 +199,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tableView)
-        return 27;
+        return 28;
     else
         return 1;
 }
@@ -209,9 +210,11 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     {
         switch (section) {
             case 0:
+                return @"";
+            case 1:
                 return @"Your registered courses";
             default:
-                return [alphabet substringWithRange:NSMakeRange(section-1, 1)];
+                return [alphabet substringWithRange:NSMakeRange(section-2, 1)];
         }
     }
     else
@@ -223,12 +226,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     if (tableView == self.tableView)
     {
         if (section == 0)
+            return 0;
+        if (section == 1)
             return [self.enrolledCourses count];
         else
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(section-2, 1)]];
             return [[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] count];
         }
     }
@@ -249,7 +254,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     cell.imageView.image = nil;
     if (tableView == self.tableView)
     {
-        if (indexPath.section == 0)
+        if (indexPath.section == 1)
         {
             cell.textLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
             if ([[self.enrolledCourses objectAtIndex:indexPath.row] hasWebcast])
@@ -260,7 +265,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
             cell.textLabel.text = [[[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] objectAtIndex:indexPath.row] title];
             cell.detailTextLabel.text = @"";
         }
@@ -319,7 +324,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
             NSMutableArray *sectionArray = [NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]];
             viewController.departmentURL = [[sectionArray objectAtIndex:indexPath.row] departmentID];
         }
@@ -342,7 +347,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         return;
     
     NSLog(@"did select row at indexpath %i and %i", indexPath.row, tableView == self.tableView);
-    if (tableView == self.tableView && indexPath.section)
+    if (tableView == self.tableView && indexPath.section > 1)
         [self performSegueWithIdentifier:@"department" sender:tableView];
     else if (tableView != self.tableView)
         [self performSegueWithIdentifier:@"department" sender:tableView];
@@ -363,7 +368,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString
                                                                              *)title atIndex:(NSInteger)index {
-    return index;
+    return index+1;
 }
 
 - (void)viewDidUnload {

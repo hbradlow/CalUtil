@@ -29,10 +29,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self embedYouTube:@"https://www.youtube.com/watch?v=bQbbtnTz1KE&feature=g-logo-xit"];
+    [self embedYouTube:self.url];
 }
-- (void)embedYouTube:(NSString*)urlString {  
-    NSString *embedHTML = @"\
+- (void)embedYouTube:(NSString*)urlString {
+    NSString *html = [NSString stringWithFormat:@"<iframe class=\"youtube-player\" type=\"text/html\" width=\"%f\" height=\"%f\" src=\"http://www.youtube.com/embed/JW5meKfy3fy\" frameborder=\"0\">\
+    </iframe>", self.view.frame.size.width, self.view.frame.size.height];
+/*    NSString *embedHTML = @"\
     <html><head>\
     <style type=\"text/css\">\
     body {\
@@ -43,7 +45,7 @@
     z-index:1;\
     }\
     #video,#videoc{\
-    position:absolute;\
+    position:absolute;
     z-index: 1;\
     border: none;\
     }\
@@ -64,10 +66,10 @@
     <embed wmode=\"transparent\" id=\"video\" src=\"%@&autoplay=1\" type=\"application/x-shockwave-flash\" \
     width=\"320\" height=\"367\"></embed>\
     </object>\
-    </body></html>";
+    </body></html>";*/
     NSString *path = [[NSBundle mainBundle] bundlePath];
-    NSURL *baseURL = [NSURL fileURLWithPath:path];      
-    NSString *html = [NSString stringWithFormat:embedHTML, urlString,urlString];
+    NSURL *baseURL = [NSURL fileURLWithPath:path];
+    //NSString *html = [NSString stringWithFormat:embedHTML, urlString,urlString];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
         [self.webView loadHTMLString:html baseURL:baseURL];
@@ -78,8 +80,8 @@
     A little hack to make the video start with no user interaction required. 
  */
 - (void)webViewDidFinishLoad:(UIWebView *)_webView {
-    UIButton *b = [self findButtonInView:_webView];
-    [b sendActionsForControlEvents:UIControlEventTouchUpInside];
+//    UIButton *b = [self findButtonInView:_webView];
+//    [b sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 - (UIButton *)findButtonInView:(UIView *)view {

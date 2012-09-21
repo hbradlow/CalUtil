@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClassListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ClassListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *classes;
 @property (nonatomic, retain) NSString *departmentURL;
 @property (nonatomic, retain) NSMutableArray *searchResults;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
