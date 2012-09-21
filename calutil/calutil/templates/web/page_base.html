@@ -1,0 +1,45 @@
+<div data-role="page" id="{% block page_id %}{% endblock %}">
+    <div data-theme="a" data-role="header">
+        <h3>
+            CalUtil
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <ul id="{% block list_id %}{% endblock %}" data-role="listview" data-divider-theme="b" data-inset="true">
+            {% block page_list %}
+            {% endblock %}
+        </ul>
+        <ul id="bottom" data-role="listview" data-divider-theme="b" data-inset="true">
+            {% block page_list_bottom %}
+            {% endblock %}
+        </ul>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="navbar" data-iconpos="top">
+            <ul >
+                <li>
+                    <a href="#page1" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">
+                        Schedule
+                    </a>
+                </li>
+                <li>
+                    <a href="#page2" data-theme="" data-icon="">
+                        Map
+                    </a>
+                </li>
+                <li>
+                    <a href="#page3" data-theme="" data-icon="">
+                        Dining
+                    </a>
+                </li>
+                <li>
+                    <a href="#page4" data-theme="" data-icon="">
+                        News
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% block page_script %}
+    {% endblock %}
+</div>

@@ -1,0 +1,44 @@
+{% extends "web/page_base.html" %}
+
+{% block page_id %}schedule{% endblock %}
+{% block list_id %}department_list{% endblock %}
+
+
+{% block page_list %}
+    <li data-role="list-divider" role="heading">
+        Divider
+    </li>
+{% endblock %}
+{% block page_list_bottom %}
+    <li data-theme="c">
+        <a href="#" id="more" data-transition="slide">
+            Button
+        </a>
+    </li>
+{% endblock %}
+
+{% block page_script %}
+    <script>
+        $(function(){
+            var view = new DepartmentListView({el: $("#department_list")});
+            //every time the more button is clicked, add some more courses
+            $("#more").click(function(){
+                var text = $(this).html(), link = $(this);
+                var element = $(this);
+                $(this).html("Loading...");
+                view.fetch({
+                    success: function(){
+                        element.html(text);
+                    },
+                    complete: function(){
+                        element.remove();
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+    <script type="text/template" id="department_template">
+        {% include "web/department.html" %}
+    </script>
+{% endblock %}

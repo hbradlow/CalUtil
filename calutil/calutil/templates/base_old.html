@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>CalUtil</title>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0;" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link rel="apple-touch-icon" href="icon.png"/>
+
+        <!-- twitter bootstrap stylesheet -->
+        <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+        <link rel="stylesheet" href="{% static "css/media_query.css" %}">
+
+        <!-- we need jQuery -->
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <!-- we need tabs javascript plugin of twitter bootstrap -->
+        <script src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+        <script src="{% static "js/underscore-min.js" %}"></script>
+        <script src="{% static "js/backbone-min.js" %}"></script>
+        <script src="{% static "js/models.js" %}"></script>
+        {% block style %}
+            {% block extra_style %}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+            <!-- TOP BAR -->
+            {% block topbar_base %}
+                <div class="navbar navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <div class="container-fluid">
+                            {% block brand %}
+                                <a class="brand" href="#">{% block brand_name %}CalUtil{% endblock %}</a>
+                            {% endblock %}
+                            <ul class="nav">
+                                {% block topbar_links %}
+                                {% endblock %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+
+            {% block content %}
+            {% endblock %}
+    </body>
+    {% block extra_script %}
+    {% endblock %}
+</html>

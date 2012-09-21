@@ -1,5 +1,5 @@
 function generate_url(base_url,data_type,filter){
-    return base_url + "?format=json&limit=20"
+    return base_url + "?format=json"
 }
 CalUtilCollection = Backbone.Collection.extend({
     parse: function(data) {
