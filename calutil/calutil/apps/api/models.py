@@ -115,6 +115,7 @@ class Location(models.Model):
     name = models.CharField(max_length=50) 
     link = models.URLField(null=True)
     timespans = models.ManyToManyField(TimeSpan)
+    timespan_string = models.TextField(null=True)
 class Menu(models.Model):
     location = models.ForeignKey(Location,default=1)
     breakfast = models.ManyToManyField(MenuItem,related_name="breakfast",blank=True)
