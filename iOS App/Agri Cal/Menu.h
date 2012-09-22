@@ -15,5 +15,6 @@
 @property (nonatomic, retain) NSMutableArray *lunch;
 @property (nonatomic, retain) NSMutableArray *dinner;
 @property (nonatomic, retain) NSMutableArray *lateNight;
+@property (nonatomic, copy) NSString *timeSpan;
 
 @end

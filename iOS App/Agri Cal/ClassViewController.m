@@ -19,16 +19,18 @@
 {
     [super viewWillAppear:animated];
     self.sections = [[NSMutableArray alloc] init];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        [self loadSections];
-    });
+    [self loadSections];
     self.navigationItem.backBarButtonItem.title = @"Back";
-    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(loadSections) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating sections"]];
+    [self.refreshControl beginRefreshing];
 }
 
 - (void)loadSections
 {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
     @try {
         NSString *queryString = [NSString stringWithFormat:@"%@/app_data/section/?format=json&course=%@", ServerURL, self.currentClass.uniqueID];
         NSURL *requestURL = [NSURL URLWithString:queryString];
@@ -43,6 +45,7 @@
         
         NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
         NSArray *arr = [receivedDict objectForKey:@"objects"];
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
         for (NSDictionary *currentClass in arr)
         {
             CalClass *newClass = [[CalClass alloc] init];
@@ -59,14 +62,18 @@
             newClass.uniqueID = [currentClass objectForKey:@"id"];
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [self.sections addObject:newClass];
+            [tempArray addObject:newClass];
         }
+        self.sections = tempArray;
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+        dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     }
     @catch (NSException *exception) {
         NSLog(@"Error when loading list of classes");
+         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     }
+    });
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -143,7 +150,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"number of sections %i", [self.sections count]);
     return 1 + [self.sections count];
 }
 

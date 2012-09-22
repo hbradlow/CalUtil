@@ -330,7 +330,7 @@ static float LongitudeDelta = 0.015;
             [self.mapView removeAnnotation:self.selectedAnnotation];
         if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
         {
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
                 [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
             else
                 [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];

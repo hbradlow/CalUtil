@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "CalClass.h"
 
-@interface ClassViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface ClassViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) CalClass *currentClass;
 @property (nonatomic, retain) NSMutableArray *sections;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end

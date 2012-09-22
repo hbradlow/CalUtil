@@ -12,6 +12,7 @@
 #define kLunch @"lunch" 
 #define kDinner @"dinner" 
 #define kLateNight @"latenight" 
+#define kTimeSpan @"timespan"
 
 @implementation Menu
 
@@ -35,6 +36,7 @@
         self.lunch = [aDecoder decodeObjectForKey:kLunch];
         self.dinner = [aDecoder decodeObjectForKey:kDinner];
         self.lateNight = [aDecoder decodeObjectForKey:kLateNight];
+        self.timeSpan = [aDecoder decodeObjectForKey:kTimeSpan];
     }
     return self;
 }
@@ -45,6 +47,7 @@
     [aCoder encodeObject:self.lunch forKey:kLunch];
     [aCoder encodeObject:self.dinner forKey:kDinner];
     [aCoder encodeObject:self.lateNight forKey:kLateNight];
+    [aCoder encodeObject:self.timeSpan forKey:kTimeSpan];
 }
 
 @end

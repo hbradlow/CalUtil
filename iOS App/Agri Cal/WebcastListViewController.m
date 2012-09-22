@@ -66,12 +66,12 @@
                 return [obj1.number compare:obj2.number options:NSNumericSearch];
             }];
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl beginRefreshing];[self.tableView reloadData];});
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
         }
         @catch (NSException *exception) {
             NSLog(@"Error when loading webcast lists");
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl beginRefreshing];});
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];});
         }
     });
 }
@@ -118,7 +118,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     WebcastViewController *destination = [segue destinationViewController];
-    destination.url = [self.webcasts objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+    destination.url = ((Webcast*)[self.webcasts objectAtIndex:[self.tableView indexPathForSelectedRow].row]).url;
 }
 
 @end

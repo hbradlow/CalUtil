@@ -32,47 +32,23 @@
     [self embedYouTube:self.url];
 }
 - (void)embedYouTube:(NSString*)urlString {
-    NSString *html = [NSString stringWithFormat:@"<iframe class=\"youtube-player\" type=\"text/html\" width=\"%f\" height=\"%f\" src=\"http://www.youtube.com/embed/JW5meKfy3fy\" frameborder=\"0\">\
-    </iframe>", self.view.frame.size.width, self.view.frame.size.height];
-/*    NSString *embedHTML = @"\
-    <html><head>\
-    <style type=\"text/css\">\
-    body {\
-    background-color: black;\
-    }\
-    #container{\
-    position: relative;\
-    z-index:1;\
-    }\
-    #video,#videoc{\
-    position:absolute;
-    z-index: 1;\
-    border: none;\
-    }\
-    #tv{\
-    background: transparent url(tv.png) no-repeat;\
-    width: 320px;\
-    height: 367px;\
-    position: absolute;\
-    top: 0;\
-    z-index: 999;\
-    }\
-    </style>\
-    </head><body style=\"margin:0\">\
-    <div id=\"tv\"></div>\
-    <object id=\"videoc\" width=\"320\" height=\"367\">\
-    <param name=\"movie\" value=\"%@\"></param>\
+    NSString *embedHTML = [NSString stringWithFormat:@"<html><head>\
+    <meta name = \"viewport\" content = \"initial-scale = 1.0, user-scalable = no, width = %f\"/></head>\
+    <body style=\"background:#F00;margin-top:0px;margin-left:0px\">\
+    <div><object width=\"%f\" height=\"%f\">\
+    <param name=\"movie\" value=\"%@&autoplay=1\"></param>\
     <param name=\"wmode\" value=\"transparent\"></param>\
-    <embed wmode=\"transparent\" id=\"video\" src=\"%@&autoplay=1\" type=\"application/x-shockwave-flash\" \
-    width=\"320\" height=\"367\"></embed>\
-    </object>\
-    </body></html>";*/
+    <embed src=\"%@&autoplay=1\" id=\"video\"\
+    type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"%f\" height=\"%f\"></embed>\
+    </object></div></body></html>", self.view.frame.size.width,self.view.frame.size.width, self.view.frame.size.height, self.url, self.url, self.view.frame.size.width, self.view.frame.size.height];
+
     NSString *path = [[NSBundle mainBundle] bundlePath];
     NSURL *baseURL = [NSURL fileURLWithPath:path];
-    //NSString *html = [NSString stringWithFormat:embedHTML, urlString,urlString];
+    NSString *html = [NSString stringWithFormat:embedHTML, urlString,urlString];
+    NSLog(@"%@ \n %@", html, baseURL);
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^{
-        [self.webView loadHTMLString:html baseURL:baseURL];
+        [self.webView loadHTMLString:html baseURL:nil];
     });
 }
 
@@ -80,24 +56,7 @@
     A little hack to make the video start with no user interaction required. 
  */
 - (void)webViewDidFinishLoad:(UIWebView *)_webView {
-//    UIButton *b = [self findButtonInView:_webView];
-//    [b sendActionsForControlEvents:UIControlEventTouchUpInside];
-}
-
-- (UIButton *)findButtonInView:(UIView *)view {
-    UIButton *button = nil;
-    
-    if ([view isMemberOfClass:[UIButton class]]) {
-        return (UIButton *)view;
-    }
-    
-    if (view.subviews && [view.subviews count] > 0) {
-        for (UIView *subview in view.subviews) {
-            button = [self findButtonInView:subview];
-            if (button) return button;
-        }
-    }
-    return button;
+    [self.webView stringByEvaluatingJavaScriptFromString:@"doc.getElementByID(video).click();"];
 }
 - (void)viewDidUnload
 {

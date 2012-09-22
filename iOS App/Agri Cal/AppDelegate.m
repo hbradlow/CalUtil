@@ -41,8 +41,11 @@
     self.web.delegate = self;
     NSURL *url = [NSURL URLWithString:@"https://wlan.berkeley.edu/cgi-bin/login/calnet.cgi"];
     NSURLRequest *wifiRequest = [NSURLRequest requestWithURL:url];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
     [self.web loadRequest:wifiRequest];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    });
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
     dispatch_async(queue, ^(){
         [self loadBalances];
     });
@@ -59,8 +62,11 @@
     self.web.delegate = self;
     NSURL *url = [NSURL URLWithString:@"https://wlan.berkeley.edu/cgi-bin/login/calnet.cgi"];
     NSURLRequest *wifiRequest = [NSURLRequest requestWithURL:url];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
     [self.web loadRequest:wifiRequest];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    });
+    queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
     dispatch_async(queue, ^(){
         [self loadBalances];
     });

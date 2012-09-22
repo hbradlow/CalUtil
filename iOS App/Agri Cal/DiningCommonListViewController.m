@@ -34,11 +34,13 @@
     [self.refreshControl beginRefreshing];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating menus"]];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
 }
+
 - (void)loadMenus
 {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
@@ -66,11 +68,13 @@
                 NSDictionary *currentLocation = [currentMenus objectForKey:@"location"];
                 
                 NSString *locationName = [currentLocation objectForKey:@"name"];
+                NSString *timeSpan = [currentLocation objectForKey:@"timespan_string"];
                 NSArray *breakfastMenu = [currentMenus objectForKey:@"breakfast_items"];
                 NSArray *lunchMenu = [currentMenus objectForKey:@"lunch_items"];
                 NSArray *dinnerMenu = [currentMenus objectForKey:@"dinner_items"];
                 
                 Menu *currentMenu = [[Menu alloc] init];
+                currentMenu.timeSpan = timeSpan;
                 
                 for (NSDictionary *currentItem in breakfastMenu)
                 {
@@ -130,7 +134,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -141,10 +145,12 @@
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
     switch (section) {
         case 0:
-            return [menu.breakfast count];
+            return 1;
         case 1:
-            return [menu.lunch count];
+            return [menu.breakfast count];
         case 2:
+            return [menu.lunch count];
+        case 3:
             return [menu.dinner count];
         default:
             break;
@@ -155,14 +161,14 @@
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case 0:
-            return @"Breakfast";
         case 1:
-            return @"Lunch";
+            return @"Breakfast";
         case 2:
+            return @"Lunch";
+        case 3:
             return @"Dinner";
     }
-    return @"";
+    return @"Hours";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -177,17 +183,18 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
+    
     if ([menu isKindOfClass:[Menu class]])
     {
         NSArray *currentMeal;
         switch (indexPath.section) {
-            case 0:
+            case 1:
                 currentMeal = menu.breakfast;
                 break;
-            case 1:
+            case 2:
                 currentMeal = menu.lunch;
                 break;
-            case 2:
+            case 3:
                 currentMeal = menu.dinner;
             default:
                 break;
@@ -195,6 +202,16 @@
         
         cell.textLabel.text = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).name;
         cell.detailTextLabel.text = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).type;
+        if (!indexPath.section)
+        {
+            cell.detailTextLabel.text = @"";
+            cell.textLabel.text = menu.timeSpan;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+            cell.textLabel.numberOfLines = 100;
+            cell.textLabel.font = [UIFont systemFontOfSize:14];
+        }
     }
     else
     {
@@ -221,13 +238,13 @@
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
     NSArray *currentMeal;
     switch (indexPath.section) {
-        case 0:
+        case 1:
             currentMeal = menu.breakfast;
             break;
-        case 1:
+        case 2:
             currentMeal = menu.lunch;
             break;
-        case 2:
+        case 3:
             currentMeal = menu.dinner;
         default:
             break;
@@ -235,7 +252,22 @@
     
     ((DishDetailsViewController*)[segue destinationViewController]).url = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).nutritionURL;
 }
-
+- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if ([[self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]] class] == [Menu class]
+        && !indexPath.section)
+    {
+        CGSize detailSize;
+        float height = 0;
+        Menu *currentMenu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
+        NSLog(@"%@", currentMenu.timeSpan);
+        detailSize = [currentMenu.timeSpan sizeWithFont:[UIFont systemFontOfSize:14]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
+        height = detailSize.height + 4;
+        return height;
+    }
+    return 44;
+}
 - (IBAction)locationDidChange:(id)sender
 {
     [self.tableView reloadData];
