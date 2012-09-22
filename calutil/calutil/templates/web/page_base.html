@@ -5,6 +5,15 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
+        {% block search %}
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <label for="searchinput1">
+                    </label>
+                    <input name="" id="{% block search_id %}searchinput1{% endblock %}" placeholder="" value="" type="search" />
+                </fieldset>
+            </div>
+        {% endblock %}
         <ul id="{% block list_id %}{% endblock %}" data-role="listview" data-divider-theme="b" data-inset="true">
             {% block page_list %}
             {% endblock %}
@@ -18,22 +27,22 @@
         <div data-role="navbar" data-iconpos="top">
             <ul >
                 <li>
-                    <a href="#page1" data-theme="" data-icon="" class="ui-btn-active ui-state-persist">
+                    <a href="#schedule" id="schedule_link" data-theme="" data-icon="" class="">
                         Schedule
                     </a>
                 </li>
                 <li>
-                    <a href="#page2" data-theme="" data-icon="">
+                    <a href="#map" id="map_link" data-theme="" data-icon="">
                         Map
                     </a>
                 </li>
                 <li>
-                    <a href="#page3" data-theme="" data-icon="">
+                    <a href="#dining" id="dining_link" data-theme="" data-icon="">
                         Dining
                     </a>
                 </li>
                 <li>
-                    <a href="#page4" data-theme="" data-icon="">
+                    <a href="#news" id="news_link" data-theme="" data-icon="">
                         News
                     </a>
                 </li>

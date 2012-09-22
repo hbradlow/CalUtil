@@ -1,5 +1,5 @@
 function generate_url(base_url,data_type,filter){
-    return base_url + "?format=json&limit=20"
+    return base_url + "?format=json"
 }
 CalUtilCollection = Backbone.Collection.extend({
     parse: function(data) {
@@ -23,6 +23,51 @@ CalUtilView = Backbone.View.extend({
             }
         });
     },
+});
+NewsCollection = CalUtilCollection.extend({
+    url: generate_url("/api/dailycal/"),
+    initialize: function(department_id){
+    },
+    parse: function(data) {
+        if (!data)
+            return []; 
+        return data;
+    },
+});
+MenuCollection = CalUtilCollection.extend({
+    url: generate_url("/app_data/menu/"),
+    initialize: function(department_id){
+    }
+});
+NewsListView = CalUtilView.extend({
+    initialize: function(){
+        this.el = this.options.el;
+        this.collection = new NewsCollection();
+        this.fetch();
+    },
+    render: function(){
+        var e = this.el;
+        $.each(this.collection.models, function(index,object){
+            var template = _.template($("#news_template").html(),{name: object.attributes.title});
+            $(template).appendTo($(e));
+        });
+        e.listview("refresh");
+    }
+});
+MenuListView = CalUtilView.extend({
+    initialize: function(){
+        this.el = this.options.el;
+        this.collection = new MenuCollection();
+        this.fetch();
+    },
+    render: function(){
+        var e = this.el;
+        $.each(this.collection.models, function(index,object){
+            var template = _.template($("#menu_template").html(),{name: object.attributes.location.name});
+            $(template).appendTo($(e));
+        });
+        e.listview("refresh");
+    }
 });
 CourseCollection = CalUtilCollection.extend({
     url: generate_url("/app_data/course/"),
@@ -56,10 +101,20 @@ DepartmentListView = CalUtilView.extend({
     initialize: function(){
         this.el = this.options.el;
         this.collection = new DepartmentCollection();
+        this.original_collection = this.collection;
         this.fetch();
+    },
+    filter: function(q){
+        var new_collection = new DepartmentCollection();
+        this.original_collection.each(function (model, index) {
+            if (model.attributes.name.toLowerCase().indexOf(q.toLowerCase())!=-1) { new_collection.add(model); }
+        });
+        this.collection = new_collection;
+        this.render();
     },
     render: function(){
         var e = this.el;
+        $(e).empty();
         $.each(this.collection.models, function(index,object){
             var template = _.template($("#department_template").html(),{name: object.attributes.name, url: "/department/" + object.attributes.slug});
             $(template).appendTo($(e));

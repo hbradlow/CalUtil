@@ -1,0 +1,30 @@
+{% extends "web/page_base.html" %}
+
+{% block page_id %}dining{% endblock %}
+{% block list_id %}menu_list{% endblock %}
+
+
+{% block page_list %}
+    <li data-role="list-divider" role="heading">
+        Locations
+    </li>
+{% endblock %}
+{% block page_list_bottom %}
+{% endblock %}
+
+{% block page_script %}
+    <script>
+        $(function(){
+            /*
+            $("#dining").bind("pageshow",function(){
+                $("#dining_link").addClass("ui-btn-active ui-state-persist");
+            });
+            */
+            var view = new MenuListView({el: $("#menu_list")});
+            //every time the more button is clicked, add some more courses
+        });
+    </script>
+    <script type="text/template" id="menu_template">
+        {% include "web/menu.html" %}
+    </script>
+{% endblock %}

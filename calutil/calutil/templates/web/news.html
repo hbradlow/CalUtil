@@ -1,0 +1,25 @@
+{% extends "web/page_base.html" %}
+
+{% block page_id %}news{% endblock %}
+{% block list_id %}news_list{% endblock %}
+
+
+{% block page_list %}
+    <li data-role="list-divider" role="heading">
+        News
+    </li>
+{% endblock %}
+{% block page_list_bottom %}
+{% endblock %}
+
+{% block page_script %}
+    <script>
+        $(function(){
+            var view = new NewsListView({el: $("#news_list")});
+            //every time the more button is clicked, add some more courses
+        });
+    </script>
+    <script type="text/template" id="news_template">
+        {% include "web/news_item.html" %}
+    </script>
+{% endblock %}

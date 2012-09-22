@@ -84,13 +84,14 @@ class BusStop(models.Model):
     longitude = models.FloatField()
     stop_id = models.CharField(max_length=50)
     lines = models.ManyToManyField(BusLine)
-    def predictions(self):
+    def predictions(self,debug=False):
         import requests
         results = {'objects':[]}
         soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=actransit&stopId=" + self.stop_id).text)
         for prediction in soup("predictions"):
             line = BusLine.objects.get(tag=prediction['routetag'])
-            print line.tag
+            if debug:
+                print line.tag
             for direction in prediction("direction"):
                 title = direction['title']
                 for prediction in direction("prediction"):
@@ -124,6 +125,11 @@ class Menu(models.Model):
     dinner = models.ManyToManyField(MenuItem,related_name="dinner",blank=True)
     pub_date = models.DateTimeField(auto_now_add=True)
 ###############################OLD########################################
+
+
+
+
+
 class BusVehicle(models.Model):
 	vehicle_id = models.IntegerField()
 	route_tag = models.CharField(max_length=10)
@@ -136,103 +142,104 @@ class BusVehicle(models.Model):
 	speed = models.FloatField()
 
 class BusLine2(models.Model):
-	vehicles = models.ManyToManyField(BusVehicle)
-	line_title = models.CharField(max_length = 50)
-	line_tag = models.CharField(max_length = 50)
+    vehicles = models.ManyToManyField(BusVehicle)
+    line_title = models.CharField(max_length = 50)
+    line_tag = models.CharField(max_length = 50)
 
-	def update(self):
-		url = "http://webservices.nextbus.com/service/publicXMLFeed?command=vehicleLocations&a=actransit&r=1&t=1330150116620"
-		response = urllib.urlopen(url)
-		soup = BeautifulSoup.BeautifulSoup(response.read())
-		vs = soup.findAll("vehicle")
-		for v in vs:
-			print v
-			b = BusVehicle()
-			b.vehicle_id = v['id']
-			try:
-				b.route_tag = v['routetag']
-			except:
-				b.route_tag = "51B"
-			try:
-				b.dir_tag = v['dirtag']
-			except:
-				b.dir_tag = None
-			b.latitude = v['lat']
-			b.longitude = v['lon']
-			b.seconds_since_report = v['secssincereport']
-			b.predictable = v['predictable']
-			b.heading = v['heading']
-			b.speed = v['speedkmhr']
-			b.save()
-			self.vehicles.add(b)
+    def update(self,debug=False):
+        url = "http://webservices.nextbus.com/service/publicXMLFeed?command=vehicleLocations&a=actransit&r=1&t=1330150116620"
+        response = urllib.urlopen(url)
+        soup = BeautifulSoup.BeautifulSoup(response.read())
+        vs = soup.findAll("vehicle")
+        for v in vs:
+            if debug:
+                print v
+            b = BusVehicle()
+            b.vehicle_id = v['id']
+            try:
+                b.route_tag = v['routetag']
+            except:
+                b.route_tag = "51B"
+            try:
+                b.dir_tag = v['dirtag']
+            except:
+                b.dir_tag = None
+            b.latitude = v['lat']
+            b.longitude = v['lon']
+            b.seconds_since_report = v['secssincereport']
+            b.predictable = v['predictable']
+            b.heading = v['heading']
+            b.speed = v['speedkmhr']
+            b.save()
+            self.vehicles.add(b)
 
 class Menu2(models.Model):
-	location = models.CharField(max_length=50)
-	breakfast = models.ManyToManyField(MenuItem,related_name="breakfast2")
-	lunch = models.ManyToManyField(MenuItem,related_name="lunch2")
-	brunch = models.ManyToManyField(MenuItem,related_name="brunch2")
-	dinner = models.ManyToManyField(MenuItem,related_name="dinner2")
-	pub_date = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(max_length=50)
+    breakfast = models.ManyToManyField(MenuItem,related_name="breakfast2")
+    lunch = models.ManyToManyField(MenuItem,related_name="lunch2")
+    brunch = models.ManyToManyField(MenuItem,related_name="brunch2")
+    dinner = models.ManyToManyField(MenuItem,related_name="dinner2")
+    pub_date = models.DateTimeField(auto_now_add=True)
 
-	def update(self):
-		base = "http://services.housing.berkeley.edu/FoodPro/dining/static/"
-		url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
-		response = urllib.urlopen(url)
-		soup = BeautifulSoup.BeautifulSoup(response.read())
-		index = 0
-		if self.location == "crossroads":
-			index = 0
-		elif self.location == "cafe3":
-			index = 1
-		elif self.location == "foothill":
-			index = 2
-		elif self.location == "ckc":
-			index = 3
-	
-		breakfast = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[1].findAll("td")[index].findAll("a")
-		lunch = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[2].findAll("td")[index].findAll("a")
-		dinner = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[3].findAll("td")[index].findAll("a")
-		soup_key = soup.find("table").find("tbody").findAll("tr",recursive=False)[0].findAll("td",recursive=False)[1].find("table").find("table").findAll("font")
-		key = {u'#000000':"Normal"}
-		for i in soup_key[1:4]:
-			key[i['color']] = i.contents[0]
-		print key
+    def update(self,debug=False):
+        base = "http://services.housing.berkeley.edu/FoodPro/dining/static/"
+        url = "http://services.housing.berkeley.edu/FoodPro/dining/static/todaysentrees.asp"
+        response = urllib.urlopen(url)
+        soup = BeautifulSoup.BeautifulSoup(response.read())
+        index = 0
+        if self.location == "crossroads":
+            index = 0
+        elif self.location == "cafe3":
+            index = 1
+        elif self.location == "foothill":
+            index = 2
+        elif self.location == "ckc":
+            index = 3
 
-		for i in breakfast:
-			if i.find("font"):
-				m = MenuItem()
-				m.link = base + i['href']
-				m.name = i.find("font").contents[0]
-				try:
-					m.type = key[i.find("font")['color']]
-				except:
-					pass
-				m.save()
-				self.breakfast.add(m)
-		for i in lunch:
-			if i.find("font"):
-				m = MenuItem()
-				m.link = base + i['href']
-				m.name = i.find("font").contents[0]
-				try:
-					m.type = key[i.find("font")['color']]
-				except:
-					pass
-				m.save()
-				self.lunch.add(m)
-		for i in dinner:
-			if i.find("font"):
-				m = MenuItem()
-				m.link = base + i['href']
-				m.name = i.find("font").contents[0]
-				try:
-					m.type = key[i.find("font")['color']]
-				except:
-					pass
-				m.save()
-				self.dinner.add(m)
-	class Meta:
-		ordering = ['-pub_date']
+        breakfast = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[1].findAll("td")[index].findAll("a")
+        lunch = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[2].findAll("td")[index].findAll("a")
+        dinner = soup.find("table").find("tbody").findAll("tr",recursive=False)[1].find("table").findAll("tr",recursive=False)[3].findAll("td")[index].findAll("a")
+        soup_key = soup.find("table").find("tbody").findAll("tr",recursive=False)[0].findAll("td",recursive=False)[1].find("table").find("table").findAll("font")
+        key = {u'#000000':"Normal"}
+        for i in soup_key[1:4]:
+            key[i['color']] = i.contents[0]
+        if debug:
+            print key
+        for i in breakfast:
+            if i.find("font"):
+                m = MenuItem()
+                m.link = base + i['href']
+                m.name = i.find("font").contents[0]
+                try:
+                    m.type = key[i.find("font")['color']]
+                except:
+                    pass
+                m.save()
+                self.breakfast.add(m)
+        for i in lunch:
+            if i.find("font"):
+                m = MenuItem()
+                m.link = base + i['href']
+                m.name = i.find("font").contents[0]
+                try:
+                    m.type = key[i.find("font")['color']]
+                except:
+                    pass
+                m.save()
+                self.lunch.add(m)
+        for i in dinner:
+            if i.find("font"):
+                m = MenuItem()
+                m.link = base + i['href']
+                m.name = i.find("font").contents[0]
+                try:
+                    m.type = key[i.find("font")['color']]
+                except:
+                    pass
+                m.save()
+                self.dinner.add(m)
+    class Meta:
+        ordering = ['-pub_date']
 
 def clean(s):
     """
