@@ -26,9 +26,11 @@
     </head>
     <body>
         <!-- Home -->
-        {% include "web/schedule.html" %}
-        {% include "web/dining.html" %}
-        {% include "web/news.html" %}
+        {% block content %}
+            {% include "web/schedule.html" %}
+            {% include "web/dining.html" %}
+            {% include "web/news.html" %}
+        {% endblock %}
         <script>
             //App custom javascript
         </script>

@@ -33,6 +33,7 @@ class SectionResource(ModelResource):
 class CourseResource(ModelResource):
     department = fields.ToOneField("api.API.DepartmentResource","department")
     def dehydrate(self, bundle):
+        bundle.data['url'] = bundle.obj.get_absolute_url()
         bundle.data['webcast_flag'] = bundle.obj.webcast_set.count() > 0
         try:
             bundle.data['building'] = bundle.obj.building.name

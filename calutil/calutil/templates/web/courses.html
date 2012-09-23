@@ -1,22 +1,26 @@
-{% extends "base.html" %}
+{% extends "web/page_detail.html" %}
 
-{% block content %}
-    <div class="panel scrollable">
-        <ul id="course" class="nav nav-list">
-        </ul>
-        <ul class="nav nav-list">
-            <li>
-                <a href="#" id="more">More</a>
-            </li>
-        </ul>
-    </div>
+{% block page_id %}department{% endblock %}
+{% block list_id %}course_list{% endblock %}
+{% block search_id %}course_search{% endblock %}
+
+{% block page_list %}
+    <li data-role="list-divider" role="heading">
+        Courses
+    </li>
 {% endblock %}
-{% block extra_script %}
+{% block page_list_bottom %}
+{% endblock %}
+
+{% block page_script %}
     <script>
         $(function(){
-            var view = new CourseListView({el: $("#course"),collection:new CourseCollection({{object.id}})});
+            var view = new CourseListView({el: $("#course_list"),collection:new CourseCollection({{object.id}})});
             //every time the more button is clicked, add some more courses
-            $("#more").click(function(){
+            $("#course_search").keyup(function(){
+                view.filter($(this).val());
+            });
+            $("#more_departments").click(function(){
                 var text = $(this).html(), link = $(this);
                 var element = $(this);
                 $(this).html("Loading...");
@@ -33,6 +37,6 @@
         });
     </script>
     <script type="text/template" id="course_template">
-        {% include "web/course.html" %}
+        {% include "web/department.html" %}
     </script>
 {% endblock %}

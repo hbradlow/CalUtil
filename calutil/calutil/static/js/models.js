@@ -19,7 +19,8 @@ CalUtilView = Backbone.View.extend({
         this.collection.fetch({
             success: function(data){
                 view.render();
-                options.success();
+                if(options)
+                    options.success();
             }
         });
     },
@@ -74,7 +75,6 @@ CourseCollection = CalUtilCollection.extend({
     initialize: function(department_id){
         if(department_id)
             this.url += "&department=" + department_id;
-        console.log(this.url);
     }
 });
 DepartmentCollection = CalUtilCollection.extend({
@@ -87,14 +87,25 @@ CourseListView = CalUtilView.extend({
             this.collection = this.options.collection;
         else
             this.collection = new CourseCollection();
+        this.original_collection = this.collection;
         this.fetch();
+    },
+    filter: function(q){
+        var new_collection = new CourseCollection();
+        this.original_collection.each(function (model, index) {
+            if (model.attributes.abbreviation.toLowerCase().indexOf(q.toLowerCase())!=-1) { new_collection.add(model); }
+        });
+        this.collection = new_collection;
+        this.render();
     },
     render: function(){
         var e = this.el;
+        $(e).empty();
         $.each(this.collection.models, function(index,course){
             var template = _.template($("#course_template").html(),{name: course.attributes.abbreviation,instructor: course.attributes.instructor,enrolled: course.attributes.enrolled, url: course.attributes.url});
             $(template).appendTo($(e));
         });
+        e.listview("refresh");
     }
 });
 DepartmentListView = CalUtilView.extend({

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div data-role="page" id="{% block page_id %}{% endblock %}">
+        <div data-theme="a" data-role="header">
+            <h3>
+                CalUtil
+            </h3>
+        </div>
+        <div data-role="content" style="padding: 15px">
+            {% block search %}
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="searchinput1">
+                        </label>
+                        <input name="" id="{% block search_id %}searchinput1{% endblock %}" placeholder="" value="" type="search" />
+                    </fieldset>
+                </div>
+            {% endblock %}
+            <ul id="{% block list_id %}{% endblock %}" data-role="listview" data-divider-theme="b" data-inset="true">
+                {% block page_list %}
+                {% endblock %}
+            </ul>
+            {% block more_lists %}
+            {% endblock %}
+            <ul id="bottom" data-role="listview" data-divider-theme="b" data-inset="true">
+                {% block page_list_bottom %}
+                {% endblock %}
+            </ul>
+        </div>
+        <div data-theme="a" data-role="footer" data-position="fixed">
+            <div data-role="navbar" data-iconpos="top">
+                <ul >
+                    <li>
+                        <a href="/#schedule" id="schedule_link" data-theme="" data-icon="" class="">
+                            Schedule
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/#map" id="map_link" data-theme="" data-icon="">
+                            Map
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/#dining" id="dining_link" data-theme="" data-icon="">
+                            Dining
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/#news" id="news_link" data-theme="" data-icon="">
+                            News
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% block page_script %}
+        {% endblock %}
+    </div>
+{% endblock %}

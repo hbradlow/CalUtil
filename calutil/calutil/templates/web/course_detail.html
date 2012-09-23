@@ -1,0 +1,49 @@
+{% extends "web/page_detail.html" %}
+
+{% block page_id %}course{% endblock %}
+{% block list_id %}section_list{% endblock %}
+{% block search %}{% endblock %}
+
+{% block page_list %}
+    <li data-role="list-divider" role="heading">
+        Course: {{object.abbreviation}} {{object.number}}
+    </li>
+    <li data-theme="c">
+        Department: {{object.department.name}}
+    </li>
+    <li data-theme="c">
+        Instructor: {{object.instructor}}
+    </li>
+    <li data-theme="c">
+        Location: {{object.location}}
+    </li>
+    <li data-theme="c">
+        Units: {{object.units}}
+    </li>
+    <li data-theme="c">
+        CCN: {{object.ccn}}
+    </li>
+    <li data-theme="c">
+        Limit: {{object.limit}}, Enrolled: {{object.enrolled}}<br />Waitlist: {{object.waitlist}}, Available Seats: {{object.available_seats}}
+    </li>
+{% endblock %}
+{% block more_lists %}
+    {% for section in object.sections.all %}
+        <ul id="{{section.pk}}" data-role="listview" data-divider-theme="b" data-inset="true">
+            <li data-role="list-divider" role="heading">
+                Section: {{section.type}} {{section.section}}
+            </li>
+            <li data-theme="c">
+                Instructor: {{section.instructor}}
+            </li>
+            <li data-theme="c">
+                Location: {{section.location}}
+            </li>
+            <li data-theme="c">
+                CCN: {{section.ccn}}
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}
+{% block page_list_bottom %}
+{% endblock %}

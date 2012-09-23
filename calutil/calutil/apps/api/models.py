@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django_extensions.db.fields import *
+from django.db.models import permalink
 
 import bs4
 import urllib
@@ -47,6 +48,9 @@ class Course(models.Model):
     enrolled = models.CharField(max_length=10,default="",null=True)
     waitlist = models.CharField(max_length=10,default="",null=True)
     available_seats = models.CharField(max_length=10,default="",null=True)
+    @permalink
+    def get_absolute_url(self):
+        return ("course_detail",[self.id])
     def __unicode__(self):
         return self.abbreviation + ": " + self.type + " " + self.number + ", " + self.type + " - " + self.semester
 class Section(models.Model):
