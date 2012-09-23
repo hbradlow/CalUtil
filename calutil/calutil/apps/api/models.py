@@ -138,6 +138,8 @@ class Location(models.Model):
     @property
     def dinner_times(self):
         return self.timespans.filter(type="dinner")
+    def __unicode__(self):
+        return self.name
 class Menu(models.Model):
     location = models.ForeignKey(Location,default=1)
     breakfast = models.ManyToManyField(MenuItem,related_name="breakfast",blank=True)
