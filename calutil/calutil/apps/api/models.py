@@ -118,6 +118,8 @@ class TimeSpan(models.Model):
         ("breakfast","Breakfast"),
         ("lunch","Lunch"),
         ("dinner","Dinner"),
+        ("brunch","Brunch"),
+        ("latenight","Late Night"),
     )
     days = models.CharField(max_length=50,help_text="example: Monday-Friday")
     type = models.CharField(max_length=50,choices=TYPES)
@@ -138,6 +140,12 @@ class Location(models.Model):
     @property
     def dinner_times(self):
         return self.timespans.filter(type="dinner")
+    @property
+    def brunch_times(self):
+        return self.timespans.filter(type="brunch")
+    @property
+    def latenight_times(self):
+        return self.timespans.filter(type="latenight")
     def __unicode__(self):
         return self.name
 class Menu(models.Model):

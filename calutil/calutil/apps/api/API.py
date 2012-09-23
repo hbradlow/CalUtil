@@ -105,10 +105,14 @@ class LocationResource(ModelResource):
     breakfast_times = fields.ToManyField("api.API.TimeSpanResource","breakfast_times",null=True,full=True)
     lunch_times = fields.ToManyField("api.API.TimeSpanResource","lunch_times",null=True,full=True)
     dinner_times = fields.ToManyField("api.API.TimeSpanResource","dinner_times",null=True,full=True)
+    brunch_times = fields.ToManyField("api.API.TimeSpanResource","brunch_times",null=True,full=True)
+    latenight_times = fields.ToManyField("api.API.TimeSpanResource","latenight_times",null=True,full=True)
     def dehydrate(self, bundle):
         bundle.data['breakfast_times'] = filter_timespan_for_today(bundle.data['breakfast_times'])
         bundle.data['lunch_times'] = filter_timespan_for_today(bundle.data['lunch_times'])
         bundle.data['dinner_times'] = filter_timespan_for_today(bundle.data['dinner_times'])
+        bundle.data['brunch_times'] = filter_timespan_for_today(bundle.data['brunch_times'])
+        bundle.data['latenight_times'] = filter_timespan_for_today(bundle.data['latenight_times'])
         return bundle
     class Meta:
         queryset = Location.objects.all()
