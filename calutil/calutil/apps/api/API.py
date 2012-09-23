@@ -83,13 +83,13 @@ def filter_timespan_for_today(times):
     import re
     import datetime
     matches = {
-        "monday":0,
-        "tuesday":1,
-        "wednesday":2,
-        "thursday":3,
-        "friday":4,
-        "saturday":5,
-        "sunday":6,
+        "monday":       0,
+        "tuesday":      1,
+        "wednesday":    2,
+        "thursday":     3,
+        "friday":       4,
+        "saturday":     5,
+        "sunday":       6,
     }
     bundles = []
     for time in times:
@@ -98,7 +98,6 @@ def filter_timespan_for_today(times):
         last = matches[d.group(2).lower()]
         current = datetime.datetime.now().weekday()
         if current >= first and current <= last:
-            print first," ",last,"-",current
             bundles.append(time)
     return bundles
 class LocationResource(ModelResource):
@@ -119,6 +118,7 @@ class LocationResource(ModelResource):
         resource_name = "location"
 class MenuResource(ModelResource):
     breakfast_items = fields.ToManyField("api.API.MenuItemResource","breakfast",full=True)
+    brunch_items = fields.ToManyField("api.API.MenuItemResource","brunch",full=True)
     lunch_items = fields.ToManyField("api.API.MenuItemResource","lunch",full=True)
     dinner_items = fields.ToManyField("api.API.MenuItemResource","dinner",full=True)
     location = fields.ToOneField("api.API.LocationResource","location",full=True)

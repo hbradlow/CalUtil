@@ -20,14 +20,20 @@ def menu(menu):
         index = 3
 
     breakfast = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[1]("td")[index].findAll("a")
-    lunch = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[2]("td")[index].findAll("a")
+    name = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[2]("td")[index]("b")[0].string
+    lunch = []
+    brunch = []
+    if name=="Lunch":
+        lunch = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[2]("td")[index].findAll("a")
+    else:
+        brunch = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[2]("td")[index].findAll("a")
     dinner = soup("table")[0]("tbody")[0]("tr",recursive=False)[1]("table")[0]("tr",recursive=False)[3]("td")[index].findAll("a")
     
     soup_key = soup("table")[0]("tbody")[0]("tr",recursive=False)[0]("td",recursive=False)[1]("table")[0]("table")[0]("font")
     key = {u'#000000':"Normal"}
     for i in soup_key[1:4]:
         key[i['color']] = i.contents[0]
-    for meal in [breakfast,lunch,dinner]:
+    for meal in [breakfast,brunch,lunch,dinner]:
         for i in meal:
             if i.find("font"):
                 m = MenuItem()
@@ -40,6 +46,8 @@ def menu(menu):
                 m.save()
                 if meal == breakfast:
                     menu.breakfast.add(m)
+                if meal == brunch:
+                    menu.brunch.add(m)
                 if meal == lunch:
                     menu.lunch.add(m)
                 if meal == dinner:
