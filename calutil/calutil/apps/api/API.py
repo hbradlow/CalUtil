@@ -78,8 +78,38 @@ class TimeSpanResource(ModelResource):
     class Meta:
         queryset = TimeSpan.objects.all()
         resource_name = "location"
+
+def filter_timespan_for_today(times):
+    import re
+    import datetime
+    matches = {
+        "monday":0,
+        "tuesday":1,
+        "wednesday":2,
+        "thursday":3,
+        "friday":4,
+        "saturday":5,
+        "sunday":6,
+    }
+    bundles = []
+    for time in times:
+        d = re.match(r'\s*(\w+)-(\w+)\s*',time.obj.days)
+        first = matches[d.group(1).lower()]
+        last = matches[d.group(2).lower()]
+        current = datetime.datetime.now().weekday()
+        if current >= first and current <= last:
+            print first," ",last,"-",current
+            bundles.append(time)
+    return bundles
 class LocationResource(ModelResource):
-    timespans = fields.ToManyField("api.API.TimeSpanResource","timespans",full=True)
+    breakfast_times = fields.ToManyField("api.API.TimeSpanResource","breakfast_times",null=True,full=True)
+    lunch_times = fields.ToManyField("api.API.TimeSpanResource","lunch_times",null=True,full=True)
+    dinner_times = fields.ToManyField("api.API.TimeSpanResource","dinner_times",null=True,full=True)
+    def dehydrate(self, bundle):
+        bundle.data['breakfast_times'] = filter_timespan_for_today(bundle.data['breakfast_times'])
+        bundle.data['lunch_times'] = filter_timespan_for_today(bundle.data['lunch_times'])
+        bundle.data['dinner_times'] = filter_timespan_for_today(bundle.data['dinner_times'])
+        return bundle
     class Meta:
         queryset = Location.objects.all()
         resource_name = "location"

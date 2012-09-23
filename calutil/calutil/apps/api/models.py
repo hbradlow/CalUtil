@@ -114,14 +114,30 @@ class MenuItem(models.Model):
 	link = models.URLField(null=True)
 	pub_date = models.DateTimeField(auto_now_add=True)
 class TimeSpan(models.Model):
-	days = models.CharField(max_length=50)
-	type = models.CharField(max_length=50)
-	span = models.CharField(max_length=50)
+    TYPES = (
+        ("breakfast","Breakfast"),
+        ("lunch","Lunch"),
+        ("dinner","Dinner"),
+    )
+    days = models.CharField(max_length=50,help_text="example: Monday-Friday")
+    type = models.CharField(max_length=50,choices=TYPES)
+    span = models.CharField(max_length=50,help_text="example: 8am-10am")
+    def __unicode__(self):
+        return self.get_type_display()+" -> "+self.days+" -> "+self.span
 class Location(models.Model):
     name = models.CharField(max_length=50) 
     link = models.URLField(null=True)
     timespans = models.ManyToManyField(TimeSpan)
     timespan_string = models.TextField(null=True)
+    @property
+    def breakfast_times(self):
+        return self.timespans.filter(type="breakfast")
+    @property
+    def lunch_times(self):
+        return self.timespans.filter(type="lunch")
+    @property
+    def dinner_times(self):
+        return self.timespans.filter(type="dinner")
 class Menu(models.Model):
     location = models.ForeignKey(Location,default=1)
     breakfast = models.ManyToManyField(MenuItem,related_name="breakfast",blank=True)
