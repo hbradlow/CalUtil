@@ -53,6 +53,7 @@ def nutrition(request,item_id):
     soup("body")[0]("table",recursive=False)[0]['width'] = "600"
     soup("body")[0]("table",recursive=False)[1]['width'] = "600"
     return HttpResponse(str(soup))
+
 def dailycal(request,entries):
     if not entries:
         entries = 10

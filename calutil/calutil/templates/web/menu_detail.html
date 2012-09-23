@@ -1,0 +1,41 @@
+{% extends "web/page_detail.html" %}
+
+{% block page_id %}menu{% endblock %}
+{% block list_id %}menu_item_list{% endblock %}
+{% block search %}{% endblock %}
+
+{% block page_list %}
+        <li data-role="list-divider" role="heading">
+            {{menu.location.name|title}}
+        </li>
+{% endblock %}
+{% block more_lists %}
+    <ul id="breakfast_list" data-role="listview" data-divider-theme="b" data-inset="true">
+        <li data-role="list-divider" role="heading">
+            Breakfast Items
+        </li>
+    </ul>
+    <ul id="lunch_list" data-role="listview" data-divider-theme="b" data-inset="true">
+        <li data-role="list-divider" role="heading">
+            Lunch Items
+        </li>
+    </ul>
+    <ul id="dinner_list" data-role="listview" data-divider-theme="b" data-inset="true">
+        <li data-role="list-divider" role="heading">
+            Dinner Items
+        </li>
+    </ul>
+{% endblock %}
+{% block page_list_bottom %}
+{% endblock %}
+
+{% block page_script %}
+    <script>
+        $(function(){
+            var view = new MenuItemListView({breakfast_el: $("#breakfast_list"),lunch_el: $("#lunch_list"),dinner_el: $("#dinner_list"),collection:new MenuCollection({{menu.location.id}})});
+        });
+    </script>
+    <script type="text/template" id="menu_item_template">
+        {% include "web/menu_item.html" %}
+    </script>
+{% endblock %}

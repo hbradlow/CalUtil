@@ -37,7 +37,9 @@ NewsCollection = CalUtilCollection.extend({
 });
 MenuCollection = CalUtilCollection.extend({
     url: generate_url("/app_data/menu/"),
-    initialize: function(department_id){
+    initialize: function(location_id){
+        if(location_id)
+            this.url += "&location=" + location_id;
     }
 });
 NewsListView = CalUtilView.extend({
@@ -55,6 +57,38 @@ NewsListView = CalUtilView.extend({
         e.listview("refresh");
     }
 });
+MenuItemListView = CalUtilView.extend({
+    initialize: function(){
+        this.breakfast_el = this.options.breakfast_el;
+        this.lunch_el = this.options.lunch_el;
+        this.dinner_el = this.options.dinner_el;
+        if(this.options.collection)
+            this.collection = this.options.collection;
+        else
+            this.collection = new MenuCollection();
+        this.fetch();
+    },
+    render: function(){
+        var t = this;
+        $.each(this.collection.models, function(index,object){
+            $.each(object.attributes.breakfast_items,function(index,object){
+                var template = _.template($("#menu_item_template").html(),{name: object.name,url:"/menu_item/" + object.id});
+                $(template).appendTo($(t.breakfast_el));
+            });
+            $.each(object.attributes.lunch_items,function(index,object){
+                var template = _.template($("#menu_item_template").html(),{name: object.name,url:"/menu_item/" + object.id});
+                $(template).appendTo($(t.lunch_el));
+            });
+            $.each(object.attributes.dinner_items,function(index,object){
+                var template = _.template($("#menu_item_template").html(),{name: object.name,url:"/menu_item/" + object.id});
+                $(template).appendTo($(t.dinner_el));
+            });
+        });
+        t.breakfast_el.listview("refresh");
+        t.lunch_el.listview("refresh");
+        t.dinner_el.listview("refresh");
+    }
+});
 MenuListView = CalUtilView.extend({
     initialize: function(){
         this.el = this.options.el;
@@ -64,7 +98,7 @@ MenuListView = CalUtilView.extend({
     render: function(){
         var e = this.el;
         $.each(this.collection.models, function(index,object){
-            var template = _.template($("#menu_template").html(),{name: object.attributes.location.name});
+            var template = _.template($("#menu_template").html(),{name: object.attributes.location.name,url: "/menu/" + object.attributes.location.name});
             $(template).appendTo($(e));
         });
         e.listview("refresh");

@@ -91,3 +91,9 @@ class MenuResource(ModelResource):
     class Meta:
         queryset = Menu.objects.all()
         resource_name = "menu"
+        filtering = {
+            'location':['exact'],
+            'limit':['exact'],
+            'offset':['exact'],
+            'id':ALL,
+        }

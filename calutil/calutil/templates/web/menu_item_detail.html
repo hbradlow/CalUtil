@@ -1,0 +1,24 @@
+{% extends "web/page_detail.html" %}
+
+{% block page_id %}menu{% endblock %}
+{% block list_id %}menu_item_list{% endblock %}
+{% block search %}{% endblock %}
+
+{% block page_list %}
+{% endblock %}
+{% block more_lists %}
+    <div id="nutrition" style="overflow:scroll;">
+    </div>
+{% endblock %}
+{% block page_list_bottom %}
+{% endblock %}
+
+{% block page_script %}
+    <script>
+        $.ajax({
+            url: "/api/nutrition/{{item.id}}/",
+        }).done(function(data){
+            $("#nutrition").html($(data));
+        });
+    </script>
+{% endblock %}
