@@ -84,6 +84,7 @@ class BusStop(models.Model):
     longitude = models.FloatField()
     stop_id = models.CharField(max_length=50)
     lines = models.ManyToManyField(BusLine)
+    has_realtime = models.BooleanField(default=False)
     def predictions(self,debug=False):
         import requests
         results = {'objects':[]}
