@@ -409,8 +409,8 @@ def scrape_class(c,debug=False):
 			br['p_title'] = c.title
 		except:
 			br['p_title'] = ""
-        if debug:
-            print c.title
+		if debug:
+		    print c.title
 		subsoup = BeautifulSoup.BeautifulSoup(br.submit().read())
 		table = subsoup.findAll("table")[1]
 		try:
