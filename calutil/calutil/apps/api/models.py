@@ -102,6 +102,8 @@ class BusStop(models.Model):
                 for prediction in direction("prediction"):
                     results['objects'].append({"line":line.tag,"direction":title,"seconds":prediction['seconds'],"minutes":prediction['minutes']})
         return results
+    def __unicode__(self):
+        print self.stop_id
 
 class BusStopDirection(models.Model):
     tag = models.CharField(max_length=50)

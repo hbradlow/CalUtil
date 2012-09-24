@@ -279,7 +279,7 @@ def bus_lines():
         line.title = route['title']
         line.tag = route['tag']
         line.save()
-def bus_stops():
+def bus_stops(debug=False):
     import grequests
     lines = BusLine.objects.all()
     line_names = [line.tag for line in lines]
@@ -288,7 +288,8 @@ def bus_stops():
     rs = (grequests.get(u) for u in urls)
     results = grequests.map(rs)
     for result,line in zip(results,lines):
-        print "Starting line " + str(line.tag)
+        if debug:
+            print "Scraping line " + str(line.tag)
         soup = bs4.BeautifulSoup(result.text)
         raw_stops = soup("stop")
         for raw_stop in raw_stops:
@@ -317,7 +318,7 @@ def bus_stops():
             bus_direction.line = line
             bus_direction.save()
 
-def get_schedule(username,password):
+def get_schedule(username,password,debug=False):
     from twill.commands import *
     import twill
 
@@ -343,7 +344,8 @@ def get_schedule(username,password):
     header = [c.contents[0] for c in classes[0].findAll("th")]
     for c in classes[1:len(classes)]:
         try:
-            print clean(c.findAll("td")[0].contents[0])
+            if debug:
+                print clean(c.findAll("td")[0].contents[0])
             tmp = Course.objects.get(ccn=clean(str(c.findAll("td")[0].contents[0])))
             cs.append(tmp)
         except:
@@ -365,7 +367,7 @@ def get_schedule(username,password):
     return cs 
 
 ###############################OLD########################################
-def scrape_class(c):
+def scrape_class(c,debug=False):
 	br = mechanize.Browser()
 	url = "http://osoc.berkeley.edu/OSOC/osoc?p_term=SP&p_list_all=Y"
 	terms = c.findAll("label")
@@ -407,7 +409,8 @@ def scrape_class(c):
 			br['p_title'] = c.title
 		except:
 			br['p_title'] = ""
-		print c.title
+        if debug:
+            print c.title
 		subsoup = BeautifulSoup.BeautifulSoup(br.submit().read())
 		table = subsoup.findAll("table")[1]
 		try:
