@@ -69,6 +69,19 @@ class Section(models.Model):
     available_seats = models.CharField(max_length=10,default="",null=True)
     def __unicode__(self):
         return self.type + " " + self.section
+class TimeSpan(models.Model):
+    TYPES = (
+        ("breakfast","Breakfast"),
+        ("lunch","Lunch"),
+        ("dinner","Dinner"),
+        ("brunch","Brunch"),
+        ("latenight","Late Night"),
+    )
+    days = models.CharField(max_length=50,help_text="example: Monday-Friday")
+    type = models.CharField(max_length=50,choices=TYPES,null=True)
+    span = models.CharField(max_length=50,help_text="example: 8am-10am")
+    def __unicode__(self):
+        return self.get_type_display()+" -> "+self.days+" -> "+self.span
 class CalOneCardLocation(models.Model):
     name = models.CharField(max_length=300)
     latitude = models.FloatField()
@@ -77,6 +90,9 @@ class CalOneCardLocation(models.Model):
     type = models.CharField(max_length=200)
     times = models.CharField(max_length=200)
     info = models.TextField()
+    timespans = models.ManyToManyField(TimeSpan)
+    def __unicode__(self):
+        return self.name
 
 class BusLine(models.Model):
 	title = models.CharField(max_length = 100)
@@ -115,19 +131,6 @@ class MenuItem(models.Model):
 	type = models.CharField(max_length=50,default="Normal")
 	link = models.URLField(null=True)
 	pub_date = models.DateTimeField(auto_now_add=True)
-class TimeSpan(models.Model):
-    TYPES = (
-        ("breakfast","Breakfast"),
-        ("lunch","Lunch"),
-        ("dinner","Dinner"),
-        ("brunch","Brunch"),
-        ("latenight","Late Night"),
-    )
-    days = models.CharField(max_length=50,help_text="example: Monday-Friday")
-    type = models.CharField(max_length=50,choices=TYPES)
-    span = models.CharField(max_length=50,help_text="example: 8am-10am")
-    def __unicode__(self):
-        return self.get_type_display()+" -> "+self.days+" -> "+self.span
 class Location(models.Model):
     name = models.CharField(max_length=50) 
     link = models.URLField(null=True)

@@ -14,7 +14,32 @@ class BusStopResource(ModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         resource_name = 'bus_stop'
+def filter_timespan_for_today(times):
+    import re
+    import datetime
+    matches = {
+        "monday":       0,
+        "tuesday":      1,
+        "wednesday":    2,
+        "thursday":     3,
+        "friday":       4,
+        "saturday":     5,
+        "sunday":       6,
+    }
+    bundles = []
+    for time in times:
+        d = re.match(r'\s*(\w+)-(\w+)\s*',time.obj.days)
+        first = matches[d.group(1).lower()]
+        last = matches[d.group(2).lower()]
+        current = datetime.datetime.now().weekday()
+        if current >= first and current <= last:
+            bundles.append(time)
+    return bundles
 class CalOneCardLocationResource(ModelResource):
+    times = fields.ToManyField("api.API.TimeSpanResource","timespans",null=True,full=True)
+    def dehydrate(self, bundle):
+        bundle.data['times'] = filter_timespan_for_today(bundle.data['times'])
+        return bundle
     class Meta:
         queryset = CalOneCardLocation.objects.all()
         resource_name = "cal_one_card"
@@ -79,27 +104,6 @@ class TimeSpanResource(ModelResource):
         queryset = TimeSpan.objects.all()
         resource_name = "location"
 
-def filter_timespan_for_today(times):
-    import re
-    import datetime
-    matches = {
-        "monday":       0,
-        "tuesday":      1,
-        "wednesday":    2,
-        "thursday":     3,
-        "friday":       4,
-        "saturday":     5,
-        "sunday":       6,
-    }
-    bundles = []
-    for time in times:
-        d = re.match(r'\s*(\w+)-(\w+)\s*',time.obj.days)
-        first = matches[d.group(1).lower()]
-        last = matches[d.group(2).lower()]
-        current = datetime.datetime.now().weekday()
-        if current >= first and current <= last:
-            bundles.append(time)
-    return bundles
 class LocationResource(ModelResource):
     breakfast_times = fields.ToManyField("api.API.TimeSpanResource","breakfast_times",null=True,full=True)
     lunch_times = fields.ToManyField("api.API.TimeSpanResource","lunch_times",null=True,full=True)
