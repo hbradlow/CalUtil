@@ -5,7 +5,21 @@ import requests
 from django.db.models import Q
 
 ###############################NEW########################################
+def clear_menu(menu):
+    for b in menu.breakfast.all():
+        b.delete()
+    for l in menu.lunch.all():
+        l.delete()
+    for b in menu.brunch.all():
+        b.delete()
+    for d in menu.dinner.all():
+        d.delete()
+    menu.breakfast.clear()
+    menu.lunch.clear()
+    menu.brunch.clear()
+    menu.dinner.clear()
 def menu(menu):
+    clear_menu(menu)
     base_url = "http://services.housing.berkeley.edu/FoodPro/dining/static/"
     r = requests.get(base_url + "todaysentrees.asp")
     soup = bs4.BeautifulSoup(r.text)
