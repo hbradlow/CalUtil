@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Webcast : NSObject
+@interface Webcast : NSObject <NSCoding> 
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *url;

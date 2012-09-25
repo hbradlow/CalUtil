@@ -20,5 +20,4 @@
 - (id)initWithLatitude:(CLLocationDegrees)latitude
           andLongitude:(CLLocationDegrees)longitude;
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
-- (void)displayDetails;
 @end

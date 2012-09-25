@@ -82,11 +82,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)loadCourses
 {
     @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/personal_schedule/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/personal_schedule/", ServerURL];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
-        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
+        [jsonRequest setHTTPMethod:@"POST"];
+        NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
+        [jsonRequest setHTTPBody:requestBody];
         
         NSData *receivedData;
         receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
@@ -346,7 +349,6 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading..."])
         return;
     
-    NSLog(@"did select row at indexpath %i and %i", indexPath.row, tableView == self.tableView);
     if (tableView == self.tableView && indexPath.section > 1)
         [self performSegueWithIdentifier:@"department" sender:tableView];
     else if (tableView != self.tableView)

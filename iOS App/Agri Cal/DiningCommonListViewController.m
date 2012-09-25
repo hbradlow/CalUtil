@@ -28,6 +28,7 @@
     [super viewDidLoad];
     self.locations = [[NSMutableArray alloc] init];
     self.locations = [NSMutableArray arrayWithArray:@[ @"",@"",@"",@"" ]];
+    self.sectionTitles = [[NSMutableArray alloc] init];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadMenus) forControlEvents:UIControlEventValueChanged];
     [self loadMenus];
@@ -72,6 +73,8 @@
                 NSArray *breakfastMenu = [currentMenus objectForKey:@"breakfast_items"];
                 NSArray *lunchMenu = [currentMenus objectForKey:@"lunch_items"];
                 NSArray *dinnerMenu = [currentMenus objectForKey:@"dinner_items"];
+                NSArray *lateNightMenu = [currentMenus objectForKey:@"late_night_items"];
+                NSArray *brunchMenu = [currentMenus objectForKey:@"brunch_items"];
                 
                 Menu *currentMenu = [[Menu alloc] init];
                 currentMenu.timeSpan = timeSpan;
@@ -83,6 +86,19 @@
                     currentDish.type = [currentItem objectForKey:@"type"];
                     currentDish.nutritionURL = [currentItem objectForKey:@"id"];
                     [currentMenu.breakfast addObject:currentDish];
+                    if ([[currentLocation objectForKey:@"breakfast_times"] count])
+                        currentMenu.breakfastTime = [[[currentLocation objectForKey:@"breakfast_times"] objectAtIndex:0] objectForKey:@"span"];
+                }
+                
+                for (NSDictionary *currentItem in brunchMenu)
+                {
+                    Dish *currentDish = [[Dish alloc] init];
+                    currentDish.name = [currentItem objectForKey:@"name"];
+                    currentDish.type = [currentItem objectForKey:@"type"];
+                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                    [currentMenu.brunch addObject:currentDish];
+                    if ([[currentLocation objectForKey:@"brunch_times"] count])
+                        currentMenu.brunchTime = [[[currentLocation objectForKey:@"brunch_times"] objectAtIndex:0] objectForKey:@"span"];
                 }
                 
                 for (NSDictionary *currentItem in lunchMenu)
@@ -92,6 +108,8 @@
                     currentDish.type = [currentItem objectForKey:@"type"];
                     currentDish.nutritionURL = [currentItem objectForKey:@"id"];
                     [currentMenu.lunch addObject:currentDish];
+                    if ([[currentLocation objectForKey:@"lunch_times"]count])
+                        currentMenu.lunchTime = [[[currentLocation objectForKey:@"lunch_times"] objectAtIndex:0] objectForKey:@"span"];
                 }
                 
                 for (NSDictionary *currentItem in dinnerMenu)
@@ -101,7 +119,22 @@
                     currentDish.type = [currentItem objectForKey:@"type"];
                     currentDish.nutritionURL = [currentItem objectForKey:@"id"];
                     [currentMenu.dinner addObject:currentDish];
+                    if ([[currentLocation objectForKey:@"dinner_times"] count])
+                        currentMenu.dinnerTime = [[[currentLocation objectForKey:@"dinner_times"] objectAtIndex:0] objectForKey:@"span"];
                 }
+                
+                for (NSDictionary *currentItem in lateNightMenu)
+                {
+                    Dish *currentDish = [[Dish alloc] init];
+                    currentDish.name = [currentItem objectForKey:@"name"];
+                    currentDish.type = [currentItem objectForKey:@"type"];
+                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                    [currentMenu.lateNight addObject:currentDish];
+                    if ([[currentLocation objectForKey:@"latenight_times"] count])
+                        currentMenu.lateNightTime = [[[currentLocation objectForKey:@"latenight_times"] objectAtIndex:0] objectForKey:@"span"];
+                }
+                
+                
                 if ([locationName isEqualToString:@"crossroads"])
                 {
                     [self.locations replaceObjectAtIndex:kCrossroads withObject:currentMenu];
@@ -123,7 +156,7 @@
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
         }
         @catch (NSException *exception) {
-            NSLog(@"Error when loading menus");
+            NSLog(@"Error when loading menus %@", exception);
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];});
         }
@@ -134,7 +167,38 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 4;
+    int count = 0;
+    Menu *currentMenu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
+    self.sectionTitles = [[NSMutableArray alloc] init];
+    if ([currentMenu isKindOfClass:[Menu class]])
+    {
+        if ([currentMenu.breakfast count])
+        {
+            [self.sectionTitles addObject:@"Breakfast"];
+            count++;
+        }
+        if ([currentMenu.brunch count])
+        {
+            [self.sectionTitles addObject:@"Brunch"];
+            count++;
+        }
+        if ([currentMenu.lunch count])
+        {
+            [self.sectionTitles addObject:@"Lunch"];
+            count++;
+        }
+        if ([currentMenu.dinner count])
+        {
+            [self.sectionTitles addObject:@"Dinner"];
+            count++;
+        }
+        if ([currentMenu.lateNight count])
+        {
+            [self.sectionTitles addObject:@"Late Night"];
+            count++;
+        }
+    }
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -143,32 +207,37 @@
     if ([[self.locations objectAtIndex:selectedIndex] class] != [Menu class])
         return 0;
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
-    switch (section) {
-        case 0:
-            return 1;
-        case 1:
-            return [menu.breakfast count];
-        case 2:
-            return [menu.lunch count];
-        case 3:
-            return [menu.dinner count];
-        default:
-            break;
-    }
+    NSString *title = [self.sectionTitles objectAtIndex:section];
+    if ([title isEqualToString:@"Breakfast"])
+        return [menu.breakfast count];
+    if ([title isEqualToString:@"Brunch"])
+        return [menu.brunch count];
+    if ([title isEqualToString:@"Lunch"])
+        return [menu.lunch count];
+    if ([title isEqualToString:@"Dinner"])
+        return [menu.dinner count];
+    if ([title isEqualToString:@"Late Night"])
+        return [menu.lateNight count];
+    
     return 0;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 1:
-            return @"Breakfast";
-        case 2:
-            return @"Lunch";
-        case 3:
-            return @"Dinner";
-    }
-    return @"Hours";
+    NSString *title = [self.sectionTitles objectAtIndex:section];
+    NSString *times = @"";
+    Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
+    if ([title isEqualToString:@"Breakfast"])
+        times = menu.breakfastTime;
+    if ([title isEqualToString:@"Brunch"])
+        times = menu.brunchTime;
+    if ([title isEqualToString:@"Lunch"])
+        times = menu.lunchTime;
+    if ([title isEqualToString:@"Dinner"])
+        times = menu.dinnerTime;
+    if ([title isEqualToString:@"Late Night"])
+        times = menu.lateNightTime;
+    return [NSString stringWithFormat:@"%@ Open: %@", [self.sectionTitles objectAtIndex:section], times];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,31 +256,20 @@
     if ([menu isKindOfClass:[Menu class]])
     {
         NSArray *currentMeal;
-        switch (indexPath.section) {
-            case 1:
-                currentMeal = menu.breakfast;
-                break;
-            case 2:
-                currentMeal = menu.lunch;
-                break;
-            case 3:
-                currentMeal = menu.dinner;
-            default:
-                break;
-        }
+        NSString *title = [self.sectionTitles objectAtIndex:indexPath.section];
+        if ([title isEqualToString:@"Breakfast"])
+            currentMeal = menu.breakfast;
+        if ([title isEqualToString:@"Brunch"])
+            currentMeal = menu.brunch;
+        if ([title isEqualToString:@"Lunch"])
+            currentMeal = menu.lunch;
+        if ([title isEqualToString:@"Dinner"])
+            currentMeal = menu.dinner;
+        if ([title isEqualToString:@"Late Night"])
+            currentMeal = menu.lateNight;
         
         cell.textLabel.text = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).name;
         cell.detailTextLabel.text = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).type;
-        if (!indexPath.section)
-        {
-            cell.detailTextLabel.text = @"";
-            cell.textLabel.text = menu.timeSpan;
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-            cell.textLabel.numberOfLines = 100;
-            cell.textLabel.font = [UIFont systemFontOfSize:14];
-        }
     }
     else
     {
@@ -237,40 +295,25 @@
     NSIndexPath *indexPath = (NSIndexPath*)sender;
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
     NSArray *currentMeal;
-    switch (indexPath.section) {
-        case 1:
-            currentMeal = menu.breakfast;
-            break;
-        case 2:
-            currentMeal = menu.lunch;
-            break;
-        case 3:
-            currentMeal = menu.dinner;
-        default:
-            break;
-    }
+    NSString *title = [self.sectionTitles objectAtIndex:indexPath.section];
+    if ([title isEqualToString:@"Breakfast"])
+        currentMeal = menu.breakfast;
+    if ([title isEqualToString:@"Brunch"])
+        currentMeal = menu.brunch;
+    if ([title isEqualToString:@"Lunch"])
+        currentMeal = menu.lunch;
+    if ([title isEqualToString:@"Dinner"])
+        currentMeal = menu.dinner;
+    if ([title isEqualToString:@"Late Night"])
+        currentMeal = menu.lateNight;
     
     ((DishDetailsViewController*)[segue destinationViewController]).url = ((Dish*)[currentMeal objectAtIndex:indexPath.row]).nutritionURL;
 }
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if ([[self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]] class] == [Menu class]
-        && !indexPath.section)
-    {
-        CGSize detailSize;
-        float height = 0;
-        Menu *currentMenu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
-        NSLog(@"%@", currentMenu.timeSpan);
-        detailSize = [currentMenu.timeSpan sizeWithFont:[UIFont systemFontOfSize:14]constrainedToSize:CGSizeMake(270, 4000)lineBreakMode:UILineBreakModeWordWrap];
-        height = detailSize.height + 4;
-        return height;
-    }
-    return 44;
-}
+
 - (IBAction)locationDidChange:(id)sender
 {
     [self.tableView reloadData];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)viewDidUnload {

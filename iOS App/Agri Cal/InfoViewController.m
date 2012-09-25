@@ -25,7 +25,7 @@
         case 2:
             return @"Transportation";
         default:
-            break;
+            return @"";
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

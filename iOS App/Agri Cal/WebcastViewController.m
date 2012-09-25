@@ -34,7 +34,7 @@
 - (void)embedYouTube:(NSString*)urlString {
     NSString *embedHTML = [NSString stringWithFormat:@"<html><head>\
     <meta name = \"viewport\" content = \"initial-scale = 1.0, user-scalable = no, width = %f\"/></head>\
-    <body style=\"background:#F00;margin-top:0px;margin-left:0px\">\
+    <body style=\"background:#000;margin-top:0px;margin-left:0px\">\
     <div><object width=\"%f\" height=\"%f\">\
     <param name=\"movie\" value=\"%@&autoplay=1\"></param>\
     <param name=\"wmode\" value=\"transparent\"></param>\
@@ -64,10 +64,12 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (BOOL)shouldAutorotate
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return NO;
 }
-
+- (NSInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 @end

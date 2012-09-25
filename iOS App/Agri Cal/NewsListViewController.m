@@ -162,4 +162,9 @@
     [self setTableView:nil];
     [super viewDidUnload];
 }
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    NSLog(@"called");
+    return YES;
+}
 @end

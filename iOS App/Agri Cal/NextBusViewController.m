@@ -66,9 +66,9 @@
 }
 - (void)updateTimes:(int)extension withTag:(NSString*)tag atIndex:(int)index
 {
-    NSLog(@"Loading times");
     @try {
         NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/predictions/%i/%@", ServerURL, extension, tag];
+        NSLog(@"%@", queryString);
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
         NSError *error = nil;
@@ -83,6 +83,8 @@
         dispatch_async(updateUIQueue, ^{
             NSString *subtitle = [arr componentsJoinedByString:@", "];
             subtitle = [subtitle stringByAppendingString:@" minutes"];
+            if (![arr count])
+                subtitle = @"--";
             [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]].detailTextLabel.text = subtitle;
         });
     }

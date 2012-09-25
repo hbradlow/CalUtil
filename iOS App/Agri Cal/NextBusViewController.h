@@ -10,7 +10,6 @@
 #import "BusStopAnnotation.h"
 
 @interface NextBusViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *lines;
 @property (nonatomic, weak) BusStopAnnotation *annotation;
 
