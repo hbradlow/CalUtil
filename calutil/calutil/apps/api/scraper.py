@@ -321,6 +321,7 @@ def bus_stops(debug=False):
 def get_schedule(username,password,debug=False):
     from twill.commands import *
     import twill
+    from django.conf import settings
 
     b = twill.get_browser() #  make it so that twill can handle xhtml  
     b._browser._factory.is_html = True
@@ -346,7 +347,7 @@ def get_schedule(username,password,debug=False):
         try:
             if debug:
                 print clean(c.findAll("td")[0].contents[0])
-            tmp = Course.objects.get(ccn=clean(str(c.findAll("td")[0].contents[0])))
+            tmp = Course.objects.filter(ccn=clean(str(c.findAll("td")[0].contents[0]))).filter(semester=settings.CURRENT_SEMESTER_CALLBACK())[0]
             cs.append(tmp)
         except:
             """

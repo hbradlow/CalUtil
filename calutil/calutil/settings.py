@@ -163,3 +163,11 @@ DATABASES = {'default': dj_database_url.config(default='postgres://localhost/cal
 
 #tastypie
 API_LIMIT_PER_PAGE = 500
+
+#project
+def semester():
+    return "FL"
+CURRENT_SEMESTER_CALLBACK = semester
+def year():
+    return "FL"
+CURRENT_YEAR_CALLBACK = year
