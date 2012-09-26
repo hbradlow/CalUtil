@@ -95,8 +95,9 @@ class CalOneCardLocation(models.Model):
         return self.name
 
 class BusLine(models.Model):
-	title = models.CharField(max_length = 100)
-	tag = models.CharField(max_length = 50)
+    title = models.CharField(max_length = 100)
+    tag = models.CharField(max_length = 50)
+    has_realtime = models.BooleanField(default=False)
 class BusStop(models.Model):
     tag = models.CharField(max_length=50)
     title = models.CharField(max_length=100)
@@ -119,9 +120,10 @@ class BusStop(models.Model):
                     title = direction['title']
                     for prediction in direction("prediction"):
                         results['objects'].append({"line":line.tag,"direction":title,"seconds":prediction['seconds'],"minutes":prediction['minutes']})
-            return results
-        else:
-            return results
+        if self.has_non_realtime:
+            for line in self.lines.filter(has_realtime=False):
+                results['objects'].append({"line":line.tag,"direction":"NA","seconds":[],"minutes":[]})
+        return results
     def __unicode__(self):
         return self.stop_id
 class BusTime(models.Model):
