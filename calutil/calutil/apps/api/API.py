@@ -28,17 +28,20 @@ def filter_timespan_for_today(times):
     }
     bundles = []
     for time in times:
-        d = re.match(r'\s*(\w+)\s*(-\s*(\w+))?\s*',time.obj.days)
-        first = matches[d.group(1).lower()]
         try:
-            last = matches[d.group(3).lower()]
+            d = re.match(r'\s*(\w+)\s*(-\s*(\w+))?\s*',time.obj.days)
+            first = matches[d.group(1).lower()]
+            try:
+                last = matches[d.group(3).lower()]
+            except:
+                last = None
+            current = datetime.datetime.now().weekday()
+            if not last and current == first:
+                bundles.append(time)
+            elif current >= first and current <= last:
+                bundles.append(time)
         except:
-            last = None
-        current = datetime.datetime.now().weekday()
-        if not last and current == first:
-            bundles.append(time)
-        elif current >= first and current <= last:
-            bundles.append(time)
+            pass #something went wrong, dont add this to the bundle
     return bundles
 class CalOneCardLocationResource(ModelResource):
     times = fields.ToManyField("api.API.TimeSpanResource","timespans",null=True,full=True)
