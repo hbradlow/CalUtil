@@ -276,12 +276,17 @@ def get_cal_balance(username,password):
         pass
     b.go("https://services.housing.berkeley.edu/c1c/dyn/balance.asp")
     soup = bs4.BeautifulSoup(show())
+    balance = ""
+    points = ""
     try:
         balance = soup("table")[0]("tr")[4]("td")[0]("b")[0].string
-        points = soup("table")[0]("tr")[5]("td")[0]("b")[0].string
-        return (balance,points)
     except:
-        return ("","")
+        pass
+    try:
+        points = soup("table")[0]("tr")[5]("td")[0]("b")[0].string
+    except:
+        pass
+    return (balance,points)
 
 def bus_lines():
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)
