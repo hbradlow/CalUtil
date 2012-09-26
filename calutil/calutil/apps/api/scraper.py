@@ -293,6 +293,39 @@ def bus_lines():
         line.title = route['title']
         line.tag = route['tag']
         line.save()
+def distance(lat1,lon1,lat2,lon2):
+    import math
+    return math.sqrt(math.pow(lat1-lat2,2)+math.pow(lon1-lon2,2))
+def scrape_berkeley_buses(debug=False):
+    file = open("calutil/calutil/data/perimiter_data.txt")
+    data = file.readline()
+    line = None
+    num = 0
+    while data:
+        data = [d.strip() for d in data.split(" ")]
+        if data[0]=="line":
+            line = BusLine.objects.create(title=data[1],tag="perimiter-" + data[1])
+            print "Line",line.title
+            num = 0
+        else:
+            lat = data[1].split(",")[0]
+            lon = data[1].split(",")[1]
+            stop = BusStop()
+            stop.latitude = lat
+            stop.longitude = lon
+            stop.tag = line.title + str(num) 
+            stop.title = line.title
+            stop.stop_id = stop.tag
+            for s in BusStop.objects.all():
+                if distance(float(lat),float(lon),s.latitude,s.longitude)<.00005:
+                    stop = s
+                    break
+            stop.has_non_realtime = True
+            stop.save()
+            stop.lines.add(line)
+            print "Stop",stop.title
+            num += 1
+        data = file.readline()
 def bus_stops(debug=False):
     import grequests
     lines = BusLine.objects.all()
@@ -317,6 +350,7 @@ def bus_stops(debug=False):
                 stop.stop_id = raw_stop['stopid']
                 stop.latitude = raw_stop['lat']
                 stop.longitude = raw_stop['lon']
+                stop.has_realtime = True
                 stop.save()
                 stop.lines.add(line)
                 stop.save()
@@ -331,6 +365,7 @@ def bus_stops(debug=False):
             bus_direction.title = direction['title']
             bus_direction.line = line
             bus_direction.save()
+    scraper_berkeley_buses(debug)
 
 def get_schedule(username,password,debug=False):
     from twill.commands import *

@@ -105,21 +105,28 @@ class BusStop(models.Model):
     stop_id = models.CharField(max_length=50)
     lines = models.ManyToManyField(BusLine)
     has_realtime = models.BooleanField(default=False)
+    has_non_realtime = models.BooleanField(default=False)
     def predictions(self,debug=False):
-        import requests
         results = {'objects':[]}
-        soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=actransit&stopId=" + self.stop_id).text)
-        for prediction in soup("predictions"):
-            line = BusLine.objects.get(tag=prediction['routetag'])
-            if debug:
-                print line.tag
-            for direction in prediction("direction"):
-                title = direction['title']
-                for prediction in direction("prediction"):
-                    results['objects'].append({"line":line.tag,"direction":title,"seconds":prediction['seconds'],"minutes":prediction['minutes']})
-        return results
+        if self.has_realtime:
+            import requests
+            soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=actransit&stopId=" + self.stop_id).text)
+            for prediction in soup("predictions"):
+                line = BusLine.objects.get(tag=prediction['routetag'])
+                if debug:
+                    print line.tag
+                for direction in prediction("direction"):
+                    title = direction['title']
+                    for prediction in direction("prediction"):
+                        results['objects'].append({"line":line.tag,"direction":title,"seconds":prediction['seconds'],"minutes":prediction['minutes']})
+            return results
+        else:
+            return results
     def __unicode__(self):
-        print self.stop_id
+        return self.stop_id
+class BusTime(models.Model):
+    stop = models.ForeignKey(BusStop)
+    pub_date = models.TimeField()
 
 class BusStopDirection(models.Model):
     tag = models.CharField(max_length=50)
