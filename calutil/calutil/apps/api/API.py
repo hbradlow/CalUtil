@@ -28,11 +28,16 @@ def filter_timespan_for_today(times):
     }
     bundles = []
     for time in times:
-        d = re.match(r'\s*(\w+)-(\w+)\s*',time.obj.days)
+        d = re.match(r'\s*(\w+)\s*(-\s*(\w+))?\s*',time.obj.days)
         first = matches[d.group(1).lower()]
-        last = matches[d.group(2).lower()]
+        try:
+            last = matches[d.group(3).lower()]
+        except:
+            last = None
         current = datetime.datetime.now().weekday()
-        if current >= first and current <= last:
+        if not last and current == first:
+            bundles.append(time)
+        elif current >= first and current <= last:
             bundles.append(time)
     return bundles
 class CalOneCardLocationResource(ModelResource):
