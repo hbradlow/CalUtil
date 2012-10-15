@@ -11,6 +11,11 @@ Cal one card locations (time, coordinates, picture)
 """
 
 ###############################NEW########################################
+class RSFRoom(models.Model):
+    location = models.CharField(max_length=200,null=True)
+    fill_value = models.FloatField()
+    update = ModificationDateTimeField()
+    pop_count = models.IntegerField()
 class Department(models.Model):
     name = models.CharField(max_length=500)
     possible_names = models.TextField(default="")
@@ -369,6 +374,7 @@ class Webcast(models.Model):
         return self.title + ": " + self.number
 
 
+admin.site.register(RSFRoom)
 admin.site.register(BusLine)
 admin.site.register(BusVehicle)
 admin.site.register(MenuItem)

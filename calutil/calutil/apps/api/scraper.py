@@ -312,6 +312,7 @@ def flatten(l):
     return [i for sublist in l for i in l]
 def berkeley_buses(debug=False):
     import datetime
+    """
     rfs_times = {
             "times": flatten([
                 [t for t in time_period(datetime.time(6,45),datetime.time(11,0),datetime.timedelta(minutes=15))],
@@ -357,6 +358,7 @@ def berkeley_buses(debug=False):
                 0,5,7,9,11,15,17,19,21
             ]
     }
+    """
 
     file = open("calutil/calutil/data/perimiter_data.txt")
     data = file.readline()

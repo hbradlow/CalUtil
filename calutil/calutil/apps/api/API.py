@@ -1,8 +1,16 @@
 from django.contrib.auth.models import User
+from tastypie.authorization import Authorization
 from tastypie import fields
 from tastypie.resources import ModelResource,ALL_WITH_RELATIONS,ALL
 from api.models import *
 
+class RSFRoomResource(ModelResource):
+    class Meta:
+        queryset = RSFRoom.objects.all()
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        resource_name = 'rsf_room'
+        authorization= Authorization()
 class BusLineResource(ModelResource):
     class Meta:
         queryset = BusLine.objects.all()

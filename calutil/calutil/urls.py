@@ -6,6 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 api = Api(api_name='app_data')
+api.register(RSFRoomResource())
 api.register(BusLineResource())
 api.register(BusStopResource())
 api.register(CalOneCardLocationResource())

@@ -33,3 +33,4 @@ pip-log.txt
 media
 whoosh_index
 site_media
+*.swp
