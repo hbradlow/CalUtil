@@ -301,7 +301,63 @@ def bus_lines():
 def distance(lat1,lon1,lat2,lon2):
     import math
     return math.sqrt(math.pow(lat1-lat2,2)+math.pow(lon1-lon2,2))
+def time_period(start,end,increment):
+    import datetime
+    datetime_start = datetime.datetime(1,1,1,start.hour,start.minute)
+    datetime_end = datetime.datetime(1,1,1,end.hour,end.minute)
+    while datetime_start <= datetime_end:
+        yield datetime_start.time()
+        datetime_start += increment
+def flatten(l):
+    return [i for sublist in l for i in l]
 def berkeley_buses(debug=False):
+    import datetime
+    rfs_times = {
+            "times": flatten([
+                [t for t in time_period(datetime.time(6,45),datetime.time(11,0),datetime.timedelta(minutes=15))],
+                [t for t in time_period(datetime.time(11,30),datetime.time(16,0),datetime.timedelta(minutes=30))],
+                [t for t in time_period(datetime.time(16,15),datetime.time(19,30),datetime.timedelta(minutes=15))],
+            ]),
+            "offsets": [
+                0,2,4,5,6,8,10,11,12,14,18,20,21,23,25,27,28
+            ]
+    }
+    rfs_tabls = [
+            "first":
+            [datetime.time(6,45),datetime.time(6,57),datetime.time(7,0),datetime.time(7,05),datetime.time(7,10),None,datetime.time(7,35),datetime.time(7,40),datetime.time(7,42),datetime.time(7,48),datetime.time(7,53),datetime.time(8,02),datetime.time(8,05)],
+            "others":
+            [
+                [None,33,35,35,35,None,35,35,35,35,35,35,35],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,None,65,65,65,None,60,60,60,60,60,60,60],
+                [None,datetime.time(17,0),105,105,65,None,60,60,60,60,60,60,60],
+            ]
+    ]
+    p_times = {
+            "times": flatten([
+                [t for t in time_period(datetime.time(6,45),datetime.time(11,0),datetime.timedelta(minutes=15))],
+                [t for t in time_period(datetime.time(11,30),datetime.time(16,0),datetime.timedelta(minutes=30))],
+                [t for t in time_period(datetime.time(16,15),datetime.time(19,30),datetime.timedelta(minutes=15))],
+            ]),
+            "offsets": [
+                0,2,4,5,6,8,10,11,12,14,18,20,21,23,25,27,28
+            ]
+    }
+    h_times = {
+            "times": flatten([
+                [t for t in time_period(datetime.time(7,40),datetime.time(18,10),datetime.timedelta(minutes=30))],
+                [time_period(datetime.time(19,0)]
+            ]),
+            "offsets": [
+                0,5,7,9,11,15,17,19,21
+            ]
+    }
+
     file = open("calutil/calutil/data/perimiter_data.txt")
     data = file.readline()
     line = None
