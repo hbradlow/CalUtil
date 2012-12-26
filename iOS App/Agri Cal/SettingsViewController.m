@@ -28,6 +28,38 @@
     }
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"CalNet login";
+}
+
+- (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 44;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
+    NSString *titleText = @"";
+    switch (indexPath.row) {
+        case 0:
+            titleText = @"Username";
+            break;
+        default:
+            titleText = @"Password";
+            break;
+    }
+    cell.textLabel.text = titleText;
+    cell.detailTextLabel.text = @"hello";
+    return cell;
+}
+
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     [textField resignFirstResponder];

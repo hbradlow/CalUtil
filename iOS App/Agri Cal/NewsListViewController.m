@@ -11,9 +11,8 @@
 #import "AppDelegate.h"
 #import "NewsStoryViewController.h"
 
-@interface NewsListViewController ()
-
-@end
+#define MENU_WIDTH self.navigationController.view.frame.size.width*3/4
+#define MENU_HEIGHT self.navigationController.view.frame.size.height
 
 @implementation NewsListViewController
 
@@ -39,6 +38,33 @@
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating news"]];
     [self.refreshControl beginRefreshing];
     [self loadRSS];
+    self.isMenuHidden = YES;
+    self.menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, MENU_WIDTH, MENU_HEIGHT)
+                                                      style:UITableViewStylePlain];
+    [self.tabBarController.view addSubview:self.menuTableView];
+    [self.tabBarController.view sendSubviewToBack:self.menuTableView];
+    self.menuViewController = [[SettingsViewController alloc] init];
+    self.menuTableView.delegate = self.menuViewController;
+    self.menuTableView.dataSource = self.menuViewController;
+}
+
+- (IBAction)showMenu:(id)sender
+{
+    void (^animationBlock) () = ^{
+        CGRect frame = self.navigationController.view.frame;
+        if (self.isMenuHidden)
+        {
+            frame.origin.x += MENU_WIDTH;
+            self.isMenuHidden = NO;
+        }
+        else
+        {
+            frame.origin.x -= MENU_WIDTH;
+            self.isMenuHidden = YES;
+        }
+        self.navigationController.view.frame = frame;
+    };
+    [UIView animateWithDuration:0.5 animations:animationBlock];
 }
 
 - (void)viewWillAppear:(BOOL)animated
