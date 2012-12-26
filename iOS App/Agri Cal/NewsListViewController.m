@@ -41,11 +41,20 @@
     self.isMenuHidden = YES;
     self.menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, MENU_WIDTH, MENU_HEIGHT)
                                                       style:UITableViewStylePlain];
+    [self.menuTableView setUserInteractionEnabled:YES];
     [self.tabBarController.view addSubview:self.menuTableView];
     [self.tabBarController.view sendSubviewToBack:self.menuTableView];
     self.menuViewController = [[SettingsViewController alloc] init];
     self.menuTableView.delegate = self.menuViewController;
     self.menuTableView.dataSource = self.menuViewController;
+    
+    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
+	{
+		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
+		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
+		
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Reveal", @"Reveal") style:UIBarButtonItemStylePlain target:self.navigationController.parentViewController action:@selector(revealToggle:)];
+	}
 }
 
 - (IBAction)showMenu:(id)sender
@@ -55,6 +64,7 @@
         if (self.isMenuHidden)
         {
             frame.origin.x += MENU_WIDTH;
+            [self.menuTableView setUserInteractionEnabled:YES];
             self.isMenuHidden = NO;
         }
         else

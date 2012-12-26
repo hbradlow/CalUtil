@@ -110,6 +110,8 @@
 		63C28D4015FAD72C00E212F0 /* ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3F15FAD72B00E212F0 /* ClassListViewController.m */; };
 		63C28D4715FAF00A00E212F0 /* ClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D4615FAF00A00E212F0 /* ClassViewController.m */; };
 		63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */; };
+		63DA57B1168AD36B003E5D75 /* RevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B0168AD36A003E5D75 /* RevealController.m */; };
+		63DA57B4168AD3CE003E5D75 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
 		63DE52BB1539332C00F9ECFB /* berkeleyThaiHouse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */; };
 		63DE52BD153933E700F9ECFB /* cafedurant.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52BC153933E700F9ECFB /* cafedurant.jpg */; };
@@ -285,6 +287,10 @@
 		63C28D4615FAF00A00E212F0 /* ClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassViewController.m; sourceTree = "<group>"; };
 		63D6146515EECA9F00931A59 /* DisclosureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureAnnotationView.h; sourceTree = "<group>"; };
 		63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureAnnotationView.m; sourceTree = "<group>"; };
+		63DA57AF168AD36A003E5D75 /* RevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealController.h; sourceTree = "<group>"; };
+		63DA57B0168AD36A003E5D75 /* RevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevealController.m; sourceTree = "<group>"; };
+		63DA57B2168AD3CE003E5D75 /* ZUUIRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUUIRevealController.h; sourceTree = "<group>"; };
+		63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZUUIRevealController.m; sourceTree = "<group>"; };
 		63DE52B71539330C00F9ECFB /* bearbasics.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bearbasics.jpg; sourceTree = "<group>"; };
 		63DE52BA1539332C00F9ECFB /* berkeleyThaiHouse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = berkeleyThaiHouse.jpg; sourceTree = "<group>"; };
 		63DE52BC153933E700F9ECFB /* cafedurant.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cafedurant.jpg; sourceTree = "<group>"; };
@@ -379,6 +385,10 @@
 			children = (
 				6393DE17150301F3003B77F5 /* AppDelegate.h */,
 				6393DE18150301F3003B77F5 /* AppDelegate.m */,
+				63DA57B2168AD3CE003E5D75 /* ZUUIRevealController.h */,
+				63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */,
+				63DA57AF168AD36A003E5D75 /* RevealController.h */,
+				63DA57B0168AD36A003E5D75 /* RevealController.m */,
 			);
 			name = "App wide files";
 			sourceTree = "<group>";
@@ -882,6 +892,8 @@
 				630F206415FEAC5C00D1E447 /* NewsListViewController.m in Sources */,
 				63716503160180E4006BC4AC /* NewsStory.m in Sources */,
 				63B33DB3160290F20044E7DE /* NewsStoryViewController.m in Sources */,
+				63DA57B1168AD36B003E5D75 /* RevealController.m in Sources */,
+				63DA57B4168AD3CE003E5D75 /* ZUUIRevealController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

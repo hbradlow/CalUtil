@@ -7,6 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NewsListViewController.h"
+#import "SettingsViewController.h"
+#import "MapViewController.h"
+#import "RevealController.h"
+#import "ZUUIRevealController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIWebViewDelegate>
 
@@ -14,5 +19,7 @@
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) UIWebView *web;
+@property (strong, nonatomic) RevealController *viewController;
+
 @property BOOL hasLoaded;
 @end

@@ -13,6 +13,13 @@ static float CenterOfCampusLong = -122.259481;
 static float LatitudeDelta = 0.015;
 static float LongitudeDelta = 0.015;
 
+- (id)init
+{
+    UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+    self = [st instantiateViewControllerWithIdentifier:@"maps"];
+    return self;
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     
