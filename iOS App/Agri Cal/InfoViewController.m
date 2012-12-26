@@ -1,11 +1,26 @@
 #import "InfoViewController.h"
 
 @implementation InfoViewController
+
+- (id)init
+{
+    UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+    self = [st instantiateViewControllerWithIdentifier:@"info"];
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.titles = @[@[@"Bear Walk", @"UCPD Non-Emergency", @"Tang Center"], @[@"Cal Bears", @"Schedulebuilder", @"Tele-bears", @"Wikipedia"], @[@"Air Express Cab", @"Yellow Cab Express"]];
     self.detailTitles = @[@[@"510-642-9255", @"510-642-6760", @"510-642-2000"], @[@"http://www.calbears.com/", @"http://schedulebuilder.berkeley.edu/", @"http://telebears.berkeley.edu", @"http://en.wikipedia.org/wiki/University_of_California,_Berkeley"], @[@"510-485-4848", @"510-234-5555"]];
+    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
+	{
+		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
+		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
+		
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Reveal", @"Reveal") style:UIBarButtonItemStylePlain target:self.navigationController.parentViewController action:@selector(revealToggle:)];
+	}
 }
 /*
  The table view contains only static data so just handle

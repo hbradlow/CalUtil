@@ -33,9 +33,17 @@
 #import <UIKit/UIKit.h>
 #import "ZUUIRevealController.h"
 #import "NewsListViewController.h"
-#import "SettingsViewController.h"
 #import "MapViewController.h"
+#import "InfoViewController.h"
+#import "DiningCommonListViewController.h"
+#import "DepartmentListViewController.h"
 
 @interface RevealController : ZUUIRevealController <ZUUIRevealControllerDelegate>
+
+@property (nonatomic, retain) MapViewController *mapController;
+@property (nonatomic, retain) NewsListViewController *newsController;
+@property (nonatomic, retain) InfoViewController *infoController;
+@property (nonatomic, retain) DiningCommonListViewController *diningController;
+@property (nonatomic, retain) DepartmentListViewController *departmentController;
 
 @end

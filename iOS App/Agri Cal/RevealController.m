@@ -31,6 +31,7 @@
  */
 
 #import "RevealController.h"
+#import "SettingsViewController.h"
 
 @implementation RevealController
 
@@ -51,10 +52,10 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     NewsListViewController *frontViewController = [[NewsListViewController alloc] init];
+    self.newsController = frontViewController;
     SettingsViewController *rearViewController = [[SettingsViewController alloc] init];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-    self = [super initWithFrontViewController:navigationController rearViewController:rearViewController];
+    self = [super initWithFrontViewController:frontViewController rearViewController:rearViewController];
     self.delegate = self;
     return self;
 }
@@ -88,6 +89,7 @@
 - (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController
 {
 	NSLog(@"%@", NSStringFromSelector(_cmd));
+    [rearViewController performSelector:@selector(hide)];
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController

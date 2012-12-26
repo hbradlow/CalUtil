@@ -16,6 +16,13 @@
 
 @implementation NewsListViewController
 
+- (id)init
+{
+    UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+    self = [st instantiateViewControllerWithIdentifier:@"news"];
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,9 +51,6 @@
     [self.menuTableView setUserInteractionEnabled:YES];
     [self.tabBarController.view addSubview:self.menuTableView];
     [self.tabBarController.view sendSubviewToBack:self.menuTableView];
-    self.menuViewController = [[SettingsViewController alloc] init];
-    self.menuTableView.delegate = self.menuViewController;
-    self.menuTableView.dataSource = self.menuViewController;
     
     if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
 	{
@@ -55,26 +59,6 @@
 		
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Reveal", @"Reveal") style:UIBarButtonItemStylePlain target:self.navigationController.parentViewController action:@selector(revealToggle:)];
 	}
-}
-
-- (IBAction)showMenu:(id)sender
-{
-    void (^animationBlock) () = ^{
-        CGRect frame = self.navigationController.view.frame;
-        if (self.isMenuHidden)
-        {
-            frame.origin.x += MENU_WIDTH;
-            [self.menuTableView setUserInteractionEnabled:YES];
-            self.isMenuHidden = NO;
-        }
-        else
-        {
-            frame.origin.x -= MENU_WIDTH;
-            self.isMenuHidden = YES;
-        }
-        self.navigationController.view.frame = frame;
-    };
-    [UIView animateWithDuration:0.5 animations:animationBlock];
 }
 
 - (void)viewWillAppear:(BOOL)animated
