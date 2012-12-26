@@ -20,25 +20,28 @@
                                 </connections>
                             </mapView>
                             <searchBar hidden="YES" contentMode="redraw" barStyle="blackOpaque" text="" id="8ge-Fv-ljt">
-                                <rect key="frame" x="0.0" y="21" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="2" id="2CD-Qr-3SC"/>
                                 </connections>
                             </searchBar>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="mapkey.png" id="wjr-dH-aWC">
-                                <rect key="frame" x="320" y="120" width="160" height="240"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="tJT-Xx-sni">
+                                <rect key="frame" x="303" y="336" width="20" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=" Cal1Card balance: $2.14" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DPZ-oJ-vY8">
-                                <rect key="frame" x="0.0" y="0.0" width="1200" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.24705882370000001" blue="0.52941179279999995" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Button" image="MapButton.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="displayMapKey:" destination="2" eventType="touchUpInside" id="CRd-b8-rSv"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -47,7 +50,6 @@
                         <nil key="title"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="mapKeyImageView" destination="wjr-dH-aWC" id="C8p-m3-W9P"/>
                         <outlet property="mapView" destination="N0G-e7-n14" id="7dI-kL-pDk"/>
                         <outlet property="searchBar" destination="8ge-Fv-ljt" id="076-F2-Skb"/>
                         <outlet property="searchDisplayController" destination="HnC-EA-YeH" id="9bK-Jg-qh6"/>
@@ -179,14 +181,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <label key="tableHeaderView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text=" Mealpoints: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RJ4-JR-Ct7">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.0" green="0.24705882370000001" blue="0.52941179279999995" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <connections>
                                     <outlet property="dataSource" destination="Mhp-cR-Msi" id="ejJ-xc-Iz8"/>
                                     <outlet property="delegate" destination="Mhp-cR-Msi" id="bzb-Nw-rAG"/>
@@ -597,7 +591,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2sd-f4-5Oa">
-                                <rect key="frame" x="0.0" y="44" width="269" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="269" height="460"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -605,19 +599,11 @@
                                     <outlet property="delegate" destination="70q-qE-NIL" id="aEZ-bv-US1"/>
                                 </connections>
                             </tableView>
-                            <navigationBar contentMode="scaleToFill" id="m4b-Sc-TYD">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <navigationItem title="Settings" id="wnw-C3-vij"/>
-                                </items>
-                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="navigationBar" destination="m4b-Sc-TYD" id="2q0-t3-oVn"/>
                         <outlet property="tableView" destination="2sd-f4-5Oa" id="Njj-j8-hhQ"/>
                     </connections>
                 </viewController>
@@ -628,9 +614,9 @@
     </scenes>
     <resources>
         <image name="Calendar-Month.png" width="30" height="30"/>
+        <image name="MapButton.png" width="15" height="45"/>
         <image name="Radio-Tower.png" width="30" height="30"/>
         <image name="crossroads.png" width="30" height="30"/>
-        <image name="mapkey.png" width="160" height="240"/>
         <image name="world.png" width="26" height="26"/>
     </resources>
     <classes>
