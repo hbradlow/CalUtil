@@ -50,11 +50,14 @@
     return 2;
 }
 
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{ return nil;}
+
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
         case 0:
-            return @"CalNet login";
+            return @"";
         case 1:
             return @"Campus Information";
     }
@@ -63,6 +66,8 @@
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section == 0)
+        return 0;
     return 44;
 }
 
@@ -74,7 +79,7 @@
     NSLog(@"%i,%i", x,y);
     if (indexPath.section == 0)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textcell"];
+        cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textcell"];
         UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(4, 10, 312, cell.frame.size.height-16)];
         textField.backgroundColor = [UIColor clearColor];
         [textField setEnabled:YES];

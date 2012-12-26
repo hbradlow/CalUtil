@@ -4,6 +4,7 @@
 #import "DiningCommonListViewController.h"
 #import "DepartmentListViewController.h"
 #import "NewsListViewController.h"
+#import "CUMenuCellViewCell.h"
 
 @interface SettingsViewController : UIViewController <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *username;
