@@ -18,6 +18,7 @@
     self.username.text = [[NSUserDefaults standardUserDefaults] objectForKey:kUserName];
     self.password.text = [[NSUserDefaults standardUserDefaults] objectForKey:kPassword];
     [self.loginLabel setFont:[UIFont fontWithName:kAppFont size:40]];
+    [self.navigationBar  setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.75 alpha:1],UITextAttributeTextColor,[UIColor clearColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:20.0],UITextAttributeFont, nil]];
 }
 - (void)viewDidUnload
 {
@@ -41,17 +42,16 @@
 {
     if (section == 0)
         return 2;
+    else if (section < 3)
+        return 1;
     else
         return 5;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 4;
 }
-
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{ return nil;}
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -66,9 +66,37 @@
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
-        return 0;
-    return 44;
+    return 20;
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
+    UIView *view = [[UIView alloc] initWithFrame:rect];
+    [view setBackgroundColor:[UIColor colorWithWhite:0.075 alpha:1]];
+    rect.origin.y += 1;
+    rect.origin.x += 4;
+    rect.size.height -= 1;
+    rect.size.width -= 4;
+    UILabel *label = [[UILabel alloc] initWithFrame:rect];
+    label.textColor = [UIColor colorWithWhite:0.5 alpha:1];
+    label.backgroundColor = [UIColor clearColor];
+    switch (section) {
+        case 0:
+            label.text = @"CalNet login";
+            break;
+        case 1:
+            label.text = @"Cal1Card balance";
+            break;
+        case 2:
+            label.text = @"Mealpoints";
+            break;
+        case 3:
+            label.text = @"Information";
+            break;
+    }
+    [view addSubview:label];
+    return view;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,8 +108,9 @@
     if (indexPath.section == 0)
     {
         cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textcell"];
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(4, 10, 312, cell.frame.size.height-16)];
+        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 312, cell.frame.size.height-16)];
         textField.backgroundColor = [UIColor clearColor];
+        [textField setFont:[UIFont fontWithName:kAppFont size:18]];
         [textField setEnabled:YES];
         textField.delegate = self;
         if (indexPath.row==0)
@@ -97,22 +126,16 @@
             [cell addSubview:textField];
         }
     }
-    else
+    else if (indexPath.section == 3)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor colorWithWhite:0.75 alpha:1];
+        cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Maps";
-                if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
-                {
-                    NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]);
-                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@  ",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]];
-                }
-                else
-                {
-                    NSLog(@".");
-                    cell.detailTextLabel.text = @"N/A  ";
-                }
                 break;
             case 1:
                 cell.textLabel.text = @"Dining";
@@ -127,6 +150,40 @@
                 cell.textLabel.text = @"News";
                 break;
             default:
+                break;
+        }
+    }
+    else
+    {
+        cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor colorWithWhite:0.75 alpha:1];
+        cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
+        switch (indexPath.section) {
+            case 1:
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
+                {
+                    NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]);
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@  ",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]];
+                }
+                else
+                {
+                    NSLog(@".");
+                    cell.textLabel.text = @"N/A  ";
+                }
+                break;
+            case 2:
+                if ([[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] isEqualToString:@""])
+                {
+                    NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints]);
+                    cell.textLabel.text = [NSString stringWithFormat:@"%@  ",[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints]];
+                }
+                else
+                {
+                    NSLog(@".");
+                    cell.textLabel.text = @"N/A  ";
+                }
                 break;
         }
     }

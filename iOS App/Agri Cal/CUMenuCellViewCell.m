@@ -13,22 +13,30 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGColorRef whiteColor = [UIColor colorWithWhite:0.2 alpha:1].CGColor;
-    CGColorRef lightGrayColor = [UIColor colorWithWhite:0.1 alpha:1].CGColor;
+    UIColor *whiteColor = [UIColor colorWithWhite:0.15 alpha:1];
+    UIColor *lightGrayColor = [UIColor colorWithWhite:0.13 alpha:1];
     
     CGRect paperRect = self.bounds;
     
     drawCellGradient(context, paperRect, whiteColor, lightGrayColor);
+    
+    CGRect separator = CGRectMake(self.bounds.origin.x, self.bounds.origin.y+self.bounds.size.height-1, self.bounds.size.width, 1.0f);
+    UIColor* redColor =
+    [UIColor colorWithWhite:0.2 alpha:1];
+    
+    CGContextSetFillColorWithColor(context, [redColor CGColor]);
+    CGContextFillRect(context, separator);
+    
 }
-void drawCellGradient(CGContextRef context, CGRect rect, CGColorRef startColor,
-                        CGColorRef  endColor) {
+void drawCellGradient(CGContextRef context, CGRect rect, UIColor* startColor,
+                        UIColor*  endColor) {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[] = { 0.0, 1.0 };
     
-    NSArray *colors = [NSArray arrayWithObjects:(__bridge id)startColor, (__bridge id)endColor, nil];
+    NSArray *colors = [NSArray arrayWithObjects:(id)[startColor CGColor], (id)[endColor CGColor], nil];
     
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace,
-                                                        (__bridge CFArrayRef) colors, locations);
+                                                        (__bridge CFArrayRef)colors, locations);
     
     CGPoint startPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect));
     CGPoint endPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect));

@@ -29,12 +29,12 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadRSS) forControlEvents:UIControlEventValueChanged];
     self.rssFeed = [[NSMutableArray alloc] init];
-    UIImage* image=[UIImage imageNamed:@"SplashScreenAnimated.png"];
+    UIImage* image=[UIImage imageNamed:@"Default-568h.png"];
     if (!((AppDelegate*)[[UIApplication sharedApplication] delegate]).hasLoaded)
     {
-        self.splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,-64,320,480)];
+        self.splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,image.size.width,image.size.height)];
         self.splashView.image = image;
-        [self.view addSubview:self.splashView];
+        [self.navigationController.view addSubview:self.splashView];
         [self performSelector:@selector(removeSplash) withObject:self afterDelay:1.5];
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:1.5];
