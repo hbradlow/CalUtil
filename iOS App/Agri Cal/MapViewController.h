@@ -27,7 +27,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
-@property (weak, nonatomic) IBOutlet UIImageView *mapKeyImageView;
+@property (weak, nonatomic) IBOutlet UIButton *mapKeyImageView;
 @property (strong, nonatomic) IBOutlet InfoView *infoView;
 
 @property CLLocationCoordinate2D previousUserLocation;
