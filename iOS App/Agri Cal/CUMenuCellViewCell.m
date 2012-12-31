@@ -13,20 +13,28 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    UIColor *whiteColor = [UIColor colorWithWhite:0.15 alpha:1];
-    UIColor *lightGrayColor = [UIColor colorWithWhite:0.13 alpha:1];
+    UIColor *whiteColor = [UIColor colorWithWhite:0.12 alpha:1];
+    UIColor *lightGrayColor = [UIColor colorWithWhite:0.12 alpha:1];
     
     CGRect paperRect = self.bounds;
     
     drawCellGradient(context, paperRect, whiteColor, lightGrayColor);
     
-    CGRect separator = CGRectMake(self.bounds.origin.x, self.bounds.origin.y+self.bounds.size.height-1, self.bounds.size.width, 1.0f);
-    UIColor* redColor =
-    [UIColor colorWithWhite:0.2 alpha:1];
-    
-    CGContextSetFillColorWithColor(context, [redColor CGColor]);
+    CGRect separator = CGRectMake(self.bounds.origin.x,
+                                  self.bounds.origin.y+self.bounds.size.height-1,
+                                  self.bounds.size.width,
+                                  1.0f);
+    UIColor* separatorColor = [UIColor colorWithWhite:0 alpha:1];
+
+    CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);
     
+    separator.origin.y -= self.bounds.size.height-1;
+    
+    separatorColor = [UIColor colorWithWhite:0.9 alpha:0.05];
+    
+    CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
+    CGContextFillRect(context, separator);
 }
 void drawCellGradient(CGContextRef context, CGRect rect, UIColor* startColor,
                         UIColor*  endColor) {

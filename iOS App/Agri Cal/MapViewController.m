@@ -1,6 +1,7 @@
 #import "MapViewController.h"
 #import "NextBusViewController.h"
 #import "Cal1CardViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #warning Deals for cal1card?
 
@@ -78,7 +79,23 @@ static float LongitudeDelta = 0.015;
     }
     @catch (NSException *exception) {
         NSLog(@"Error when loading map annotations");
-    }    
+    }
+    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
+	{
+		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
+		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
+		
+        UIButton *a1 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [a1 setFrame:CGRectMake(0.0f, 0.0f, 50.0f, 30.0f)];
+        [a1 addTarget:self.navigationController.parentViewController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        [a1 setImage:[UIImage imageNamed:@"menubutton"] forState:UIControlStateNormal];
+        UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
+		self.navigationItem.leftBarButtonItem = random;
+	}
+    self.mapView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    self.mapView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.mapView.layer.shadowRadius = 2.0f;
+    self.mapView.layer.shadowOpacity = 1.0f;
 }
 - (void)viewWillAppear:(BOOL)animated
 {

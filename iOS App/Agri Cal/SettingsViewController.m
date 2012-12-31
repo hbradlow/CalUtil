@@ -1,4 +1,6 @@
 #import "SettingsViewController.h"
+#import "CUMenuTextField.h"
+#import "CUSettingsHeader.h"
 
 @implementation SettingsViewController
 @synthesize username;
@@ -19,6 +21,15 @@
     self.password.text = [[NSUserDefaults standardUserDefaults] objectForKey:kPassword];
     [self.loginLabel setFont:[UIFont fontWithName:kAppFont size:40]];
     [self.navigationBar  setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.75 alpha:1],UITextAttributeTextColor,[UIColor clearColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:20.0],UITextAttributeFont, nil]];
+    self.tapRecognizer = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+}
+
+- (void)dismissKeyboard
+{
+    [self.username resignFirstResponder];
+    [self.password resignFirstResponder];
 }
 - (void)viewDidUnload
 {
@@ -66,19 +77,20 @@
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 22;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
-    UIView *view = [[UIView alloc] initWithFrame:rect];
-    [view setBackgroundColor:[UIColor colorWithWhite:0.075 alpha:1]];
+    CUSettingsHeader *view = [[CUSettingsHeader alloc] initWithFrame:rect];
+    [view setBackgroundColor:[UIColor colorWithWhite:0.1 alpha:1]];
     rect.origin.y += 1;
-    rect.origin.x += 4;
-    rect.size.height -= 1;
+    rect.origin.x += 8;
+    rect.size.height -= 2;
     rect.size.width -= 4;
     UILabel *label = [[UILabel alloc] initWithFrame:rect];
+    label.font = [UIFont boldSystemFontOfSize:14];
     label.textColor = [UIColor colorWithWhite:0.5 alpha:1];
     label.backgroundColor = [UIColor clearColor];
     switch (section) {
@@ -108,8 +120,9 @@
     if (indexPath.section == 0)
     {
         cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textcell"];
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 312, cell.frame.size.height-16)];
+        UITextField *textField = [[CUMenuTextField alloc] initWithFrame:CGRectMake(10, 10, 312, cell.frame.size.height-16)];
         textField.backgroundColor = [UIColor clearColor];
+        textField.textColor = [UIColor colorWithWhite:0.75 alpha:1];
         [textField setFont:[UIFont fontWithName:kAppFont size:18]];
         [textField setEnabled:YES];
         textField.delegate = self;
@@ -124,6 +137,7 @@
             self.password = textField;
             textField.placeholder = @"Password";
             [cell addSubview:textField];
+            textField.secureTextEntry = YES;
         }
     }
     else if (indexPath.section == 3)
@@ -196,9 +210,16 @@
     [self.password resignFirstResponder];
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section > 0)
+        return YES;
+    else return NO;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section)
+    if (indexPath.section > 2)
     {
         [self hide];
         RevealController *revealController = [self.parentViewController isKindOfClass:[RevealController class]] ? (RevealController *)self.parentViewController : nil;

@@ -13,7 +13,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     UIColor *whiteColor = [UIColor colorWithWhite:0.15 alpha:1];
-    UIColor *lightGrayColor = [UIColor colorWithWhite:0.13 alpha:1];
+    UIColor *lightGrayColor = [UIColor colorWithWhite:0.12 alpha:1];
     
     CGRect paperRect = self.bounds;
     drawLinearGradient(context, paperRect, whiteColor, lightGrayColor);

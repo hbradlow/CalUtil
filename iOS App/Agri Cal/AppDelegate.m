@@ -35,7 +35,7 @@
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:12.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
     
     [[UISearchBar appearance] setTintColor:[UIColor colorWithWhite:0.8 alpha:1]];
-    [[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"searchbg"]];
+    [[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"searchbar"]];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"empty"] forState:UIBarMetricsDefault];
     
     // Autologin to airbears

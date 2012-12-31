@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIGestureRecognizer *tapRecognizer;
 @end
