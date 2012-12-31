@@ -50,6 +50,37 @@
      setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
     [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor colorWithWhite:0.95 alpha:1]];
     
+    UIImage *segmentUnselectedUnselected = [UIImage imageNamed:@"segdiv"];
+    UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"segdiv"];
+    UIImage *segUnselectedSelected = [UIImage imageNamed:@"segdiv"];
+    
+    UIImage *segmentUnselected = [UIImage imageNamed:@"empty"];
+    UIImage *segmentSelected = [UIImage imageNamed:@"empty"];
+    
+    [[UISegmentedControl appearance] setDividerImage:segmentUnselectedUnselected forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setDividerImage:segmentSelectedUnselected forLeftSegmentState:UIControlStateSelected rightSegmentState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setDividerImage:segUnselectedSelected forLeftSegmentState:UIControlStateNormal rightSegmentState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    [[UISegmentedControl appearance] setBackgroundImage:segmentUnselected forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearance] setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    NSDictionary *segattributes =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor colorWithWhite:0.1 alpha:1], UITextAttributeTextColor,
+     [UIColor colorWithWhite:0.2 alpha:1], UITextAttributeTextShadowColor,
+     [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+     [UIFont fontWithName:kAppFont size:16], UITextAttributeFont,
+     nil];
+    [[UISegmentedControl appearance] setTitleTextAttributes:segattributes forState:UIControlStateHighlighted];
+    NSDictionary *segattributesunsel =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor colorWithWhite:0.4 alpha:1], UITextAttributeTextColor,
+     [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5], UITextAttributeTextShadowColor,
+     [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+     [UIFont fontWithName:kAppFont size:16], UITextAttributeFont,
+     nil];
+    [[UISegmentedControl appearance] setTitleTextAttributes:segattributesunsel forState:UIControlStateNormal];
+    
     // Autologin to airbears
     self.web = [[UIWebView alloc] init];
     self.web.delegate = self;

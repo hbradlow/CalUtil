@@ -99,6 +99,12 @@ static float LongitudeDelta = 0.015;
     [[self.mapView layer] setShadowRadius:6.0f];
     [[self.mapView layer] setShadowOffset:CGSizeMake(0, 3)];
     [self.mapView setNeedsDisplay];
+    
+    UIImage *segmentUnselected = [UIImage imageNamed:@"segbgwhite"];
+    UIImage *segmentSelected = [UIImage imageNamed:@"segbgwhite"];
+    
+    [self.annotationSelector setBackgroundImage:segmentUnselected forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [self.annotationSelector setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
 }
 - (void)viewWillAppear:(BOOL)animated
 {

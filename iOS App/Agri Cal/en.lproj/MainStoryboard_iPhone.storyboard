@@ -27,21 +27,15 @@
                                     <outlet property="delegate" destination="2" id="2CD-Qr-3SC"/>
                                 </connections>
                             </searchBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="tJT-Xx-sni">
-                                <rect key="frame" x="0.0" y="336" width="20" height="60"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Button" image="MapButton.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="displayMapKey:" destination="2" eventType="touchUpInside" id="CRd-b8-rSv"/>
-                                </connections>
-                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="XIK-ZH-cmh">
+                                <rect key="frame" x="0.0" y="373" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <segments>
+                                    <segment title="Buses"/>
+                                    <segment title="Cal1Card"/>
+                                    <segment title="Libraries"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -49,6 +43,7 @@
                     <navigationItem key="navigationItem" title="Maps" id="UMW-eg-V7p"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="annotationSelector" destination="XIK-ZH-cmh" id="bmT-f3-JU1"/>
                         <outlet property="mapView" destination="N0G-e7-n14" id="7dI-kL-pDk"/>
                         <outlet property="searchBar" destination="8ge-Fv-ljt" id="076-F2-Skb"/>
                         <outlet property="searchDisplayController" destination="HnC-EA-YeH" id="9bK-Jg-qh6"/>
@@ -194,7 +189,7 @@
                             <rect key="frame" x="5" y="7" width="310" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="XRoads"/>
+                                <segment title="Cross"/>
                                 <segment title="CKC"/>
                                 <segment title="Cafè 3"/>
                                 <segment title="Foothill"/>
@@ -622,7 +617,6 @@
     </scenes>
     <resources>
         <image name="Calendar-Month.png" width="30" height="30"/>
-        <image name="MapButton.png" width="20" height="60"/>
         <image name="Radio-Tower.png" width="30" height="30"/>
         <image name="crossroads.png" width="30" height="30"/>
         <image name="world.png" width="26" height="26"/>
@@ -652,7 +646,6 @@
         <class className="DiningCommonListViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
-                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
