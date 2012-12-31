@@ -29,14 +29,26 @@
     [[UISegmentedControl appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:14.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
     [[UISegmentedControl appearance] setContentPositionAdjustment:kSegmentedOffset forSegmentType:UISegmentedControlSegmentAny barMetrics:UIBarMetricsDefault];
     
-    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.4 alpha:1],UITextAttributeTextColor,[UIColor clearColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset , [UIFont fontWithName:kAppFont size:14.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:kFontOffset forBarMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0 alpha:1],UITextAttributeTextColor,[UIColor clearColor],UITextAttributeTextShadowColor, nil] forState:UIControlStateNormal];
     
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor],UITextAttributeTextColor,[UIColor blackColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:12.0],UITextAttributeFont, nil] forState:UIControlStateNormal];
     
     [[UISearchBar appearance] setTintColor:[UIColor colorWithWhite:0.8 alpha:1]];
     [[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"searchbar"]];
     [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"empty"] forState:UIBarMetricsDefault];
+    
+    NSDictionary *attributes =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     [UIColor colorWithWhite:0.2 alpha:1], UITextAttributeTextColor,
+     [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5], UITextAttributeTextShadowColor,
+     [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
+     [UIFont systemFontOfSize:12], UITextAttributeFont,
+     nil];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil]
+     setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil]
+     setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor colorWithWhite:0.95 alpha:1]];
     
     // Autologin to airbears
     self.web = [[UIWebView alloc] init];

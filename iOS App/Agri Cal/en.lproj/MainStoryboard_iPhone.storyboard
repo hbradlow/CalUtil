@@ -527,7 +527,7 @@
             </objects>
             <point key="canvasLocation" x="74" y="298"/>
         </scene>
-        <!--News List View Controller - News Feed-->
+        <!--News List View Controller - News-->
         <scene sceneID="in8-V6-n6x">
             <objects>
                 <viewController storyboardIdentifier="" id="2ze-h7-qc1" customClass="NewsListViewController" sceneMemberID="viewController">
@@ -548,7 +548,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="News" image="Radio-Tower.png" id="eBg-2w-hoD"/>
-                    <navigationItem key="navigationItem" title="News Feed" id="tet-Zy-PO3">
+                    <navigationItem key="navigationItem" title="News" id="tet-Zy-PO3">
                         <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="64f-gx-dTp">
                             <connections>
                                 <action selector="showMenu:" destination="2ze-h7-qc1" id="lPg-th-HgY"/>

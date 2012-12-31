@@ -92,10 +92,13 @@ static float LongitudeDelta = 0.015;
         UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
 		self.navigationItem.leftBarButtonItem = random;
 	}
-    self.mapView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.mapView.layer.shadowOffset = CGSizeMake(0, 0);
-    self.mapView.layer.shadowRadius = 2.0f;
-    self.mapView.layer.shadowOpacity = 1.0f;
+    
+    [[self.mapView layer] setMasksToBounds:NO];
+    [[self.mapView layer] setShadowColor:[UIColor blackColor].CGColor];
+    [[self.mapView layer] setShadowOpacity:1.0f];
+    [[self.mapView layer] setShadowRadius:6.0f];
+    [[self.mapView layer] setShadowOffset:CGSizeMake(0, 3)];
+    [self.mapView setNeedsDisplay];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
