@@ -30,6 +30,7 @@
 {
     [self.username resignFirstResponder];
     [self.password resignFirstResponder];
+    [self.view removeGestureRecognizer:self.tapRecognizer];
 }
 - (void)viewDidUnload
 {
@@ -278,6 +279,11 @@
         }
         [revealController setFrontViewController:controller animated:NO];
     }
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.view addGestureRecognizer:self.tapRecognizer];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
