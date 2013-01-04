@@ -31,6 +31,8 @@
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating course list"]];
     [self refresh];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

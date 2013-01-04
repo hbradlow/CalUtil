@@ -41,14 +41,6 @@
     [self setNavigationBar:nil];
     [super viewDidUnload];
 }
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"save"])
-    {
-        [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:kUserName];
-        [[NSUserDefaults standardUserDefaults] setValue:password.text forKey:kPassword];
-    }
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -131,12 +123,16 @@
         {
             self.username = textField;
             textField.placeholder = @"Username";
+            textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
+            NSLog(@"username %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"username"]);
             [cell addSubview:textField];
         }
         if (indexPath.row==1)
         {
             self.password = textField;
             textField.placeholder = @"Password";
+            textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
+            NSLog(@"username %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"password"]);            
             [cell addSubview:textField];
             textField.secureTextEntry = YES;
         }
@@ -293,6 +289,11 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
+    NSLog(@"here %i", textField == self.username);
+    if (textField == self.username)
+        [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:@"username"];
+    else
+        [[NSUserDefaults standardUserDefaults] setValue:self.password.text forKey:@"password"];
     [textField resignFirstResponder];
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
