@@ -151,18 +151,23 @@
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Maps";
+                cell.imageView.image = [UIImage imageNamed:@"world"];                
                 break;
             case 1:
                 cell.textLabel.text = @"Dining";
+                cell.imageView.image = [UIImage imageNamed:@"crossroads"];
                 break;
             case 2:
                 cell.textLabel.text = @"Schedule";
+                cell.imageView.image = [UIImage imageNamed:@"Calendar-Month"];                
                 break;
             case 3:
                 cell.textLabel.text = @"Information";
+                cell.imageView.image = [UIImage imageNamed:@"Radio-Tower"];
                 break;
             case 4:
                 cell.textLabel.text = @"News";
+                cell.imageView.image = [UIImage imageNamed:@"rss_64"];                
                 break;
             default:
                 break;
@@ -213,7 +218,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section > 0)
+    if (indexPath.section > 2)
         return YES;
     else return NO;
 }

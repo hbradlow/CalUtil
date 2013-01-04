@@ -256,7 +256,7 @@
         times = menu.dinnerTime;
     if ([title isEqualToString:@"Late Night"])
         times = menu.lateNightTime;
-    return [NSString stringWithFormat:@"%@ Open: %@", [self.sectionTitles objectAtIndex:section], times];
+    return [NSString stringWithFormat:@"%@: %@", [self.sectionTitles objectAtIndex:section], times];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
