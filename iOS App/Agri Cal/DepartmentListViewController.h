@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Department.h"
+#import "FrontTableViewController.h"
 
-@interface DepartmentListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DepartmentListViewController : FrontTableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *departments;
 @property (nonatomic, retain) NSMutableArray *enrolledCourses;

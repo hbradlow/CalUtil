@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FrontTableViewController.h"
 
-@interface NewsListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface NewsListViewController : FrontTableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *rssFeed; 
 @property (nonatomic, retain) UIImageView *splashView;

@@ -5,8 +5,9 @@
 #import "Cal1CardAnnotation.h"
 #import "DisclosureAnnotationView.h"
 #import "InfoView.h"
+#import "FrontViewController.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface MapViewController : FrontViewController  <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 // The main map view
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;

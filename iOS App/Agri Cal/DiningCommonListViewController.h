@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FrontTableViewController.h"
 
-@interface DiningCommonListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface DiningCommonListViewController : FrontTableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *locationSelector;
 @property (nonatomic, retain) NSMutableArray *sectionTitles;

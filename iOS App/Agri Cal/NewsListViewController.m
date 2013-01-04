@@ -51,19 +51,6 @@
     [self.menuTableView setUserInteractionEnabled:YES];
     [self.tabBarController.view addSubview:self.menuTableView];
     [self.tabBarController.view sendSubviewToBack:self.menuTableView];
-    
-    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
-	{
-		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
-		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-		
-        UIButton *a1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [a1 setFrame:CGRectMake(0.0f, 0.0f, 50.0f, 30.0f)];
-        [a1 addTarget:self.navigationController.parentViewController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        [a1 setImage:[UIImage imageNamed:@"menubutton"] forState:UIControlStateNormal];
-        UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
-		self.navigationItem.leftBarButtonItem = random;
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated

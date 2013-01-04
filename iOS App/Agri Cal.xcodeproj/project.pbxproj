@@ -91,6 +91,8 @@
 		638C07B51696CDED00C12815 /* Calendar-Month@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C07B31696CDED00C12815 /* Calendar-Month@2x.png */; };
 		638C07B81696D39100C12815 /* rss_64.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C07B61696D39100C12815 /* rss_64.png */; };
 		638C07B91696D39100C12815 /* rss_64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C07B71696D39100C12815 /* rss_64@2x.png */; };
+		638C07BC1696DBA000C12815 /* FrontViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C07BB1696DBA000C12815 /* FrontViewController.m */; };
+		638C07BF1696DBCB00C12815 /* FrontTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C07BE1696DBCB00C12815 /* FrontTableViewController.m */; };
 		638DD19015384A95009EA87A /* InfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 638DD18F15384A95009EA87A /* InfoView.m */; };
 		638DD19315384D46009EA87A /* infoimage.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19115384D46009EA87A /* infoimage.png */; };
 		638DD19415384D46009EA87A /* infoimage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638DD19215384D46009EA87A /* infoimage@2x.png */; };
@@ -288,6 +290,10 @@
 		638C07B31696CDED00C12815 /* Calendar-Month@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Calendar-Month@2x.png"; sourceTree = "<group>"; };
 		638C07B61696D39100C12815 /* rss_64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rss_64.png; sourceTree = "<group>"; };
 		638C07B71696D39100C12815 /* rss_64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rss_64@2x.png"; sourceTree = "<group>"; };
+		638C07BA1696DBA000C12815 /* FrontViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrontViewController.h; sourceTree = "<group>"; };
+		638C07BB1696DBA000C12815 /* FrontViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrontViewController.m; sourceTree = "<group>"; };
+		638C07BD1696DBCA00C12815 /* FrontTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrontTableViewController.h; sourceTree = "<group>"; };
+		638C07BE1696DBCB00C12815 /* FrontTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrontTableViewController.m; sourceTree = "<group>"; };
 		638DD18E15384A95009EA87A /* InfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoView.h; sourceTree = "<group>"; };
 		638DD18F15384A95009EA87A /* InfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoView.m; sourceTree = "<group>"; };
 		638DD19115384D46009EA87A /* infoimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoimage.png; sourceTree = "<group>"; };
@@ -473,6 +479,10 @@
 				63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */,
 				63DA57AF168AD36A003E5D75 /* RevealController.h */,
 				63DA57B0168AD36A003E5D75 /* RevealController.m */,
+				638C07BA1696DBA000C12815 /* FrontViewController.h */,
+				638C07BB1696DBA000C12815 /* FrontViewController.m */,
+				638C07BD1696DBCA00C12815 /* FrontTableViewController.h */,
+				638C07BE1696DBCB00C12815 /* FrontTableViewController.m */,
 			);
 			name = "App wide files";
 			sourceTree = "<group>";
@@ -1046,6 +1056,8 @@
 				638C0717168B12C500C12815 /* CUMenuCellViewCell.m in Sources */,
 				638C0760169139A800C12815 /* CUMenuTextField.m in Sources */,
 				638C0763169141A300C12815 /* CUSettingsHeader.m in Sources */,
+				638C07BC1696DBA000C12815 /* FrontViewController.m in Sources */,
+				638C07BF1696DBCB00C12815 /* FrontTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
