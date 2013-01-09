@@ -17,13 +17,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.username.text = [[NSUserDefaults standardUserDefaults] objectForKey:kUserName];
-    self.password.text = [[NSUserDefaults standardUserDefaults] objectForKey:kPassword];
-    [self.loginLabel setFont:[UIFont fontWithName:kAppFont size:40]];
     [self.navigationBar  setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor colorWithWhite:0.75 alpha:1],UITextAttributeTextColor,[UIColor clearColor],UITextAttributeTextShadowColor,[NSValue valueWithUIOffset:UIOffsetMake(0, 1)], UITextAttributeTextShadowOffset ,[UIFont fontWithName:kAppFont size:20.0],UITextAttributeFont, nil]];
     self.tapRecognizer = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    dispatch_async(queue, ^(){
+        [self loadBalances];
+    });
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:3] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
 - (void)dismissKeyboard
@@ -279,6 +282,36 @@
                 break;
         }
         [revealController setFrontViewController:controller animated:NO];
+    }
+}
+
+- (void)loadBalances
+{
+    @try {
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/balance/?username=%@&password=%@", ServerURL, [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]];
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSError *error = nil;
+        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+        NSURLResponse *response = nil;
+        
+        NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                                     returningResponse:&response
+                                                                 error:&error];
+        
+        NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        
+        if (dict)
+        {
+            [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"meal_points"] forKey:kMealpoints];
+            [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"balance"] forKey:kCalBalance];
+        }
+        [self.tableView reloadData];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Error loading balances");
+        [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kMealpoints];
+        [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kCalBalance];
+        [self.tableView reloadData];
     }
 }
 

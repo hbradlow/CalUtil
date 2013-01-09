@@ -3,8 +3,6 @@
 #import "Cal1CardViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
-#warning Deals for cal1card?
-
 @implementation MapViewController
 
 static NSString *OffCampus = @"Off-Campus";
@@ -16,7 +14,8 @@ static float LongitudeDelta = 0.015;
 
 - (id)init
 {
-    UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+    UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"]
+                                                 bundle:[NSBundle mainBundle]];
     self = [st instantiateViewControllerWithIdentifier:@"maps"];
     return self;
 }
@@ -71,7 +70,6 @@ static float LongitudeDelta = 0.015;
             }
             if (!calData)
             {
-                NSLog(@"loading caldata");
                 [self loadCal1CardLocations];
                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
             }
@@ -80,18 +78,6 @@ static float LongitudeDelta = 0.015;
     @catch (NSException *exception) {
         NSLog(@"Error when loading map annotations");
     }
-    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
-	{
-		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
-		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-		
-        UIButton *a1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [a1 setFrame:CGRectMake(0.0f, 0.0f, 50.0f, 30.0f)];
-        [a1 addTarget:self.navigationController.parentViewController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        [a1 setImage:[UIImage imageNamed:@"menubutton"] forState:UIControlStateNormal];
-        UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
-		self.navigationItem.leftBarButtonItem = random;
-	}
     
     [[self.mapView layer] setMasksToBounds:NO];
     [[self.mapView layer] setShadowColor:[UIColor blackColor].CGColor];
@@ -139,7 +125,12 @@ static float LongitudeDelta = 0.015;
         NSString *type = [currentLocation objectForKey:@"type"];
         if (latitude != nil)
         {
-            Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue] andLongitude:[longitude doubleValue] andTitle:title andURL:imageURL andTimes:times andInfo:info];
+            Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
+                                                                             andLongitude:[longitude doubleValue]
+                                                                                 andTitle:title
+                                                                                   andURL:imageURL
+                                                                                 andTimes:times
+                                                                                  andInfo:info];
             annotation.type = type;
             annotation.subtitle = type;
             [self.calCardAnnotations addObject:annotation];
@@ -172,7 +163,6 @@ static float LongitudeDelta = 0.015;
 - (void)loadBusStopsWithExtension:(NSString*)urlExtension{
     NSString *queryString = [NSString stringWithFormat:@"%@%@",ServerURL, urlExtension];
     queryString = [queryString lowercaseString];
-    NSLog(@"loading buses %@", queryString);
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
     
@@ -232,7 +222,6 @@ static float LongitudeDelta = 0.015;
 }
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
-    NSLog(@"did update user location %f %f", self.previousUserLocation.latitude, self.previousUserLocation.longitude);
     if (!self.previousUserLocation.latitude
         || abs(self.previousUserLocation.latitude - aUserLocation.location.coordinate.latitude) > 0.005/2
         || abs(self.previousUserLocation.longitude - aUserLocation.location.coordinate.longitude) > 0.005/2)
@@ -300,15 +289,7 @@ static float LongitudeDelta = 0.015;
     return nil;
 }
 
-- (IBAction)displayMapKey:(id)sender {
-    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
-	{
-        [self.navigationController.parentViewController performSelector:@selector(revealToggle:) withObject:self];
-	}
-}
-
 - (void)displayInfo:(id)sender{
-    NSLog(@"display info %@", self.selectedAnnotation);
     if ([self.busStopAnnotations containsObject:self.selectedAnnotation])
     {
         [self performSegueWithIdentifier:@"bus" sender:self.selectedAnnotation];
@@ -340,8 +321,6 @@ static float LongitudeDelta = 0.015;
 
 - (IBAction)switchAnnotations:(id)sender{
     NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
-    [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
-    self.searchBar.hidden = YES;
     if (selectedIndex == 0)
     {
         [self.mapView removeAnnotations:self.calCardAnnotations];
@@ -357,13 +336,6 @@ static float LongitudeDelta = 0.015;
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance])
-        {
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
-                [self.annotationSelector setTitle:[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] forSegmentAtIndex:1];
-            else
-                [self.annotationSelector setTitle:@"Cal1Card" forSegmentAtIndex:1];
-        }
     }
     else if (selectedIndex == 2)
     {
@@ -371,14 +343,10 @@ static float LongitudeDelta = 0.015;
         [self.mapView removeAnnotations:self.calCardAnnotations];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
-        self.searchBar.hidden = NO;
     }
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(queue, ^(){
-        
-        
-        [self.searchBar setHidden:YES];
         switch ([self.annotationSelector selectedSegmentIndex]) {
             case 0:
             {
@@ -416,6 +384,7 @@ static float LongitudeDelta = 0.015;
  Uses the google maps api to search for buldings in Berkeley.
  */
 -(void)searchForBuilding{
+#warning Should not be implemented with Google API.
     NSString *searchString = self.searchDisplayController.searchBar.text;
     searchString = [NSString stringWithFormat:@"%@ %@", searchString, @"berkeley"];
     searchString = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -437,7 +406,7 @@ static float LongitudeDelta = 0.015;
         });
     }
     @catch (NSException *exception) {
-        NSLog(@"error");
+        NSLog(@"Error when searching for building");
     }
 }
 
@@ -465,7 +434,6 @@ static float LongitudeDelta = 0.015;
     if (![self.searchResults count])
         cell.textLabel.text = @"Searching...";
     else {
-        NSLog(@"%@", [self.searchResults objectAtIndex:indexPath.row]);
         NSArray *partsOfName = [[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"formatted_address"] componentsSeparatedByString:@","];
         NSString *shortName = [partsOfName objectAtIndex:0];
         NSString *detailText = @"";

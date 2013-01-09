@@ -29,19 +29,6 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadRSS) forControlEvents:UIControlEventValueChanged];
     self.rssFeed = [[NSMutableArray alloc] init];
-    UIImage* image=[UIImage imageNamed:@"Default-568h.png"];
-    if (!((AppDelegate*)[[UIApplication sharedApplication] delegate]).hasLoaded)
-    {
-        self.splashView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,image.size.width,image.size.height)];
-        self.splashView.image = image;
-        [self.navigationController.view addSubview:self.splashView];
-        [self performSelector:@selector(removeSplash) withObject:self afterDelay:1.5];
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:1.5];
-        [self.splashView setAlpha:0];
-        [UIView commitAnimations];
-        ((AppDelegate*)[[UIApplication sharedApplication] delegate]).hasLoaded = YES;
-    }
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating news"]];
     [self.refreshControl beginRefreshing];
     [self loadRSS];
@@ -59,13 +46,8 @@
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
--(void)removeSplash{
-    [self.splashView removeFromSuperview];
-}
-
 - (void)loadRSS
 {
-    NSLog(@"Loading newsfeed");
     NSData *data;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kNewsLoaded])
     {
@@ -106,7 +88,6 @@
                 [tempArray addObject:story];
             }
             self.rssFeed = tempArray;
-            NSLog(@"done loading");
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
             [self saveNewsToFile];
@@ -176,7 +157,6 @@
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    NSLog(@"called");
     return YES;
 }
 @end

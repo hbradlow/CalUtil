@@ -78,43 +78,43 @@
 
 - (void)revealController:(ZUUIRevealController *)revealController willRevealRearViewController:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
+    /*
+    if ([rearViewController respondsToSelector:@selector(loadBalances)])
+    {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    dispatch_async(queue, ^(){
+        [rearViewController performSelector:@selector(loadBalances)];
+    });
+    }*/
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didRevealRearViewController:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController willHideRearViewController:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
     [rearViewController performSelector:@selector(hide)];
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didHideRearViewController:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController willResignRearViewControllerPresentationMode:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didResignRearViewControllerPresentationMode:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController willEnterRearViewControllerPresentationMode:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)revealController:(ZUUIRevealController *)revealController didEnterRearViewControllerPresentationMode:(UIViewController *)rearViewController
 {
-	NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 #pragma mark - View lifecycle

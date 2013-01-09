@@ -10,6 +10,7 @@
 #import "DishDetailsViewController.h"
 #import "Menu.h"
 #import "Dish.h"
+#import "CUTableViewCell.h"
 
 #define kCrossroads 0
 #define kCKC 1
@@ -41,18 +42,6 @@
     [self loadMenus];
     [self.refreshControl beginRefreshing];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating menus"]];
-    if ([self.navigationController.parentViewController respondsToSelector:@selector(revealGesture:)] && [self.navigationController.parentViewController respondsToSelector:@selector(revealToggle:)])
-	{
-		UIPanGestureRecognizer *navigationBarPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self.navigationController.parentViewController action:@selector(revealGesture:)];
-		[self.navigationController.navigationBar addGestureRecognizer:navigationBarPanGestureRecognizer];
-		
-        UIButton *a1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [a1 setFrame:CGRectMake(0.0f, 0.0f, 50.0f, 30.0f)];
-        [a1 addTarget:self.navigationController.parentViewController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        [a1 setImage:[UIImage imageNamed:@"menubutton"] forState:UIControlStateNormal];
-        UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
-		self.navigationItem.leftBarButtonItem = random;
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -265,10 +254,12 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell)
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[CUTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.backgroundColor = [UIColor clearColor];
+    cell.detailTextLabel.backgroundColor = [UIcolor clearColor];
     
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
     

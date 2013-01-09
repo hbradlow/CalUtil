@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Agri Cal/NewsListViewController.m"
-         timestampString = "378985533.985066"
+         timestampString = "379389298.507406"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "111"
-         endingLineNumber = "111"
+         startingLineNumber = "92"
+         endingLineNumber = "92"
          landmarkName = "-loadRSS"
          landmarkType = "5">
       </FileBreakpoint>

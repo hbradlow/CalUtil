@@ -7,6 +7,7 @@
 //
 
 #import "NextBusViewController.h"
+#import "CUTableViewCell.h"
 
 @interface NextBusViewController ()
 
@@ -43,7 +44,7 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"LineCell"];
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LineCell"];
+        cell = [[CUTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"LineCell"];
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
