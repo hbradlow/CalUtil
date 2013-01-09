@@ -11,6 +11,7 @@
 #import "Menu.h"
 #import "Dish.h"
 #import "CUTableViewCell.h"
+#import "CUTableHeaderView.h"
 
 #define kCrossroads 0
 #define kCKC 1
@@ -230,6 +231,43 @@
     return 0;
 }
 
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
+    CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
+    view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    rect.origin.y += 1;
+    rect.origin.x += 8;
+    rect.size.height -= 2;
+    rect.size.width -= 4;
+    UILabel *label = [[UILabel alloc] initWithFrame:rect];
+    label.font = [UIFont boldSystemFontOfSize:14];
+    label.textColor = kAppBlueColor;
+    label.backgroundColor = [UIColor clearColor];
+    NSString *title = [self.sectionTitles objectAtIndex:section];
+    NSString *times = @"";
+    Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
+    if ([title isEqualToString:@"Breakfast"])
+        times = menu.breakfastTime;
+    if ([title isEqualToString:@"Brunch"])
+        times = menu.brunchTime;
+    if ([title isEqualToString:@"Lunch"])
+        times = menu.lunchTime;
+    if ([title isEqualToString:@"Dinner"])
+        times = menu.dinnerTime;
+    if ([title isEqualToString:@"Late Night"])
+        times = menu.lateNightTime;
+    label.text = [NSString stringWithFormat:@"%@: %@", [self.sectionTitles objectAtIndex:section], times];
+
+    [view addSubview:label];
+    return view;
+}
+
+- (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 22;
+}
+
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self.sectionTitles objectAtIndex:section];
@@ -259,7 +297,9 @@
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.backgroundColor = [UIColor clearColor];
-    cell.detailTextLabel.backgroundColor = [UIcolor clearColor];
+    cell.textLabel.font = [UIFont fontWithName:kAppFontBold size:18];
+    cell.detailTextLabel.font = [UIFont fontWithName:kAppFont size:12];
+    cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     
     Menu *menu = [self.locations objectAtIndex:[self.locationSelector selectedSegmentIndex]];
     

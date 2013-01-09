@@ -10,6 +10,8 @@
 #import "ClassListViewController.h"
 #import "ClassViewController.h"
 #import "CalClass.h"
+#import "CUTableHeaderView.h"
+#import "CUTableViewCell.h"
 
 #define kDepartmentData @"depdata"
 #define kDepartmentURL [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/departments"]
@@ -213,6 +215,48 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     else
         return 1;
 }
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
+    CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
+    view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    rect.origin.y += 1;
+    rect.origin.x += 8;
+    rect.size.height -= 2;
+    rect.size.width -= 4;
+    UILabel *label = [[UILabel alloc] initWithFrame:rect];
+    label.font = [UIFont boldSystemFontOfSize:14];
+    label.textColor = kAppBlueColor;
+    label.backgroundColor = [UIColor clearColor];
+    NSString *title = @"";
+    if (tableView == self.tableView)
+    {
+        switch (section) {
+            case 0:
+                title = @"";
+                break;
+            case 1:
+                title = @"Your registered courses";
+                break;
+            default:
+                title = [alphabet substringWithRange:NSMakeRange(section-2, 1)];
+        }
+    }
+    else
+        title = @"Search results";
+    label.text = title;
+    
+    [view addSubview:label];
+    return view;
+}
+
+- (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0)
+        return 0;
+    else
+        return 22;
+}
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -257,9 +301,11 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[CUTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.font = [UIFont fontWithName:kAppFontBold size:18];
     }
     cell.imageView.image = nil;
     if (tableView == self.tableView)

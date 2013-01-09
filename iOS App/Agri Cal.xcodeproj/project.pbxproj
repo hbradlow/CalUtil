@@ -194,6 +194,7 @@
 		63EF75A0169D038400A6564B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF759F169D038400A6564B /* Default-568h@2x.png */; };
 		63EF75A3169D046C00A6564B /* LaunchImageTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75A2169D046C00A6564B /* LaunchImageTransitionController.m */; };
 		63EF75A6169D248D00A6564B /* CUTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75A5169D248D00A6564B /* CUTableViewCell.m */; };
+		63EF75A9169D2DE700A6564B /* CUTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75A8169D2DE700A6564B /* CUTableHeaderView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -421,6 +422,8 @@
 		63EF75A2169D046C00A6564B /* LaunchImageTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchImageTransitionController.m; sourceTree = "<group>"; };
 		63EF75A4169D248D00A6564B /* CUTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUTableViewCell.h; sourceTree = "<group>"; };
 		63EF75A5169D248D00A6564B /* CUTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUTableViewCell.m; sourceTree = "<group>"; };
+		63EF75A7169D2DE700A6564B /* CUTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUTableHeaderView.h; sourceTree = "<group>"; };
+		63EF75A8169D2DE700A6564B /* CUTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUTableHeaderView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,6 +496,8 @@
 				638C07BE1696DBCB00C12815 /* FrontTableViewController.m */,
 				63EF75A4169D248D00A6564B /* CUTableViewCell.h */,
 				63EF75A5169D248D00A6564B /* CUTableViewCell.m */,
+				63EF75A7169D2DE700A6564B /* CUTableHeaderView.h */,
+				63EF75A8169D2DE700A6564B /* CUTableHeaderView.m */,
 			);
 			name = "App wide files";
 			sourceTree = "<group>";
@@ -1070,6 +1075,7 @@
 				638C07BF1696DBCB00C12815 /* FrontTableViewController.m in Sources */,
 				63EF75A3169D046C00A6564B /* LaunchImageTransitionController.m in Sources */,
 				63EF75A6169D248D00A6564B /* CUTableViewCell.m in Sources */,
+				63EF75A9169D2DE700A6564B /* CUTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

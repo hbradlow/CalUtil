@@ -10,6 +10,7 @@
 #import "NewsStory.h"
 #import "AppDelegate.h"
 #import "NewsStoryViewController.h"
+#import "CUTableViewCell.h"
 
 #define MENU_WIDTH self.navigationController.view.frame.size.width*3/4
 #define MENU_HEIGHT self.navigationController.view.frame.size.height
@@ -113,7 +114,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+        cell = [[CUTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
     }
     if ([self.rssFeed count])
     {

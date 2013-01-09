@@ -31,7 +31,7 @@
     
     separator.origin.y -= self.bounds.size.height-1;
     
-    separatorColor = [UIColor colorWithWhite:1 alpha:1];
+    separatorColor = [UIColor colorWithWhite:0.98 alpha:1];
     
     CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);

@@ -97,17 +97,20 @@
     [[UISegmentedControl appearance] setBackgroundImage:segmentSelected
                                                forState:UIControlStateSelected
                                              barMetrics:UIBarMetricsDefault];
+    UIOffset offset = UIOffsetMake(0, 1);
+    [[UISegmentedControl appearance] setContentPositionAdjustment:offset
+                                                   forSegmentType:UISegmentedControlSegmentAny
+                                                       barMetrics:UIBarMetricsDefault];
     
     NSDictionary *segattributes =
     [NSDictionary dictionaryWithObjectsAndKeys:
-     [UIColor colorWithWhite:0.1 alpha:1], UITextAttributeTextColor,
+     kAppBlueColor, UITextAttributeTextColor,
      [UIColor colorWithWhite:0.2 alpha:1], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
      [UIFont fontWithName:kAppFont size:16], UITextAttributeFont,
      nil];
     [[UISegmentedControl appearance] setTitleTextAttributes:segattributes forState:UIControlStateHighlighted];
-    UIOffset offset = UIOffsetMake(0, 1);
-    [[UISegmentedControl appearance] setContentPositionAdjustment:offset forSegmentType:UISegmentedControlSegmentAny barMetrics:UIBarMetricsDefault];
+
     NSDictionary *segattributesunsel =
     [NSDictionary dictionaryWithObjectsAndKeys:
      [UIColor colorWithWhite:0.4 alpha:1], UITextAttributeTextColor,

@@ -28,8 +28,10 @@
     #define kMealpoints @"mealpoints" 
     #define kCalBalance @"cal1cardbalance"
     #define kAppFont @"Helvetica Neue"
+    #define kAppFontBold @"HelveticaNeue-Bold"
     #define kFontOffset UIOffsetMake(0, -2)
     #define kSegmentedOffset UIOffsetMake(0,0)
     #define kTitleAdjustment 0 
     #define MENU_IMAGE [UIImage imageNamed:@"menubutton"]
+    #define kAppBlueColor [UIColor colorWithRed:16.0/255 green:71.0/255 blue:119.0/255 alpha:1]
 #endif
