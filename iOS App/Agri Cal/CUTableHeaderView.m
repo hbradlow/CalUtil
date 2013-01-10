@@ -32,14 +32,12 @@
                                   self.bounds.origin.y+self.bounds.size.height-1,
                                   self.bounds.size.width,
                                   1.0f);
-    UIColor* separatorColor = [UIColor colorWithWhite:0.8 alpha:1];
+    UIColor* separatorColor = kAppBlueColor;
     
     CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);
     
     separator.origin.y -= self.bounds.size.height-1;
-    
-    separatorColor = [UIColor colorWithWhite:0.98 alpha:0.05];
     
     CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);

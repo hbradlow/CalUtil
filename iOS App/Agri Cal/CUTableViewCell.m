@@ -13,8 +13,8 @@
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    UIColor *whiteColor = [UIColor colorWithWhite:0.95 alpha:1];
-    UIColor *lightGrayColor = [UIColor colorWithWhite:0.93 alpha:1];
+    UIColor *whiteColor = [UIColor colorWithWhite:0.98 alpha:1];
+    UIColor *lightGrayColor = [UIColor colorWithWhite:0.97 alpha:1];
     
     CGRect paperRect = self.bounds;
     
@@ -24,14 +24,14 @@
                                   self.bounds.origin.y+self.bounds.size.height-1,
                                   self.bounds.size.width,
                                   1.0f);
-    UIColor* separatorColor = [UIColor colorWithWhite:0.8 alpha:1];
+    UIColor* separatorColor = [UIColor colorWithWhite:0.9 alpha:1];
     
     CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);
     
     separator.origin.y -= self.bounds.size.height-1;
     
-    separatorColor = [UIColor colorWithWhite:0.98 alpha:1];
+    separatorColor = [UIColor colorWithWhite:1 alpha:1];
     
     CGContextSetFillColorWithColor(context, [separatorColor CGColor]);
     CGContextFillRect(context, separator);

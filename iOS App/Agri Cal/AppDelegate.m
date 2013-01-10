@@ -71,9 +71,9 @@
      setTitleTextAttributes:attributes forState:UIControlStateHighlighted];
     [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor colorWithWhite:0.95 alpha:1]];
     
-    UIImage *segmentUnselectedUnselected = [UIImage imageNamed:@"segdiv"];
-    UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"segdiv"];
-    UIImage *segUnselectedSelected = [UIImage imageNamed:@"segdiv"];
+    UIImage *segmentUnselectedUnselected = [UIImage imageNamed:@"divider"];
+    UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"divider"];
+    UIImage *segUnselectedSelected = [UIImage imageNamed:@"divider"];
     
     UIImage *segmentUnselected = [UIImage imageNamed:@"empty"];
     UIImage *segmentSelected = [UIImage imageNamed:@"empty"];

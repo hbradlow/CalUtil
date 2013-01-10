@@ -211,7 +211,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tableView)
-        return 28;
+        return 27;
     else
         return 1;
 }
@@ -233,13 +233,10 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     {
         switch (section) {
             case 0:
-                title = @"";
-                break;
-            case 1:
                 title = @"Your registered courses";
                 break;
             default:
-                title = [alphabet substringWithRange:NSMakeRange(section-2, 1)];
+                title = [alphabet substringWithRange:NSMakeRange(section-1, 1)];
         }
     }
     else
@@ -254,40 +251,21 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 {
     if (section == 0)
         return 0;
-    else
-        return 22;
-}
-
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (tableView == self.tableView)
-    {
-        switch (section) {
-            case 0:
-                return @"";
-            case 1:
-                return @"Your registered courses";
-            default:
-                return [alphabet substringWithRange:NSMakeRange(section-2, 1)];
-        }
-    }
-    else
-        return @"Search results";
+    return 22;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"nr rows in section");
     if (tableView == self.tableView)
     {
         if (section == 0)
-            return 0;
-        if (section == 1)
             return [self.enrolledCourses count];
         else
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(section-2, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(section-1, 1)]];
             return [[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] count];
         }
     }
@@ -310,7 +288,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     cell.imageView.image = nil;
     if (tableView == self.tableView)
     {
-        if (indexPath.section == 1)
+        if (indexPath.section == 0)
         {
             cell.textLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
             if ([[self.enrolledCourses objectAtIndex:indexPath.row] hasWebcast])
@@ -321,7 +299,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
             cell.textLabel.text = [[[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] objectAtIndex:indexPath.row] title];
             cell.detailTextLabel.text = @"";
         }
@@ -380,7 +358,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
             NSMutableArray *sectionArray = [NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]];
             viewController.departmentURL = [[sectionArray objectAtIndex:indexPath.row] departmentID];
         }
@@ -402,7 +380,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading..."])
         return;
     
-    if (tableView == self.tableView && indexPath.section > 1)
+    if (tableView == self.tableView && indexPath.section > 0)
         [self performSegueWithIdentifier:@"department" sender:tableView];
     else if (tableView != self.tableView)
         [self performSegueWithIdentifier:@"department" sender:tableView];

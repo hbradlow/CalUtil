@@ -235,7 +235,7 @@
 {
     CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
     CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
-    view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    view.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
     rect.origin.y += 1;
     rect.origin.x += 8;
     rect.size.height -= 2;
