@@ -7,6 +7,8 @@ from api import scraper
 
 def predictions(request,stop_id,line_tag):
     stop = BusStop.objects.get(stop_id=stop_id)
+    if line_tag=="perimiter-P":
+        return perimeter_predictions("P",perimeter_name_for_stop(stop)) 
     l = []
     for object in stop.predictions()['objects']:
         if object['line'] == line_tag:
@@ -16,6 +18,9 @@ def predictions(request,stop_id,line_tag):
                 pass
     return HttpResponse(json.dumps(sorted(l)[:3]))
 
+def perimeter_name_for_stop(stop):
+    #TODO: FIX THIS HACK
+    return "a"
 def load_perimeter_data():
     def reformat(s):
         h,m = s.split(":")
@@ -25,7 +30,7 @@ def load_perimeter_data():
     for key,value in o["P"].items():
         o["P"][key] = [reformat(i) for i in value]
     return o
-def perimeter_predictions(request,line,stop):
+def perimeter_predictions(line,stop):
     d = datetime.datetime(2000,1,1,10,23,0)
     times = load_perimeter_data()[line][stop]
     l = []
