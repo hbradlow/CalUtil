@@ -24,6 +24,9 @@ class Department(models.Model):
         return self.name
 class Building(models.Model):
     name = models.CharField(max_length=300)
+    display_name = models.CharField(max_length=500)
+    description = models.TextField()
+    year = models.IntegerField()
     slug = AutoSlugField(populate_from="name",unique=True)
     image_url = models.URLField(null=True)
     latitude = models.FloatField(null=True)
