@@ -1,13 +1,40 @@
 from django.shortcuts import *
 import json
+import datetime
 from api.models import *
 from django.db.models import Q
 from api import scraper
 
 def predictions(request,stop_id,line_tag):
     stop = BusStop.objects.get(stop_id=stop_id)
-    return HttpResponse(json.dumps(sorted([int(object['minutes']) for object in stop.predictions()['objects'] if object['line']==line_tag])[:3]))
+    l = []
+    for object in stop.predictions()['objects']:
+        if object['line'] == line_tag:
+            try:
+                l.append(int(object['minutes']))
+            except TypeError:
+                pass
+    return HttpResponse(json.dumps(sorted(l)[:3]))
 
+def load_perimeter_data():
+    def reformat(s):
+        h,m = s.split(":")
+        return datetime.datetime(2000,1,1,int(h),int(m),0)
+    f = open("calutil/calutil/data/perimeter_times.json")
+    o = json.loads(f.read())
+    for key,value in o["P"].items():
+        o["P"][key] = [reformat(i) for i in value]
+    return o
+def perimeter_predictions(request,line,stop):
+    d = datetime.datetime(2000,1,1,10,23,0)
+    times = load_perimeter_data()[line][stop]
+    l = []
+    for index,time in enumerate(times):
+        if time<d:
+            pass
+        else:
+            l.append((time-d).seconds/60.)
+    return HttpResponse(json.dumps(l[:3]))
 def personal_schedule(request):
     username = ""
     password = ""

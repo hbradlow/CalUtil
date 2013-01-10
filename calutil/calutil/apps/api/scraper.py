@@ -4,7 +4,27 @@ import mechanize
 import requests
 from django.db.models import Q
 
+from gdata.youtube.service import *
+from twill.commands import *
+
 ###############################NEW########################################
+def update():
+    """
+    cal1card_from_plist()
+    print "Finished Cal1Card locations from PList"
+
+    courses()
+    print "Finished basic course info"
+    full_courses()
+    print "Finished full course info"
+    webcasts()
+    print "Finished webcasts"
+    """
+
+    bus_lines()
+    print "Finished bus lines"
+    bus_stops()
+    print "Finished bus stops"
 def clear_menu(menu):
     for b in menu.breakfast.all():
         b.delete()
@@ -229,7 +249,6 @@ def full_courses(chunk_size=70,debug=False):
         print "Done chunk " + str(i) + " of " + str(num_chunks)
 
 def webcasts(debug=False):
-    from gdata.youtube.service import *
     import re
     yt_service = gdata.youtube.service.YouTubeService()
     playlist_feed = yt_service.GetYouTubePlaylistFeed(username='ucberkeley')
@@ -258,7 +277,6 @@ def webcasts(debug=False):
                 w.course = list([c for c in Course.objects.filter(number=course_number) if department_name in c.department.possible_names])[0]
                 w.save()
 def get_cal_balance(username,password):
-    from twill.commands import *
     import twill
 
     b = twill.get_browser() # make it so that twill can handle xhtml
@@ -431,7 +449,6 @@ def bus_stops(debug=False):
     berkeley_buses(debug)
 
 def get_schedule(username,password,debug=False):
-    from twill.commands import *
     import twill
     from django.conf import settings
 
