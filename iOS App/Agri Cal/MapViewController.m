@@ -336,11 +336,12 @@ static float LongitudeDelta = 0.015;
                                     searchText];
     
     self.searchResults = [NSMutableArray arrayWithArray:[[self.buildingAnnotations filteredSetUsingPredicate:resultPredicate] allObjects]];
+    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchForBuilding) object:nil];
-    [self performSelector:@selector(searchForBuilding) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(searchForBuilding) withObject:nil afterDelay:0];
 }
 
 /*
