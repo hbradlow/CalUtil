@@ -199,6 +199,9 @@
 		63EF75BD169E78E800A6564B /* map_seg_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF75BB169E78E800A6564B /* map_seg_bg@2x.png */; };
 		63EF75C0169E795D00A6564B /* divider_white_strip.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF75BE169E795D00A6564B /* divider_white_strip.png */; };
 		63EF75C1169E795D00A6564B /* divider_white_strip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF75BF169E795D00A6564B /* divider_white_strip@2x.png */; };
+		63EF75C4169F91E900A6564B /* BusLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75C3169F91E900A6564B /* BusLoader.m */; };
+		63EF75C7169F91F800A6564B /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75C6169F91F800A6564B /* DataLoader.m */; };
+		63EF75CA169F941800A6564B /* DataLoaderPartial.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75C9169F941800A6564B /* DataLoaderPartial.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -432,6 +435,12 @@
 		63EF75BB169E78E800A6564B /* map_seg_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_seg_bg@2x.png"; sourceTree = "<group>"; };
 		63EF75BE169E795D00A6564B /* divider_white_strip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divider_white_strip.png; sourceTree = "<group>"; };
 		63EF75BF169E795D00A6564B /* divider_white_strip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "divider_white_strip@2x.png"; sourceTree = "<group>"; };
+		63EF75C2169F91E900A6564B /* BusLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusLoader.h; sourceTree = "<group>"; };
+		63EF75C3169F91E900A6564B /* BusLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusLoader.m; sourceTree = "<group>"; };
+		63EF75C5169F91F800A6564B /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataLoader.h; sourceTree = "<group>"; };
+		63EF75C6169F91F800A6564B /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataLoader.m; sourceTree = "<group>"; };
+		63EF75C8169F941800A6564B /* DataLoaderPartial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataLoaderPartial.h; sourceTree = "<group>"; };
+		63EF75C9169F941800A6564B /* DataLoaderPartial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataLoaderPartial.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -698,6 +707,12 @@
 			children = (
 				6393DE20150301F3003B77F5 /* MapViewController.h */,
 				6393DE21150301F3003B77F5 /* MapViewController.m */,
+				63EF75C5169F91F800A6564B /* DataLoader.h */,
+				63EF75C6169F91F800A6564B /* DataLoader.m */,
+				63EF75C8169F941800A6564B /* DataLoaderPartial.h */,
+				63EF75C9169F941800A6564B /* DataLoaderPartial.m */,
+				63EF75C2169F91E900A6564B /* BusLoader.h */,
+				63EF75C3169F91E900A6564B /* BusLoader.m */,
 				63389DD815F0230F00953A01 /* NextBusViewController.h */,
 				63389DD915F0230F00953A01 /* NextBusViewController.m */,
 				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
@@ -1092,6 +1107,9 @@
 				63EF75A3169D046C00A6564B /* LaunchImageTransitionController.m in Sources */,
 				63EF75A6169D248D00A6564B /* CUTableViewCell.m in Sources */,
 				63EF75A9169D2DE700A6564B /* CUTableHeaderView.m in Sources */,
+				63EF75C4169F91E900A6564B /* BusLoader.m in Sources */,
+				63EF75C7169F91F800A6564B /* DataLoader.m in Sources */,
+				63EF75CA169F941800A6564B /* DataLoaderPartial.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
