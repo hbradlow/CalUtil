@@ -51,9 +51,11 @@ def scrape_buildings(debug=False):
             i+=1
             print "Did building",i
 def calculate_building_gps(debug=False):
+    from time import sleep
     i = 0
     for b in CampusBuilding.objects.all():
         b.calculate_gps()
+        sleep(1)
         if debug:
             i+=1
             print "Did building",i
