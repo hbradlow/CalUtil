@@ -22,6 +22,31 @@ class Department(models.Model):
     slug = AutoSlugField(populate_from="name",unique=True)
     def __unicode__(self):
         return self.name
+class CampusBuilding(models.Model):
+    name = models.CharField(max_length=300)
+    abbreviation = models.CharField(max_length=300)
+    built = models.CharField(max_length=100)
+    summary = models.TextField()
+    description = models.TextField()
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+    def calculate_gps(self):
+        import json
+        import requests
+        url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.name.replace(" ","%20") + "%20Berkeley&sensor=true"
+        r = requests.get(url)
+        o = json.loads(r.text)
+        try:
+            self.latitude = o['results'][0]['geometry']['location']['lat']
+            self.longitude = o['results'][0]['geometry']['location']['lng']
+        except IndexError:
+            print o
+        self.save()
+    def image_url(self):
+        return "http://www.berkeley.edu/map/3dmap/" + self.name + ".jpg"
+    def __unicode__(self):
+        return self.name
+
 class Building(models.Model):
     name = models.CharField(max_length=300)
     display_name = models.CharField(max_length=500)
@@ -392,4 +417,5 @@ admin.site.register(BusStop)
 admin.site.register(BusStopDirection)
 admin.site.register(CalOneCardLocation)
 admin.site.register(Building)
+admin.site.register(CampusBuilding)
 admin.site.register(Department)

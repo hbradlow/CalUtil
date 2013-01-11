@@ -51,6 +51,14 @@ def filter_timespan_for_today(times):
         except:
             pass #something went wrong, dont add this to the bundle
     return bundles
+
+class CampusBuildingResource(ModelResource):
+    def dehydrate(self,bundle):
+        bundle.data['image_url'] = "http://www.berkeley.edu/map/3dmap/" + bundle.data['abbreviation'] + ".jpg"
+        return bundle
+    class Meta:
+        queryset = CampusBuilding.objects.all()
+        resource_name = "building"
 class CalOneCardLocationResource(ModelResource):
     times = fields.ToManyField("api.API.TimeSpanResource","timespans",null=True,full=True)
     def dehydrate(self, bundle):

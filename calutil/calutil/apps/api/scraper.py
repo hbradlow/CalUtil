@@ -8,7 +8,7 @@ from gdata.youtube.service import *
 from twill.commands import *
 
 ###############################NEW########################################
-def update():
+def update(debug=False,complete=True,busses=False,buildings=False):
     """
     cal1card_from_plist()
     print "Finished Cal1Card locations from PList"
@@ -21,10 +21,40 @@ def update():
     print "Finished webcasts"
     """
 
-    bus_lines()
-    print "Finished bus lines"
-    bus_stops()
-    print "Finished bus stops"
+    if complete or busses:
+        bus_lines(debug=debug)
+        print "Finished bus lines"
+        bus_stops(debug=debug)
+        print "Finished bus stops"
+
+    if complete or buildings:
+        scrape_buildings(debug=debug)
+        calculate_building_gps(debug=debug)
+
+def scrape_buildings(debug=False):
+    base_url = "http://www.berkeley.edu/map/3dmap/buildings.xml"
+    r = requests.get(base_url)
+    soup = bs4.BeautifulSoup(r.text)
+    i = 0
+    for building in soup.findAll("building"):
+        b = CampusBuilding.objects.get(name=building.find("name").text)
+        b.name = building.find("name").text
+        b.abbreviation = building['id']
+        b.built = building.find("built").text
+        b.summary = building.find("summary").text
+        b.description = building.find("description").find("paragraph").text
+        b.save()
+        if debug:
+            i+=1
+            print "Did building",i
+def calculate_building_gps(debug=False):
+    i = 0
+    for b in CampusBuilding.objects.all():
+        b.calculate_gps()
+        if debug:
+            i+=1
+            print "Did building",i
+
 def clear_menu(menu):
     for b in menu.breakfast.all():
         b.delete()
@@ -306,7 +336,7 @@ def get_cal_balance(username,password):
         pass
     return (balance,points)
 
-def bus_lines():
+def bus_lines(debug=False):
     soup = bs4.BeautifulSoup(requests.get("http://webservices.nextbus.com/service/publicXMLFeed?command=routeList&a=actransit").text)
     for route in soup("route"):
         try:

@@ -21,6 +21,7 @@ def predictions(request,stop_id,line_tag):
 def perimeter_name_for_stop(stop):
     #TODO: FIX THIS HACK
     return "a"
+
 def load_perimeter_data():
     def reformat(s):
         h,m = s.split(":")
