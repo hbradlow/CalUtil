@@ -18,7 +18,7 @@
 		  andLongitude:(CLLocationDegrees)longitude
               andTitle:(NSString *)title 
                 andURL:(NSString *)url
-              andTimes:(NSString *)times
+              andTimes:(NSArray *)times
                andInfo:(NSString*)info{
 	if (self = [super init]) {
 		_latitude = latitude;

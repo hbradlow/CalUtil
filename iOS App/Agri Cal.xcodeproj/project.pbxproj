@@ -200,6 +200,7 @@
 		63EF75C0169E795D00A6564B /* divider_white_strip.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF75BE169E795D00A6564B /* divider_white_strip.png */; };
 		63EF75C1169E795D00A6564B /* divider_white_strip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63EF75BF169E795D00A6564B /* divider_white_strip@2x.png */; };
 		63EF75C7169F91F800A6564B /* DataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75C6169F91F800A6564B /* DataLoader.m */; };
+		63EF75CD16A012BD00A6564B /* CalCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EF75CC16A012BC00A6564B /* CalCardCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -435,6 +436,8 @@
 		63EF75BF169E795D00A6564B /* divider_white_strip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "divider_white_strip@2x.png"; sourceTree = "<group>"; };
 		63EF75C5169F91F800A6564B /* DataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataLoader.h; sourceTree = "<group>"; };
 		63EF75C6169F91F800A6564B /* DataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataLoader.m; sourceTree = "<group>"; };
+		63EF75CB16A012BC00A6564B /* CalCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalCardCell.h; sourceTree = "<group>"; };
+		63EF75CC16A012BC00A6564B /* CalCardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalCardCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -707,6 +710,8 @@
 				63389DD915F0230F00953A01 /* NextBusViewController.m */,
 				63C28D2515F9437C00E212F0 /* Cal1CardViewController.h */,
 				63C28D2615F9437C00E212F0 /* Cal1CardViewController.m */,
+				63EF75CB16A012BC00A6564B /* CalCardCell.h */,
+				63EF75CC16A012BC00A6564B /* CalCardCell.m */,
 				6393DE5C15030FA5003B77F5 /* Map Annotations */,
 			);
 			name = Maps;
@@ -1098,6 +1103,7 @@
 				63EF75A6169D248D00A6564B /* CUTableViewCell.m in Sources */,
 				63EF75A9169D2DE700A6564B /* CUTableHeaderView.m in Sources */,
 				63EF75C7169F91F800A6564B /* DataLoader.m in Sources */,
+				63EF75CD16A012BD00A6564B /* CalCardCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

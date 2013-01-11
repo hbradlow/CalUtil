@@ -13,5 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) Cal1CardAnnotation *annotation;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

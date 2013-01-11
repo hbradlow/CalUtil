@@ -107,15 +107,25 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="HSW-Ax-rOk">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="127"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SBb-AV-bm9">
+                                <rect key="frame" x="20" y="132" width="280" height="284"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="cKu-Yf-HLn" id="YPE-uD-cgV"/>
+                                    <outlet property="delegate" destination="cKu-Yf-HLn" id="cCa-Cb-mRp"/>
+                                </connections>
+                            </tableView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <color key="backgroundColor" white="0.97999999999999998" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="nAP-L3-XCS"/>
                     <connections>
                         <outlet property="imageView" destination="HSW-Ax-rOk" id="ksM-kT-wl3"/>
+                        <outlet property="tableView" destination="SBb-AV-bm9" id="5Ac-3k-BEk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bHk-Yh-fib" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -624,6 +634,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Cal1CardViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
             </relationships>
         </class>
         <class className="ClassListViewController" superclassName="UITableViewController">
@@ -641,6 +652,7 @@
         <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
+                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
@@ -673,7 +685,6 @@
         <class className="MapViewController" superclassName="FrontViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
             <relationships>
-                <relationship kind="action" name="displayMapKey:"/>
                 <relationship kind="action" name="switchAnnotations:"/>
                 <relationship kind="outlet" name="annotationSelector" candidateClass="UISegmentedControl"/>
                 <relationship kind="outlet" name="infoButton" candidateClass="UIButton"/>

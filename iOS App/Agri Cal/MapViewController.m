@@ -158,6 +158,8 @@ static float LongitudeDelta = 0.015;
 {}
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
+    if (aUserLocation.location.horizontalAccuracy < 0)
+        return;
     if (!self.previousUserLocation.latitude
         || abs(self.previousUserLocation.latitude - aUserLocation.location.coordinate.latitude) > 0.005/2
         || abs(self.previousUserLocation.longitude - aUserLocation.location.coordinate.longitude) > 0.005/2)
@@ -216,7 +218,7 @@ static float LongitudeDelta = 0.015;
         annotationView.rightCalloutAccessoryView = button;
         return annotationView;
     }
-    else if ([self.calCardAnnotations containsObject:annotation])
+    else if ([self.calCardAnnotations containsObject:annotation] || [self.buildingAnnotations containsObject:annotation])
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
         annotationView.canShowCallout = NO;
@@ -235,7 +237,7 @@ static float LongitudeDelta = 0.015;
     {
         [self performSegueWithIdentifier:@"bus" sender:self.selectedAnnotation];
     }
-    else if ([self.calCardAnnotations containsObject:self.selectedAnnotation])
+    else if ([self.calCardAnnotations containsObject:self.selectedAnnotation] || [self.buildingAnnotations containsObject:self.selectedAnnotation])
     {
         [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
