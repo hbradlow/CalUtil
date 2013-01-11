@@ -13,11 +13,10 @@
     #import <Foundation/Foundation.h>
     #import <MapKit/MapKit.h>
     static NSString *ServerURL = @"https://calutil-dev.herokuapp.com";
-    #define kBusDataKey @"busdata"
     #define kBusFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/busfile"]
-    #define kBusesLoaded @"loaded"
-    #define kCalCardLoaded @"loadedcalcard"
     #define kCalFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/calfile"]
+    #define kBuildingFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/buildingfile"]
+    #define kLibraryFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/libfile"]
     #define kNewsLoaded @"newsloaded"
     #define kNewsFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/newsfile"]
     #define kNewsKey @"newskey"

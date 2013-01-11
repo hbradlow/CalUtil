@@ -10,39 +10,78 @@
 
 @implementation DataLoader
 
-- (id)initWithUrlString:(NSString*)urlString
+- (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString *)filePath
 {
     if ((self = [super init])) {
         self.urlString = urlString;
+        self.filePath = filePath;
     }
     return self;
 }
 
-- (NSArray*)loadDataWithCompletionBlock:(NSArray* (^) (NSArray*))block error:(NSError*)error
+- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block setToSave:(NSMutableSet*)set
 {
-    NSString *queryString = [NSString stringWithFormat:@"%@/app_data/cal_one_card/?format=json", ServerURL];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
+    {
+        NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        NSSet *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
+        for (NSObject* object in loaded_set)
+        {
+            [set addObject:object];
+        }
+        return YES;
+    }
+    else
+    {
+        return [self loadBlock:block withExtension:self.urlString andSet:set];
+    }
+}
+
+- (BOOL)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andSet:(NSSet*)set
+{
+    NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL, extension];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     
     NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
     
     NSData *receivedData;
+    NSError *error = nil;
     receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
                                          returningResponse:&response
                                                      error:&error];
     
     NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:&error];
-    
     if (error)
     {
-        return nil;
+        return NO;
     }
     
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
+    NSMutableArray *arr = [NSMutableArray arrayWithArray:[receivedDict objectForKey:@"objects"]];
     
-    NSArray *result = block(arr);
+    block(arr);
     
-    return result;
+    if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+    {
+        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andSet:set];
+    }
+    else
+    {
+        [self saveData:set];
+        self.lastUpdate = [NSDate date];
+        return YES;
+    }
+}
+
+- (void)saveData:(NSSet*)dataArray{
+    NSMutableData *data = [[NSMutableData alloc]init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+    [archiver encodeObject:dataArray forKey:@"filedata"];
+    [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
+    [archiver finishEncoding];
+    [data writeToFile:self.filePath atomically:YES];
 }
 
 @end

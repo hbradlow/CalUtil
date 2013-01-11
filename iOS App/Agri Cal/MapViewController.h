@@ -6,6 +6,7 @@
 #import "DisclosureAnnotationView.h"
 #import "InfoView.h"
 #import "FrontViewController.h"
+#import "DataLoader.h"
 
 @interface MapViewController : FrontViewController  <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -18,9 +19,11 @@
 @property (strong, nonatomic) MKPinAnnotationView *selectedAnnotationView;
 @property (strong, nonatomic) DisclosureAnnotationView *disclosureAnnotationView;
 
+@property (strong, nonatomic) NSMutableSet *busStopAnnotations;
+@property (strong, nonatomic) NSMutableSet *calCardAnnotations;
+@property (strong, nonatomic) NSMutableSet *buildingAnnotations;
+@property (strong, nonatomic) NSMutableSet *libraryAnnotations;
 @property (strong, nonatomic) NSMutableArray *searchResults;
-@property (strong, nonatomic) NSMutableArray *busStopAnnotations;
-@property (strong, nonatomic) NSMutableArray *calCardAnnotations;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *annotationSelector;
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
@@ -33,7 +36,12 @@
 
 @property CLLocationCoordinate2D previousUserLocation;
 
+// The different loaders for the data
+@property (nonatomic, strong) DataLoader *cal1Loader;
+@property (nonatomic, strong) DataLoader *busLoader;
+@property (nonatomic, strong) DataLoader *buildingLoader;
+@property (nonatomic, strong) DataLoader *libraryLoader; 
+
 - (IBAction)switchAnnotations:(id)sender;
-- (IBAction)displayMapKey:(id)sender;
 - (void)displayInfo:(id)sender;
 @end

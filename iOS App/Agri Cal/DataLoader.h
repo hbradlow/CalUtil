@@ -1,18 +1,12 @@
-//
-//  DataLoader.h
-//  Agri Cal
-//
-//  Created by Kevin Lindkvist on 1/10/13.
-//
-//
-
 #import <Foundation/Foundation.h>
 
 @interface DataLoader : NSObject
 
 @property (nonatomic, copy) NSString *urlString;
+@property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, strong) NSDate *lastUpdate;
 
-- (id)initWithUrlString:(NSString*)urlString;
-- (NSArray*)loadDataWithCompletionBlock:(NSArray* (^) (NSArray*))block error:(NSError*)error;
+- (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString*)filePath;
+- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block setToSave:(NSSet*)array;
 
 @end

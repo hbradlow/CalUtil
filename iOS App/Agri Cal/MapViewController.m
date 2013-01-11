@@ -23,10 +23,12 @@ static float LongitudeDelta = 0.015;
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    self.busStopAnnotations = [[NSMutableArray alloc] init];
-    self.calCardAnnotations = [[NSMutableArray alloc] init];
+    self.busStopAnnotations = [[NSMutableSet alloc] init];
+    self.calCardAnnotations = [[NSMutableSet alloc] init];
+    self.libraryAnnotations = [[NSMutableSet alloc] init];
+    self.buildingAnnotations = [[NSMutableSet alloc] init];
     
-    // Setting up the map
+/** Setting up the map */
     self.mapView.delegate = self;
     self.mapView.showsUserLocation = YES;
     
@@ -36,56 +38,24 @@ static float LongitudeDelta = 0.015;
     MKCoordinateRegion region = {coord, span};
     [self.mapView setRegion:region];
     
-    @try {
-        // Loading the stops
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            NSData *data;
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:kBusesLoaded])
-            {
-                data = [[NSMutableData alloc]initWithContentsOfFile:kBusFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-                self.busStopAnnotations = [unarchiver decodeObjectForKey:kBusDataKey];
-                [unarchiver finishDecoding];
-                dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-                dispatch_async(updateUIQueue, ^{
-                    if ([self.annotationSelector selectedSegmentIndex] == 0)
-                        [self.mapView addAnnotations:self.busStopAnnotations];
-                });
-            }
-            if (!data)
-            {
-                [self loadBusStopsWithExtension:@"/app_data/bus_stop/?format=json"];
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kBusesLoaded];
-            }
-            
-            // Loading the cal1card locations
-            NSData *calData;
-            if ([[NSUserDefaults standardUserDefaults] boolForKey:kCalCardLoaded])
-            {
-                calData = [[NSMutableData alloc]initWithContentsOfFile:kCalFilePath];
-                NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
-                self.calCardAnnotations = [unarchiver decodeObjectForKey:kCalDataKey];
-                [unarchiver finishDecoding];
-            }
-            if (!calData)
-            {
-                [self loadCal1CardLocations];
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCalCardLoaded];
-            }
-        });
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading map annotations");
-    }
-    
     [[self.mapView layer] setMasksToBounds:NO];
     [[self.mapView layer] setShadowColor:[UIColor blackColor].CGColor];
     [[self.mapView layer] setShadowOpacity:1.0f];
     [[self.mapView layer] setShadowRadius:6.0f];
     [[self.mapView layer] setShadowOffset:CGSizeMake(0, 3)];
     [self.mapView setNeedsDisplay];
+
+/** Set up the loaders and do the initial loading */
+    self.busLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/bus_stop/?format=json" andFilePath:kBusFilePath];
+    [self loadBusStops];
+    self.cal1Loader = [[DataLoader alloc] initWithUrlString:@"/app_data/cal_one_card/?format=json" andFilePath:kCalFilePath];
+    [self loadCal1CardLocations];
+    self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library_data/?format=json" andFilePath:kLibraryFilePath];
+    [self loadLibraries];
+    self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json" andFilePath:kBuildingFilePath];
+    [self loadBuildings];
     
+/** Set up the segmented control UI */
     UIImage *segmentUnselected = [UIImage imageNamed:@"map_seg_bg"];
     UIImage *segmentSelected = [UIImage imageNamed:@"map_seg_bg"];
     
@@ -93,134 +63,99 @@ static float LongitudeDelta = 0.015;
     [self.annotationSelector setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
     self.annotationSelector.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
 }
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0 forBarMetrics:UIBarMetricsDefault];
-}
+
 - (void)loadCal1CardLocations{
-    NSString *queryString = [NSString stringWithFormat:@"%@/app_data/cal_one_card/?format=json", ServerURL];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSData *receivedData;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *arr = [receivedDict objectForKey:@"objects"];
-    
-    for (NSDictionary *currentLocation in arr)
-    {
-        NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
-        NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
-        NSString *info = [currentLocation objectForKey:@"info"];
-        NSString *title = [currentLocation objectForKey:@"name"];
-        NSString *times = [currentLocation objectForKey:@"times"];
-        NSString *imageURL = [currentLocation objectForKey:@"image_url"];
-        NSString *type = [currentLocation objectForKey:@"type"];
-        if (latitude != nil)
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentLocation in arr)
         {
-            Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
-                                                                             andLongitude:[longitude doubleValue]
-                                                                                 andTitle:title
-                                                                                   andURL:imageURL
-                                                                                 andTimes:times
-                                                                                  andInfo:info];
-            annotation.type = type;
-            annotation.subtitle = type;
-            [self.calCardAnnotations addObject:annotation];
+            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+            NSString *info = [currentLocation objectForKey:@"info"];
+            NSString *title = [currentLocation objectForKey:@"name"];
+            NSString *times = [currentLocation objectForKey:@"times"];
+            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            NSString *type = [currentLocation objectForKey:@"type"];
+            if (latitude != nil)
+            {
+                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
+                                                                                 andLongitude:[longitude doubleValue]
+                                                                                     andTitle:title
+                                                                                       andURL:imageURL
+                                                                                     andTimes:times
+                                                                                      andInfo:info];
+                annotation.type = type;
+                annotation.subtitle = type;
+                [self.calCardAnnotations addObject:annotation];
+            }
         }
-    }
-    if ([self.annotationSelector selectedSegmentIndex] == 1)
-    {
-        [self.mapView removeAnnotations:self.busStopAnnotations];
-        [self.mapView addAnnotations:self.calCardAnnotations];
-    }
-    [self saveCalCardLocationsToFile];
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.cal1Loader loadDataWithCompletionBlock:block setToSave:self.calCardAnnotations];
+        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+    });
 }
 
-- (void)saveCalCardLocationsToFile{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self.calCardAnnotations forKey:kCalDataKey];
-    [archiver finishEncoding];
-    [data writeToFile:kCalFilePath atomically:YES];
-}
-
-- (void)saveBusesToFile{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self.busStopAnnotations forKey:kBusDataKey];
-    [archiver finishEncoding];
-    [data writeToFile:kBusFilePath atomically:YES];
-}
-
-- (void)loadBusStopsWithExtension:(NSString*)urlExtension{
-    NSString *queryString = [NSString stringWithFormat:@"%@%@",ServerURL, urlExtension];
-    queryString = [queryString lowercaseString];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-    
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                 returningResponse:&response
-                                                             error:&error];
-    
-    NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-    
-    NSArray *stops = [dict objectForKey:@"objects"];
-    
-    for (NSDictionary *currentStop in stops)
-    {
-        NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
-        NSArray *currentRoutes = [currentStop objectForKey:@"lines"];
-        float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
-        float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];
-        NSString *title = [currentStop objectForKey:@"title"];
-        
-        BusStopAnnotation *currentAnnotation = [[BusStopAnnotation alloc] initWithID:currentID latitude:currentLat longitude:currentLong routes:currentRoutes];
-        currentAnnotation.title = title;
-        NSString *subtitle = @"";
-        for (NSDictionary *currentLine in currentRoutes)
+- (void)loadBusStops{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentStop in arr)
         {
-            subtitle = [subtitle stringByAppendingFormat:@"%@ ",[currentLine objectForKey:@"title"]];
+            NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
+            NSArray *currentRoutes = [currentStop objectForKey:@"lines"];
+            float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
+            float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];
+            NSString *title = [currentStop objectForKey:@"title"];
+            
+            BusStopAnnotation *currentAnnotation = [[BusStopAnnotation alloc] initWithID:currentID latitude:currentLat longitude:currentLong routes:currentRoutes];
+            currentAnnotation.title = title;
+            NSString *subtitle = @"";
+            for (NSDictionary *currentLine in currentRoutes)
+            {
+                subtitle = [subtitle stringByAppendingFormat:@"%@ ",[currentLine objectForKey:@"title"]];
+            }
+            currentAnnotation.subtitle = subtitle;
+            [self.busStopAnnotations addObject:currentAnnotation];
         }
-        currentAnnotation.subtitle = subtitle;
-        [self.busStopAnnotations addObject:currentAnnotation];
-    }
-    
-    if (!([[dict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
-    {
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^{
-            if ([self.annotationSelector selectedSegmentIndex] == 0)
-            {
-                [self.mapView removeAnnotations:self.busStopAnnotations];
-                [self.mapView addAnnotations:self.busStopAnnotations];
-            }
-        });
-        [self loadBusStopsWithExtension:[[dict objectForKey:@"meta"] objectForKey:@"next"]];
-    }
-    else
-    {
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^{
-            if ([self.annotationSelector selectedSegmentIndex] == 0)
-            {
-                [self.mapView removeAnnotations:self.busStopAnnotations];
-                [self.mapView addAnnotations:self.busStopAnnotations];
-            }
-        });
-        [self saveBusesToFile];
-    }
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.busLoader loadDataWithCompletionBlock:block setToSave:self.busStopAnnotations];
+        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+    });
 }
+
+- (void)loadBuildings
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentLocation in arr)
+        {
+            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+            NSString *info = [currentLocation objectForKey:@"description"];
+            NSString *title = [currentLocation objectForKey:@"name"];
+            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            
+            if (latitude != nil && latitude != [NSNull null])
+            {
+                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
+                                                                                 andLongitude:[longitude doubleValue]
+                                                                                     andTitle:title
+                                                                                       andURL:imageURL
+                                                                                     andTimes:nil
+                                                                                      andInfo:info];
+                [self.buildingAnnotations addObject:annotation];
+            }
+        }
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.buildingLoader loadDataWithCompletionBlock:block setToSave:self.buildingAnnotations];
+        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+    });
+}
+
+-(void)loadLibraries
+{}
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
     if (!self.previousUserLocation.latitude
@@ -258,6 +193,11 @@ static float LongitudeDelta = 0.015;
     if (self.selectedAnnotation && !((BasicMapAnnotationView*)view).preventSelectionChange)
     {
         self.selectedAnnotation = nil;
+    }
+    if (view.annotation == self.buildingAnnotation)
+    {
+        [self.mapView removeAnnotation:self.buildingAnnotation];
+        self.buildingAnnotation = nil;
     }
 }
 
@@ -324,7 +264,8 @@ static float LongitudeDelta = 0.015;
     NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
     if (selectedIndex == 0)
     {
-        [self.mapView removeAnnotations:self.calCardAnnotations];
+        [self.mapView removeAnnotations:[self.calCardAnnotations allObjects]];
+        [self.mapView removeAnnotations:[self.buildingAnnotations allObjects]];
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -332,7 +273,8 @@ static float LongitudeDelta = 0.015;
     }
     else if (selectedIndex == 1)
     {
-        [self.mapView removeAnnotations:self.busStopAnnotations];
+        [self.mapView removeAnnotations:[self.busStopAnnotations allObjects]];
+        [self.mapView removeAnnotations:[self.buildingAnnotations allObjects]];        
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -340,8 +282,8 @@ static float LongitudeDelta = 0.015;
     }
     else if (selectedIndex == 2)
     {
-        [self.mapView removeAnnotations:self.busStopAnnotations];
-        [self.mapView removeAnnotations:self.calCardAnnotations];
+        [self.mapView removeAnnotations:[self.busStopAnnotations allObjects]];
+        [self.mapView removeAnnotations:[self.calCardAnnotations allObjects]];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
     }
@@ -353,7 +295,7 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:self.busStopAnnotations];
+                    [self.mapView addAnnotations:[self.busStopAnnotations allObjects]];
                 });
                 break;
             }
@@ -361,13 +303,16 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:self.calCardAnnotations];
+                    [self.mapView addAnnotations:[self.calCardAnnotations allObjects]];
                 });
                 break;
             }
             case 2:
             {
-                [self.searchBar setHidden:NO];
+                dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+                dispatch_async(updateUIQueue, ^{
+                    [self.mapView addAnnotations:[self.buildingAnnotations allObjects]];
+                });
                 break;
             }
             default:
@@ -385,30 +330,12 @@ static float LongitudeDelta = 0.015;
  Uses the google maps api to search for buldings in Berkeley.
  */
 -(void)searchForBuilding{
-#warning Should not be implemented with Google API.
-    NSString *searchString = self.searchDisplayController.searchBar.text;
-    searchString = [NSString stringWithFormat:@"%@ %@", searchString, @"berkeley"];
-    searchString = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if ([searchString isEqualToString:@"berkeley"])
-        return;
-    searchString = [[NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=true", searchString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url= [[NSURL alloc] initWithString:searchString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    @try {
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(queue, ^{
-            NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-            if (receivedData)
-                self.searchResults = [[NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil] objectForKey:@"results"];
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^{
-                [self.searchDisplayController.searchResultsTableView reloadData];
-            });
-        });
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error when searching for building");
-    }
+    NSString *searchText = self.searchBar.text;
+    NSPredicate *resultPredicate = [NSPredicate
+                                    predicateWithFormat:@"title contains[cd] %@",
+                                    searchText];
+    
+    self.searchResults = [NSMutableArray arrayWithArray:[[self.buildingAnnotations filteredSetUsingPredicate:resultPredicate] allObjects]];
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
@@ -435,19 +362,8 @@ static float LongitudeDelta = 0.015;
     if (![self.searchResults count])
         cell.textLabel.text = @"Searching...";
     else {
-        NSArray *partsOfName = [[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"formatted_address"] componentsSeparatedByString:@","];
-        NSString *shortName = [partsOfName objectAtIndex:0];
-        NSString *detailText = @"";
-        if ([partsOfName count] > 3)
-            detailText = [NSString stringWithFormat:@"%@,%@,%@", [partsOfName objectAtIndex:1], [partsOfName objectAtIndex:2], [partsOfName objectAtIndex:3]];
-        else if([partsOfName count]>2)
-            detailText = [NSString stringWithFormat:@"%@,%@", [partsOfName objectAtIndex:1], [partsOfName objectAtIndex:2]];
-        else if([partsOfName count]>1)
-            detailText = [NSString stringWithFormat:@"%@", [partsOfName objectAtIndex:1]];
-        else
-            detailText = @"";
-        cell.textLabel.text = shortName;
-        cell.detailTextLabel.text = detailText;
+        Cal1CardAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
+        cell.textLabel.text = annotation.title;
     }
     return cell;
 }
@@ -459,10 +375,8 @@ static float LongitudeDelta = 0.015;
         [self.mapView removeAnnotation:self.buildingAnnotation];
     }
     self.searchDisplayController.searchBar.text = @"";
-    NSString *lat =  [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"];
-    NSString *lng =  [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"];
-    self.buildingAnnotation = [[BasicMapAnnotation alloc] initWithLatitude:[lat doubleValue] andLongitude:[lng doubleValue]];
-    self.buildingAnnotation.title = [[[[self.searchResults objectAtIndex:indexPath.row] objectForKey:@"formatted_address"] componentsSeparatedByString:@","] objectAtIndex:0];
+    Cal1CardAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
+    self.buildingAnnotation = annotation;
     [self.mapView addAnnotation:self.buildingAnnotation];
     [self.mapView setCenterCoordinate:self.buildingAnnotation.coordinate];
     [self.searchDisplayController setActive:NO animated:YES];
