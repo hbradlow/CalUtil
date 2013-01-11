@@ -37,7 +37,10 @@ def scrape_buildings(debug=False):
     soup = bs4.BeautifulSoup(r.text)
     i = 0
     for building in soup.findAll("building"):
-        b = CampusBuilding.objects.get(name=building.find("name").text)
+        try:
+            b = CampusBuilding.objects.get(name=building.find("name").text)
+        except CampusBuilding.DoesNotExist:
+            b = CampusBuilding()
         b.name = building.find("name").text
         b.abbreviation = building['id']
         b.built = building.find("built").text
