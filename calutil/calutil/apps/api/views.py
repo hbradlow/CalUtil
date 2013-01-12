@@ -22,6 +22,26 @@ def perimeter_name_for_stop(stop):
     #TODO: FIX THIS HACK
     return "a"
 
+def library_hours(request):
+    import requests
+    import json
+    url = "http://www.lib.berkeley.edu/hours"
+    soup = bs4.BeautifulSoup(requests.get(url).text)
+    state = ""
+    data = {}
+    for tr in soup.findAll("table",{"class":"front"})[0].find("tbody").findAll("tr"):
+        new_state = tr['class']
+        if new_state == state:
+            continue
+        new_state = state
+        try:
+            name = tr.findAll("td")[0].find("a").text.strip()
+            times = tr.findAll("td")[1].text.strip()
+            data[name] = times
+        except AttributeError:
+            pass #there isnt anything in this row
+    return HttpResponse(json.dumps(data))
+
 def load_perimeter_data():
     def reformat(s):
         h,m = s.split(":")

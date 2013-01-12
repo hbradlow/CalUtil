@@ -8,4 +8,5 @@ urlpatterns = patterns('api.views',
     url(r'^balance/$',"cal1card_balance",name="balance"),
     url(r'^nutrition/(?P<item_id>(\d+))/$',"nutrition",name="nutrition"),
     url(r'^dailycal/(?P<entries>(\d+))?/?$',"dailycal",name="dailycal"),
+    url(r'^library_hours/$',"library_hours",name="library_hours"),
 )
