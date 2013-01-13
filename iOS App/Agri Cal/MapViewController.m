@@ -50,7 +50,7 @@ static float LongitudeDelta = 0.015;
     [self loadBusStops];
     self.cal1Loader = [[DataLoader alloc] initWithUrlString:@"/app_data/cal_one_card/?format=json" andFilePath:kCalFilePath];
     [self loadCal1CardLocations];
-    self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library_data/?format=json" andFilePath:kLibraryFilePath];
+    self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library/?format=json" andFilePath:kLibraryFilePath];
     [self loadLibraries];
     self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json" andFilePath:kBuildingFilePath];
     [self loadBuildings];
@@ -155,7 +155,34 @@ static float LongitudeDelta = 0.015;
 }
 
 -(void)loadLibraries
-{}
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentLocation in arr)
+        {
+            NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
+            NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
+            NSString *info = [currentLocation objectForKey:@"description"];
+            NSString *title = [currentLocation objectForKey:@"name"];
+            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            
+            if (latitude != nil && latitude != [NSNull null])
+            {
+                Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
+                                                                                 andLongitude:[longitude doubleValue]
+                                                                                     andTitle:title
+                                                                                       andURL:imageURL
+                                                                                     andTimes:nil
+                                                                                      andInfo:info];
+                [self.libraryAnnotations addObject:annotation];
+            }
+        }
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.libraryLoader loadDataWithCompletionBlock:block setToSave:self.libraryAnnotations];
+        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+    });
+}
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
     if (aUserLocation.location.horizontalAccuracy < 0)
@@ -218,7 +245,7 @@ static float LongitudeDelta = 0.015;
         annotationView.rightCalloutAccessoryView = button;
         return annotationView;
     }
-    else if ([self.calCardAnnotations containsObject:annotation] || [self.buildingAnnotations containsObject:annotation])
+    else 
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
         annotationView.canShowCallout = NO;
@@ -237,7 +264,7 @@ static float LongitudeDelta = 0.015;
     {
         [self performSegueWithIdentifier:@"bus" sender:self.selectedAnnotation];
     }
-    else if ([self.calCardAnnotations containsObject:self.selectedAnnotation] || [self.buildingAnnotations containsObject:self.selectedAnnotation])
+    else 
     {
         [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
@@ -267,7 +294,7 @@ static float LongitudeDelta = 0.015;
     if (selectedIndex == 0)
     {
         [self.mapView removeAnnotations:[self.calCardAnnotations allObjects]];
-        [self.mapView removeAnnotations:[self.buildingAnnotations allObjects]];
+        [self.mapView removeAnnotations:[self.libraryAnnotations allObjects]];
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -276,7 +303,7 @@ static float LongitudeDelta = 0.015;
     else if (selectedIndex == 1)
     {
         [self.mapView removeAnnotations:[self.busStopAnnotations allObjects]];
-        [self.mapView removeAnnotations:[self.buildingAnnotations allObjects]];        
+        [self.mapView removeAnnotations:[self.libraryAnnotations allObjects]];
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -313,7 +340,7 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:[self.buildingAnnotations allObjects]];
+                    [self.mapView addAnnotations:[self.libraryAnnotations allObjects]];
                 });
                 break;
             }
