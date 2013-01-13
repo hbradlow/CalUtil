@@ -56,7 +56,7 @@ def scrape_libraries(debug=False):
     for url in urls:
         soup = bs4.BeautifulSoup(requests.get(base_url+url).text)
         name = soup.find("table").find("table").find("table").findAll("tr")[0].findAll("td")[1].text.strip()
-        link = base_url + soup.find("table").find("table").find("table").findAll("tr")[0].findAll("td")[1].find("a")['href'].strip()
+        link = soup.find("table").find("table").find("table").findAll("tr")[0].findAll("td")[1].find("a")['href'].strip()
 
         try:
             address = soup.find("table").find("table").find("table").findAll("tr")[1].findAll("td")[1].text.strip()
