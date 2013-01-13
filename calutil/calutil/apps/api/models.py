@@ -23,15 +23,18 @@ class Department(models.Model):
     def __unicode__(self):
         return self.name
 class Library(models.Model):
-    name = models.CharField(max_length=300)
-    abbreviation = models.CharField(max_length=300)
-    description = models.TextField()
+    name = models.CharField(max_length=300,default="")
+    address = models.CharField(max_length=300,default="")
+    link = models.URLField(default="")
+    image_url = models.URLField(default="")
+    phone = models.CharField(max_length=300,default="")
+    description = models.TextField(default="")
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
     def calculate_gps(self):
         import json
         import requests
-        url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.name.replace(" ","%20") + "%20Berkeley&sensor=true"
+        url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + self.address.replace(" ","%20") + "%20Berkeley&sensor=true"
         r = requests.get(url)
         o = json.loads(r.text)
         try:
@@ -40,6 +43,8 @@ class Library(models.Model):
         except IndexError:
             print o
         self.save()
+    def __unicode__(self):
+        return self.name
 class CampusBuilding(models.Model):
     name = models.CharField(max_length=300)
     abbreviation = models.CharField(max_length=300)

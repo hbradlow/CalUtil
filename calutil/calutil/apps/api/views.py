@@ -40,6 +40,7 @@ def library_hours(request):
             data[name] = times
         except AttributeError:
             pass #there isnt anything in this row
+    data['meta'] = {'num':len(data.keys())}
     return HttpResponse(json.dumps(data))
 
 def load_perimeter_data():

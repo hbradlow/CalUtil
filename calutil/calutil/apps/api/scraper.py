@@ -2,13 +2,15 @@ from api.models import *
 import bs4
 import mechanize
 import requests
+import json
 from django.db.models import Q
+from time import sleep
 
 from gdata.youtube.service import *
 from twill.commands import *
 
 ###############################NEW########################################
-def update(debug=False,complete=True,busses=False,buildings=False):
+def update(debug=False,complete=True,busses=False,buildings=False,libraries=False):
     """
     cal1card_from_plist()
     print "Finished Cal1Card locations from PList"
@@ -30,6 +32,64 @@ def update(debug=False,complete=True,busses=False,buildings=False):
     if complete or buildings:
         scrape_buildings(debug=debug)
         calculate_building_gps(debug=debug)
+
+    if complete or libraries:
+        scrape_libraries(debug=debug)
+        for l in Library.objects.all():
+            l.calculate_gps()
+            sleep(1)
+
+def scrape_libraries(debug=False):
+    base_url = "http://www.lib.berkeley.edu"
+    soup = bs4.BeautifulSoup(requests.get(base_url + "/hours").text)
+    state = ""
+    urls = []
+    for tr in soup.findAll("table",{"class":"front"})[0].find("tbody").findAll("tr"):
+        new_state = tr['class']
+        if new_state == state:
+            continue
+        new_state = state
+        try:
+            urls.append(tr.findAll("td")[3].find("a")['href'].strip())
+        except TypeError:
+            pass #there isnt anything in this row
+    for url in urls:
+        soup = bs4.BeautifulSoup(requests.get(base_url+url).text)
+        name = soup.find("table").find("table").find("table").findAll("tr")[0].findAll("td")[1].text.strip()
+        link = base_url + soup.find("table").find("table").find("table").findAll("tr")[0].findAll("td")[1].find("a")['href'].strip()
+
+        try:
+            address = soup.find("table").find("table").find("table").findAll("tr")[1].findAll("td")[1].text.strip()
+        except IndexError:
+            print url,"has no address"
+
+        try:
+            if soup.find("table").find("table").find("table").findAll("tr")[2].findAll("td")[0].text.strip() == "Phone:":
+                phone = soup.find("table").find("table").find("table").findAll("tr")[2].findAll("td")[1].text.strip()
+            else:
+                phone = soup.find("table").find("table").find("table").findAll("tr")[3].findAll("td")[1].text.strip()
+        except IndexError:
+            print url,"has no phone"
+
+        try:
+            description = soup.find("table").find("table").findAll("tr",recursive=False)[1].text.strip()
+        except IndexError:
+            print url,"has no description"
+        try:
+            image_url = base_url + soup.find("table").find("table").findAll("tr",recursive=False)[2].find("img")['src']
+        except IndexError:
+            print url,"has no image"
+        try:
+            l = Library.objects.get(name=name)
+        except Library.DoesNotExist:
+            l = Library()
+        l.name = name
+        l.link = link
+        l.address = address
+        l.phone = phone
+        l.description = description
+        l.image_url = image_url
+        l.save()
 
 def scrape_buildings(debug=False):
     base_url = "http://www.berkeley.edu/map/3dmap/buildings.xml"
