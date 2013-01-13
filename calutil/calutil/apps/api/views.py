@@ -22,7 +22,7 @@ def perimeter_name_for_stop(stop):
     #TODO: FIX THIS HACK
     return "a"
 
-def library_hours(request):
+def library_hours(request,library_id=None):
     import requests
     import json
     url = "http://www.lib.berkeley.edu/hours"
@@ -41,7 +41,14 @@ def library_hours(request):
         except AttributeError:
             pass #there isnt anything in this row
     data['meta'] = {'num':len(data.keys())}
-    return HttpResponse(json.dumps(data))
+    if not library_id:
+        return HttpResponse(json.dumps(data))
+    else:
+        try:
+            l = Library.objects.get(id=library_id)
+            return HttpResponse(data[l.name])
+        except:
+            return HttpResponse(json.dumps({"error":"Couldn't figure it out..."}))
 
 def load_perimeter_data():
     def reformat(s):

@@ -9,4 +9,5 @@ urlpatterns = patterns('api.views',
     url(r'^nutrition/(?P<item_id>(\d+))/$',"nutrition",name="nutrition"),
     url(r'^dailycal/(?P<entries>(\d+))?/?$',"dailycal",name="dailycal"),
     url(r'^library_hours/$',"library_hours",name="library_hours"),
+    url(r'^library_hours/(?P<library_id>(\d+))/$',"library_hours",name="library_hours_with_id"),
 )
