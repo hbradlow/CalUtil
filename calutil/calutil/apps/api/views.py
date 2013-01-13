@@ -37,7 +37,11 @@ def library_hours(request,library_id=None):
         try:
             name = tr.findAll("td")[0].find("a").text.strip()
             times = tr.findAll("td")[1].text.strip()
-            data[name] = times
+            try:
+                i = Library.objects.get(name=name).id
+            except Library.DoesNotExist:
+                i = -1
+            data[name] = {"times":times,"id":i}
         except AttributeError:
             pass #there isnt anything in this row
     data['meta'] = {'num':len(data.keys())}
