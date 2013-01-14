@@ -45,12 +45,13 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     [super viewDidLoad];
     self.departments = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
+    self.waitlistedCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
     self.classLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/" andFilePath:kIndividualClassPath];
+    self.waitlistLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule_waitlist/" andFilePath:kWaitListPath];
     [self refresh];
     self.departmentLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kDepartmentURL];
     [self loadDepartments];
-    self.waitlistLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kWaitListPath];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
@@ -64,6 +65,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
     [self loadCourses];
+    [self loadWaitlisted];
     });
 }
 
@@ -88,7 +90,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [self.enrolledCourses addObject:newClass];
         }
-        if ([self.enrolledCourses count])
+        if ([self.waitlistedCourses count])
         {
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
@@ -103,9 +105,44 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
 }
 
+- (void)loadWaitlisted
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentClass in arr)
+        {
+            CalClass *newClass = [[CalClass alloc] init];
+            newClass.title = [currentClass objectForKey:@"abbreviation"];
+            newClass.times = [currentClass objectForKey:@"location"];
+            newClass.instructor = [currentClass objectForKey:@"instructor"];
+            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
+            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
+            newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
+            newClass.units = [currentClass objectForKey:@"units"];
+            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
+            newClass.number = [currentClass objectForKey:@"number"];
+            newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
+            newClass.uniqueID = [currentClass objectForKey:@"id"];
+            newClass.ccn = [currentClass objectForKey:@"ccn"];
+            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
+            [self.waitlistedCourses addObject:newClass];
+        }
+        if ([self.waitlistedCourses count])
+        {
+            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+        }
+    };
+    
+    NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self.waitlistLoader loadDataWithCompletionBlock:block arrayToSave:self.waitlistedCourses withData:requestBody];
+    [self.waitlistLoader forceLoadWithCompletionBlock:block arrayToSave:self.waitlistedCourses withData:requestBody];
+    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+}
+
 - (void)loadDepartments
 {
-    NSLog(@"Loading departments");
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentDep in arr)
         {
@@ -131,7 +168,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (tableView == self.tableView)
-        return 27;
+        return 28;
     else
         return 1;
 }
@@ -155,8 +192,11 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             case 0:
                 title = @"Your registered courses";
                 break;
+            case 1:
+                title = @"Waitlisted courses";
+                break;
             default:
-                title = [alphabet substringWithRange:NSMakeRange(section-1, 1)];
+                title = [alphabet substringWithRange:NSMakeRange(section-2, 1)];
         }
     }
     else
@@ -171,6 +211,8 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 {
     if (section == 0 && ![self.enrolledCourses count])
         return 0;
+    if (section == 1 && ![self.waitlistedCourses count])
+        return 0;
     return 22;
 }
 
@@ -180,11 +222,13 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     {
         if (section == 0)
             return [self.enrolledCourses count];
+        if (section == 1)
+            return [self.waitlistedCourses count];
         else
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(section-2, 1)]];
             return [[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] count];
         }
     }
@@ -215,11 +259,18 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                 cell.imageView.image = [UIImage imageNamed:@"monitor"];
             cell.detailTextLabel.text = [[self.enrolledCourses objectAtIndex:indexPath.row] times];
         }
+        else if (indexPath.section == 1)
+        {
+            cell.textLabel.text = [[self.waitlistedCourses objectAtIndex:indexPath.row] title];
+            if ([[self.waitlistedCourses objectAtIndex:indexPath.row] hasWebcast])
+                cell.imageView.image = [UIImage imageNamed:@"monitor"];
+            cell.detailTextLabel.text = [[self.waitlistedCourses objectAtIndex:indexPath.row] times];
+        }
         else
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
             cell.textLabel.text = [[[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] objectAtIndex:indexPath.row] title];
             cell.detailTextLabel.text = @"";
         }
@@ -278,7 +329,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         {
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
-                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-1, 1)]];
+                                            [alphabet substringWithRange:NSMakeRange(indexPath.section-2, 1)]];
             NSMutableArray *sectionArray = [NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]];
             viewController.departmentURL = [[sectionArray objectAtIndex:indexPath.row] departmentID];
         }

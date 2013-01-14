@@ -43,11 +43,9 @@
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
-        NSLog(@"File existed");
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
-        NSLog(@"%@", loaded_set);
         for (NSObject* object in loaded_set)
         {
             [array addObject:object];

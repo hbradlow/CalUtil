@@ -30,8 +30,9 @@
     [super viewWillAppear:animated];
     self.navigationItem.title = self.annotation.title;
     [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
-    NSTimer *timer = [[NSTimer alloc] initWithFireDate:[NSDate date] interval:60.0 target:self selector:@selector(updateAllTimes) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];
+    self.timer = [NSTimer timerWithTimeInterval:60.0 target:self selector:@selector(updateAllTimes) userInfo:nil repeats:YES];
+    [self.timer fire];
+    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
 }
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -97,6 +98,12 @@
 - (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 40;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.timer invalidate];
 }
 
 - (void)viewDidUnload {

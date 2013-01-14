@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableArray *departments;
 @property (nonatomic, strong) NSMutableArray *enrolledCourses;
+@property (nonatomic, strong) NSMutableArray *waitlistedCourses;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sessionSelector;
 

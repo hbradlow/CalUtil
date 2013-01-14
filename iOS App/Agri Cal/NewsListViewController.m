@@ -32,13 +32,14 @@
     self.rssFeed = [[NSMutableArray alloc] init];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating news"]];
     [self.refreshControl beginRefreshing];
-    [self loadRSS];
     self.isMenuHidden = YES;
     self.menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 20, MENU_WIDTH, MENU_HEIGHT)
                                                       style:UITableViewStylePlain];
     [self.menuTableView setUserInteractionEnabled:YES];
     [self.tabBarController.view addSubview:self.menuTableView];
     [self.tabBarController.view sendSubviewToBack:self.menuTableView];
+    self.dataLoader = [[DataLoader alloc] initWithUrlString:@"/api/dailycal/" andFilePath:kNewsFilePath];
+    [self loadRSS];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -49,36 +50,8 @@
 
 - (void)loadRSS
 {
-    NSData *data;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kNewsLoaded])
-    {
-        data = [[NSMutableData alloc]initWithContentsOfFile:kNewsFilePath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        self.rssFeed = [unarchiver decodeObjectForKey:kNewsKey];
-        [unarchiver finishDecoding];
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^{
-            [self.tableView reloadData];
-        });
-    }
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        @try {
-            NSString *queryString = [NSString stringWithFormat:@"%@/api/dailycal/", ServerURL];
-            NSURL *requestURL = [NSURL URLWithString:queryString];
-            NSURLResponse *response = nil;
-            NSError *error = nil;
-            
-            NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-            
-            NSData *receivedData;
-            receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                 returningResponse:&response
-                                                             error:&error];
-            
-            NSArray *receivedArray = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-            NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-            for (NSDictionary *currentStory in receivedArray)
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+            for (NSDictionary *currentStory in arr)
             {
                 NewsStory *story = [[NewsStory alloc] init];
                 story.title = [[currentStory objectForKey:@"title"] capitalizedString];
@@ -86,19 +59,14 @@
                 story.content = [[[currentStory objectForKey:@"content"] objectAtIndex:0] objectForKey:@"value"];
                 story.published = [currentStory objectForKey:@"published"];
                 story.published = [story.published substringToIndex:[story.published length]-5];
-                [tempArray addObject:story];
+                [self.rssFeed addObject:story];
             }
-            self.rssFeed = tempArray;
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
             [self saveNewsToFile];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"Error loading news");
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-        }
-    });
+    };
+    [self.dataLoader loadDataWithCompletionBlock:block arrayToSave:self.rssFeed];
+    [self.dataLoader forceLoadWithCompletionBlock:block arrayToSave:self.rssFeed withData:nil];
 }
 - (void)saveNewsToFile
 {
