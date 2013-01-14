@@ -188,7 +188,7 @@ def dailycal(request,entries):
         entries = 10
     import feedparser
     import json
-    d = feedparser.parse("http://dailycalifornian.ca.newsmemory.com/rss.php?edition=The%20Daily%20Californian&section=allsections&device=std&images=small&content=full")
+    d = feedparser.parse("http://dailycalifornian.ca.newsmemory.com/rss.php?edition=The%20Daily%20Californian&section=allsections&device=std&images=large&content=full")
     parsed_removed = []
     for i in d['entries'][0:int(entries)]:
         l  = {}
@@ -196,4 +196,4 @@ def dailycal(request,entries):
             if v.__class__.__name__ != "struct_time":
                 l[k] = v
         parsed_removed.append(l)
-    return HttpResponse(json.dumps(wrap(parsed_removed)))
+    return HttpResponse(json.dumps(wrap(parsed_removed)),mimetype="text/json")
