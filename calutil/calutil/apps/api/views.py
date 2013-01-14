@@ -18,7 +18,7 @@ def active_sessions(request):
     soup = bs4.BeautifulSoup(requests.get(url).text)
     objects = []
     for term,year in pair_list(soup.findAll("img",{"border":"0","height":"24"})):
-        objects.append(str(term['alt'][0:2])+str(year['alt']))
+        objects.append({"session":str(term['alt'][0:2])+str(year['alt'][-2:])})
     return HttpResponse(json.dumps(wrap(objects)))
 
 def predictions(request,stop_id,line_tag):
