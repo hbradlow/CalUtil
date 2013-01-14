@@ -24,7 +24,7 @@ def active_sessions(request):
             t = "SP"
         else:
             t = "SU"
-        objects.append({"semester":t,"session":str(term['alt'][0:2])+str(year['alt'][-2:])})
+        objects.append({"semester":t,"session":str(term['alt'][0:2])+" "+str(year['alt'][-2:])})
     return HttpResponse(json.dumps(wrap(objects)))
 
 def predictions(request,stop_id,line_tag):
@@ -188,6 +188,7 @@ def dailycal(request,entries):
         entries = 10
     import feedparser
     import json
+    import requests
     d = feedparser.parse("http://dailycalifornian.ca.newsmemory.com/rss.php?edition=The%20Daily%20Californian&section=allsections&device=std&images=large&content=full")
     parsed_removed = []
     for i in d['entries'][0:int(entries)]:
@@ -195,5 +196,16 @@ def dailycal(request,entries):
         for k,v in i.items():
             if v.__class__.__name__ != "struct_time":
                 l[k] = v
+
+        url = l['link']
+        html = requests.get(url).text.replace("/eebrowser","http://dailycalifornian.ca.newsmemory.com/eebrowser")
+        soup = bs4.BeautifulSoup(html)
+        soup.find("div",{"id":"wrapper"})['id'] = "removed"
+        soup.find("div",{"id":"story"})['id'] = "removed"
+        soup.find("div",{"id":"header"}).extract()
+        soup.find("div",{"id":"links"}).extract()
+        soup.find("div",{"id":"footer"}).extract()
+        l['content'][0]['value'] = str(soup)
+
         parsed_removed.append(l)
     return HttpResponse(json.dumps(wrap(parsed_removed)),mimetype="text/json")
