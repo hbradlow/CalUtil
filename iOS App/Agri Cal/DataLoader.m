@@ -43,9 +43,11 @@
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
+        NSLog(@"File existed");
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
+        NSLog(@"%@", loaded_set);
         for (NSObject* object in loaded_set)
         {
             [array addObject:object];
@@ -124,6 +126,7 @@
 - (void)saveData:(NSObject*)dataArray{
     if (self.shouldSave)
     {
+        NSLog(@"saving %@", dataArray);
         NSMutableData *data = [[NSMutableData alloc]init];
         NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [archiver encodeObject:dataArray forKey:@"filedata"];

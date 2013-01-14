@@ -70,7 +70,6 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)loadCourses
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
         for (NSDictionary *currentClass in arr)
         {
             CalClass *newClass = [[CalClass alloc] init];
@@ -87,11 +86,10 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.uniqueID = [currentClass objectForKey:@"id"];
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [tempArray addObject:newClass];
+            [self.enrolledCourses addObject:newClass];
         }
-        if ([tempArray count])
+        if ([self.enrolledCourses count])
         {
-            self.enrolledCourses = tempArray;
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
         }
@@ -101,31 +99,30 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
     [self.classLoader loadDataWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
     [self.classLoader forceLoadWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
-    
+    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
 }
 
 - (void)loadDepartments
 {
+    NSLog(@"Loading departments");
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        NSMutableArray *tempDepartments = [[NSMutableArray alloc] init];
-        
         for (NSDictionary *currentDep in arr)
         {
             Department *newDep = [[Department alloc] init];
             newDep.title = [[currentDep objectForKey:@"name"] capitalizedString];
             newDep.departmentID = [currentDep objectForKey:@"id"];
-            [tempDepartments addObject:newDep];
+            [self.departments addObject:newDep];
         }
-        self.departments = tempDepartments;
         [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
             return [obj1.title caseInsensitiveCompare:obj2.title];
         }];
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         [self.departmentLoader loadDataWithCompletionBlock:block arrayToSave:self.departments];
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
     });
 }
 

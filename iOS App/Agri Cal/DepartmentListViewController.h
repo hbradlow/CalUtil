@@ -13,13 +13,13 @@
 
 @interface DepartmentListViewController : FrontTableViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) NSMutableArray *departments;
-@property (nonatomic, retain) NSMutableArray *enrolledCourses;
-@property (nonatomic, retain) NSMutableArray *searchResults;
+@property (nonatomic, strong) NSMutableArray *departments;
+@property (nonatomic, strong) NSMutableArray *enrolledCourses;
+@property (nonatomic, strong) NSMutableArray *searchResults;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sessionSelector;
 
-@property (nonatomic, retain) DataLoader *classLoader;
-@property (nonatomic, retain) DataLoader *departmentLoader;
-@property (nonatomic, retain) DataLoader *waitlistLoader;
+@property (nonatomic, strong) DataLoader *classLoader;
+@property (nonatomic, strong) DataLoader *departmentLoader;
+@property (nonatomic, strong) DataLoader *waitlistLoader;
 
 @end
