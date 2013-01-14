@@ -29,11 +29,11 @@ def active_sessions(request):
 
 def predictions(request,stop_id,line_tag):
     stop = BusStop.objects.get(stop_id=stop_id)
-    if line_tag=="perimiter-P":
+    if line_tag=="perimeter-P":
         return perimeter_predictions("P",perimeter_name_for_stop(stop,"P")) 
-    if line_tag=="perimiter-SS":
+    if line_tag=="perimeter-SS":
         return perimeter_predictions("SS",perimeter_name_for_stop(stop,"SS")) 
-    if line_tag=="perimiter-NS":
+    if line_tag=="perimeter-NS":
         return perimeter_predictions("NS",perimeter_name_for_stop(stop,"NS")) 
     l = []
     for object in stop.predictions()['objects']:
