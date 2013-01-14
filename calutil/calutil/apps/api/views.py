@@ -103,7 +103,7 @@ def load_perimeter_data():
             o[line][key] = [reformat(i) for i in value]
     return o
 def perimeter_predictions(line,stop):
-    d = datetime.datetime(2000,1,1,10,23,0)
+    d = datetime.datetime.now()
     times = load_perimeter_data()[line][stop]
     l = []
     for index,time in enumerate(times):
