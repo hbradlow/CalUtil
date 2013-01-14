@@ -16,7 +16,7 @@ def update(debug=False,complete=True,busses=False,buildings=False,libraries=Fals
         print "Finished Cal1Card locations from PList"
 
     if complete or courses:
-        courses()
+        scrape_courses()
         print "Finished basic course info"
         full_courses()
         print "Finished full course info"
@@ -230,7 +230,7 @@ def cal1card_from_plist():
         print "Name: " + location.name
         location.save()
 
-def courses(term="FL"):
+def scrape_courses(term="FL"):
     import re
     data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=" + term + "&p_list_all=Y")
     soup = bs4.BeautifulSoup(data.text)
