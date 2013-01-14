@@ -104,6 +104,7 @@ class CourseResource(ModelResource):
         resource_name = "course"
         filtering = {
             'department':['exact'],
+            'semester':['exact'],
             'limit':['exact'],
             'offset':['exact'],
             'id':ALL,

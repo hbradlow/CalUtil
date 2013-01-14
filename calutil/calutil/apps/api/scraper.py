@@ -492,7 +492,10 @@ def berkeley_buses(debug=False):
     while data:
         data = [d.strip() for d in data.split(" ")]
         if data[0]=="line":
-            line = BusLine.objects.create(title=data[1],tag="perimiter-" + data[1])
+            try:
+                line = BusLine.objects.filter(title=data[1],tag="perimiter-" + data[1])
+            except BusLine.DoesNotExist:
+                line = BusLine.objects.create(title=data[1],tag="perimiter-" + data[1])
             print "Line",line.title
             num = 0
         else:

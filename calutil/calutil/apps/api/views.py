@@ -18,7 +18,13 @@ def active_sessions(request):
     soup = bs4.BeautifulSoup(requests.get(url).text)
     objects = []
     for term,year in pair_list(soup.findAll("img",{"border":"0","height":"24"})):
-        objects.append({"session":str(term['alt'][0:2])+str(year['alt'][-2:])})
+        if term == "Fall":
+            t = "FL"
+        elif term == "Spring":
+            t = "SP"
+        else:
+            t = "SU"
+        objects.append({"semester":t,"session":str(term['alt'][0:2])+str(year['alt'][-2:])})
     return HttpResponse(json.dumps(wrap(objects)))
 
 def predictions(request,stop_id,line_tag):
@@ -160,4 +166,4 @@ def dailycal(request,entries):
             if v.__class__.__name__ != "struct_time":
                 l[k] = v
         parsed_removed.append(l)
-    return HttpResponse(json.dumps(parsed_removed))
+    return HttpResponse(json.dumps(wrap(parsed_removed)))
