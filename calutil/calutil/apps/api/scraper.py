@@ -10,18 +10,25 @@ from gdata.youtube.service import *
 from twill.commands import *
 
 ###############################NEW########################################
-def update(debug=False,complete=True,busses=False,buildings=False,libraries=False):
-    """
-    cal1card_from_plist()
-    print "Finished Cal1Card locations from PList"
+def update(debug=False,complete=True,busses=False,buildings=False,libraries=False,menus=False,cal1card=False,courses=False,webcasts=False):
+    if complete or cal1card:
+        cal1card_from_plist()
+        print "Finished Cal1Card locations from PList"
 
-    courses()
-    print "Finished basic course info"
-    full_courses()
-    print "Finished full course info"
-    webcasts()
-    print "Finished webcasts"
-    """
+    if complete or courses:
+        courses()
+        print "Finished basic course info"
+        full_courses()
+        print "Finished full course info"
+
+    if complete or webcasts:
+        webcasts()
+        print "Finished webcasts"
+
+    if complete or menus:
+        for m in Menu.objects.all():
+            menu(m,debug=debug)
+        print "Finished menus"
 
     if complete or busses:
         bus_lines(debug=debug)
@@ -31,13 +38,17 @@ def update(debug=False,complete=True,busses=False,buildings=False,libraries=Fals
 
     if complete or buildings:
         scrape_buildings(debug=debug)
+        print "Finished scraping buildings"
         calculate_building_gps(debug=debug)
+        print "Finished calculating building gps"
 
     if complete or libraries:
         scrape_libraries(debug=debug)
+        print "Finished scraping libraries"
         for l in Library.objects.all():
             l.calculate_gps()
             sleep(1)
+        print "Finished calculating library gps"
 
 def scrape_libraries(debug=False):
     base_url = "http://www.lib.berkeley.edu"
@@ -133,7 +144,7 @@ def clear_menu(menu):
     menu.lunch.clear()
     menu.brunch.clear()
     menu.dinner.clear()
-def menu(menu):
+def menu(menu,debug=False):
     clear_menu(menu)
     base_url = "http://services.housing.berkeley.edu/FoodPro/dining/static/"
     r = requests.get(base_url + "todaysentrees.asp")
@@ -394,11 +405,11 @@ def get_cal_balance(username,password):
     try:
         balance = soup("table")[0]("tr")[4]("td")[0]("b")[0].string
     except:
-        pass
+        pass #didnt have a balance
     try:
         points = soup("table")[0]("tr")[5]("td")[0]("b")[0].string
     except:
-        pass
+        pass #didnt have meal points
     return (balance,points)
 
 def bus_lines(debug=False):
@@ -563,8 +574,10 @@ def get_schedule(username,password,debug=False):
     except:
         pass
     b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
-    soup = bs4.BeautifulSoup(show())
-    classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
+    #soup = bs4.BeautifulSoup(show())
+    f = open("calutil/calutil/data/bearfacts.html")
+    soup = bs4.BeautifulSoup(f.read())
+    classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr") + soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
     cs = [] 
     header = [c.contents[0] for c in classes[0].findAll("th")]
     for c in classes[1:len(classes)]:
@@ -574,21 +587,8 @@ def get_schedule(username,password,debug=False):
             tmp = Course.objects.filter(ccn=clean(str(c.findAll("td")[0].contents[0]))).filter(semester=settings.CURRENT_SEMESTER_CALLBACK())[0]
             cs.append(tmp)
         except:
-            """
-            tmp = Course()
-            tmp.ccn = clean(str(c.findAll("td")[0].contents[0])) 
-            tmp.abbreviation = clean(str(c.findAll("td")[1].contents[0])) 
-            tmp.number = clean(str(c.findAll("td")[2].contents[0])) 
-            tmp.type = clean(str(c.findAll("td")[3].contents[0])) 
-            tmp.section = clean(str(c.findAll("td")[4].contents[0])) 
-            tmp.title = clean(str(c.findAll("td")[5].contents[0])) 
-            tmp.instructor = clean(str(c.findAll("td")[6].contents[0])) 
-            tmp.pnp = clean(str(c.findAll("td")[7].contents[0])) 
-            tmp.units = clean(str(c.findAll("td")[8].contents[0])) 
-            tmp.days = clean(str(c.findAll("td")[9].contents[0])) 
-            tmp.time = clean(str(c.findAll("td")[10].contents[0])) 
-            tmp.location = clean(str(c.findAll("td")[11].contents[0])) 
-            """
+            #print c
+            pass
     return cs 
 
 ###############################OLD########################################

@@ -28,7 +28,7 @@ def library_hours(request,library_id=None):
     url = "http://www.lib.berkeley.edu/hours"
     soup = bs4.BeautifulSoup(requests.get(url).text)
     state = ""
-    data = {}
+    data = {'objects':[]}
     for tr in soup.findAll("table",{"class":"front"})[0].find("tbody").findAll("tr"):
         new_state = tr['class']
         if new_state == state:
@@ -41,10 +41,10 @@ def library_hours(request,library_id=None):
                 i = Library.objects.get(name=name).id
             except Library.DoesNotExist:
                 i = -1
-            data[name] = {"times":times,"id":i}
+            data['objects'].append({"times":times,"id":i})
         except AttributeError:
             pass #there isnt anything in this row
-    data['meta'] = {'num':len(data.keys())}
+    data['meta'] = {'total_count':len(data.keys()),'limit':500,'next':None,'offset':0,'previous':None}
     if not library_id:
         return HttpResponse(json.dumps(data))
     else:

@@ -166,7 +166,7 @@ API_LIMIT_PER_PAGE = 500
 
 #project
 def semester():
-    return "FL"
+    return "SP"
 CURRENT_SEMESTER_CALLBACK = semester
 def year():
     return "FL"
