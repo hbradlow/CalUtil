@@ -230,7 +230,7 @@ def cal1card_from_plist():
         print "Name: " + location.name
         location.save()
 
-def scrape_courses(term="FL"):
+def scrape_courses(term="SP"):
     import re
     data = requests.get("http://osoc.berkeley.edu/OSOC/osoc?p_term=" + term + "&p_list_all=Y")
     soup = bs4.BeautifulSoup(data.text)

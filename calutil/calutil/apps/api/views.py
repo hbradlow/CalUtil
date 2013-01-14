@@ -5,6 +5,22 @@ from api.models import *
 from django.db.models import Q
 from api import scraper
 
+def wrap(objects):
+    data = {'meta':{},'objects':objects}
+    data['meta'] = {'total_count':len(objects),'limit':500,'next':None,'offset':0,'previous':None}
+    return data
+def pair_list(list_):
+    return[list_[i:i+2] for i in xrange(0, len(list_), 2)]
+def active_sessions(request):
+    import requests
+    import json
+    url = "http://schedule.berkeley.edu/"
+    soup = bs4.BeautifulSoup(requests.get(url).text)
+    objects = []
+    for term,year in pair_list(soup.findAll("img",{"border":"0","height":"24"})):
+        objects.append(str(term['alt'][0:2])+str(year['alt']))
+    return HttpResponse(json.dumps(wrap(objects)))
+
 def predictions(request,stop_id,line_tag):
     stop = BusStop.objects.get(stop_id=stop_id)
     if line_tag=="perimiter-P":
@@ -41,7 +57,7 @@ def library_hours(request,library_id=None):
                 i = Library.objects.get(name=name).id
             except Library.DoesNotExist:
                 i = -1
-            data['objects'].append({"times":times,"id":i})
+            data['objects'].append({"name":name,"times":times,"id":i})
         except AttributeError:
             pass #there isnt anything in this row
     data['meta'] = {'total_count':len(data.keys()),'limit':500,'next':None,'offset':0,'previous':None}
