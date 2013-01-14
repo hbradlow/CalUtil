@@ -19,6 +19,7 @@
 #define kIndividualClassPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:@"/individualclasses"]
 #define kIndividualKey @"indkey"
 #define kIndividualData @"inddata"
+#define kWaitListPath @"waitlisted"
 
 static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -45,6 +46,9 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.departments = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
+    self.classLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/" andFilePath:kIndividualClassPath];
+    self.departmentLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kDepartmentURL];
+    self.waitlistLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kWaitListPath];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
@@ -56,41 +60,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (void)refresh
 {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    
-    NSData *departmentData;
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kDepartmentKey])
-    {
-        departmentData = [[NSMutableData alloc]initWithContentsOfFile:kDepartmentURL];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:departmentData];
-        self.departments = [unarchiver decodeObjectForKey:kDepartmentData];
-        [unarchiver finishDecoding];
-    }
-    if (!departmentData)
-    {
-        dispatch_async(queue, ^{
-            [self loadDepartments];
-        });
-    }
-    NSData *calData;
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:kIndividualKey])
-    {
-        NSLog(@"Loading the individual courses");
-        calData = [[NSMutableData alloc]initWithContentsOfFile:kIndividualClassPath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:calData];
-        self.enrolledCourses = [unarchiver decodeObjectForKey:kIndividualData];
-        [unarchiver finishDecoding];
-    }
-    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self loadCourses];
+    [self loadCourses];
     });
 }
 
 - (void)loadCourses
 {
-    @try {
         NSString *queryString = [NSString stringWithFormat:@"%@/api/personal_schedule/", ServerURL];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;

@@ -36,17 +36,45 @@
     }
     else
     {
-        return [self loadBlock:block withExtension:self.urlString andSet:set];
+        return [self loadBlock:block withExtension:self.urlString andCollection:set];
+    }
+}
+- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array
+{
+    return [self loadDataWithCompletionBlock:block arrayToSave:array withData:nil];
+}
+- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array withData:(NSData*)data
+{
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
+    {
+        NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
+        for (NSObject* object in loaded_set)
+        {
+            [array addObject:object];
+        }
+        return YES;
+    }
+    else
+    {
+        return [self loadBlock:block withExtension:self.urlString andCollection:array andData:data];
     }
 }
 
-- (BOOL)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andSet:(NSSet*)set
+- (BOOL)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andCollection:(NSObject*)set andData:(NSData*)data
 {
     NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL, extension];
     NSURL *requestURL = [NSURL URLWithString:queryString];
     NSURLResponse *response = nil;
     
-    NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+    NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
+    if (data != nil)
+    {
+        [jsonRequest setHTTPMethod:@"POST"];
+        NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
+        [jsonRequest setHTTPBody:requestBody];
+    }
     
     NSData *receivedData;
     NSError *error = nil;
@@ -66,7 +94,7 @@
     
     if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
     {
-        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andSet:set];
+        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andCollection:set];
     }
     else
     {
@@ -76,7 +104,7 @@
     }
 }
 
-- (void)saveData:(NSSet*)dataArray{
+- (void)saveData:(NSObject*)dataArray{
     if (self.shouldSave)
     {
         NSMutableData *data = [[NSMutableData alloc]init];
