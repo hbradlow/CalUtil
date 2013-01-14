@@ -208,12 +208,15 @@ static float LongitudeDelta = 0.015;
         }];
         for (Cal1CardAnnotation *annotation in self.libraryAnnotations)
         {
-            annotation.times = @[[[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"]];
-            annotation.subtitle = [NSString stringWithFormat:@"%@", [annotation.times objectAtIndex:0]];
-            if ([[self.mapView annotations] containsObject:annotation])
+            if ([annotation.identifier integerValue] < [arr count])
             {
-                [self.mapView removeAnnotation:annotation];
-                [self.mapView addAnnotation:annotation];
+                annotation.times = @[[[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"]];
+                annotation.subtitle = [NSString stringWithFormat:@"%@", [annotation.times objectAtIndex:0]];
+                if ([[self.mapView annotations] containsObject:annotation])
+                {
+                    [self.mapView removeAnnotation:annotation];
+                    [self.mapView addAnnotation:annotation];
+                }
             }
         }
     };
@@ -288,8 +291,11 @@ static float LongitudeDelta = 0.015;
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
         annotationView.canShowCallout = NO;
-        if ([[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] isEqualToString:@"Closed"])
-            annotationView.pinColor = MKPinAnnotationColorRed;
+        if ([self.libraryAnnotations containsObject:annotation])
+        {
+            if ([[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] isEqualToString:@"Closed"])
+                annotationView.pinColor = MKPinAnnotationColorRed;
+        }
         else
             annotationView.pinColor = MKPinAnnotationColorGreen;
         if ([self.buildingAnnotations containsObject:annotation])
