@@ -16,13 +16,14 @@ def update(debug=False,complete=True,busses=False,buildings=False,libraries=Fals
         print "Finished Cal1Card locations from PList"
 
     if complete or courses:
-        scrape_courses()
+        for term in ["SP","FA","SU"]:
+            scrape_courses(term=term)
         print "Finished basic course info"
         full_courses()
         print "Finished full course info"
 
     if complete or webcasts:
-        webcasts()
+        scrape_webcasts()
         print "Finished webcasts"
 
     if complete or menus:
@@ -354,7 +355,7 @@ def full_courses(chunk_size=70,debug=False):
             """
         print "Done chunk " + str(i) + " of " + str(num_chunks)
 
-def webcasts(debug=False):
+def scrape_webcasts(debug=False):
     import re
     yt_service = gdata.youtube.service.YouTubeService()
     playlist_feed = yt_service.GetYouTubePlaylistFeed(username='ucberkeley')

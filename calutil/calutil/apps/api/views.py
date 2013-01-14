@@ -34,9 +34,12 @@ def predictions(request,stop_id,line_tag):
                 pass
     return HttpResponse(json.dumps(sorted(l)[:3]))
 
+def distance(lat1,long1,lat2,long2):
+    import math
+    return math.sqrt((lat1-lat2)**2+(long1-long2)**2)
 def perimeter_name_for_stop(stop):
-    #TODO: FIX THIS HACK
-    return "a"
+    locations = load_perimeter_locations()["P"]
+    return min(locations.items(),key=lambda l: distance(l[1]['lat'],l[1]['long'],stop.latitude,stop.longitude))[0]
 
 def library_hours(request,library_id=None):
     import requests
@@ -70,6 +73,15 @@ def library_hours(request,library_id=None):
         except:
             return HttpResponse(json.dumps({"error":"Couldn't figure it out..."}))
 
+def load_perimeter_locations():
+    def reformat(s):
+        h,m = s.split(":")
+        return datetime.datetime(2000,1,1,int(h),int(m),0)
+    f = open("calutil/calutil/data/perimeter_locations.json")
+    o = json.loads(f.read())
+    for key,value in o["P"].items():
+        o["P"][key] = value
+    return o
 def load_perimeter_data():
     def reformat(s):
         h,m = s.split(":")
