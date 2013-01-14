@@ -292,6 +292,8 @@ static float LongitudeDelta = 0.015;
             annotationView.pinColor = MKPinAnnotationColorRed;
         else
             annotationView.pinColor = MKPinAnnotationColorGreen;
+        if ([self.buildingAnnotations containsObject:annotation])
+            annotationView.pinColor = MKPinAnnotationColorPurple;
         annotationView.canShowCallout = YES;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [button addTarget:self action:@selector(displayInfo:) forControlEvents:UIControlEventTouchUpInside];
