@@ -18,9 +18,9 @@ def active_sessions(request):
     soup = bs4.BeautifulSoup(requests.get(url).text)
     objects = []
     for term,year in pair_list(soup.findAll("img",{"border":"0","height":"24"})):
-        if term == "Fall":
+        if term['alt'] == "Fall":
             t = "FL"
-        elif term == "Spring":
+        elif term['alt'] == "Spring":
             t = "SP"
         else:
             t = "SU"
@@ -107,7 +107,7 @@ def perimeter_predictions(line,stop):
         else:
             l.append((time-d).seconds/60.)
     return HttpResponse(json.dumps(l[:3]))
-def personal_schedule(request):
+def personal_schedule_waitlist(request,semester):
     username = ""
     password = ""
     if request.method=="POST":
@@ -116,7 +116,25 @@ def personal_schedule(request):
     if request.method=="GET":
         username = request.GET['username']
         password = request.GET['password']
-    schedule = scraper.get_schedule(username,password)
+    schedule = scraper.get_schedule(username,password,term=semester,waitlist=True)
+
+    from api.API import CourseResource
+    from django.http import HttpRequest
+    fake_request = HttpRequest()
+    fake_request.GET['format'] = 'json'
+    fake_request.GET['id__in'] = ','.join([str(c.id) for c in schedule])
+    resource = CourseResource()
+    return resource.get_list(fake_request)
+def personal_schedule(request,semester):
+    username = ""
+    password = ""
+    if request.method=="POST":
+        username = request.POST['username']
+        password = request.POST['password']
+    if request.method=="GET":
+        username = request.GET['username']
+        password = request.GET['password']
+    schedule = scraper.get_schedule(username,password,term=semester)
 
     from api.API import CourseResource
     from django.http import HttpRequest

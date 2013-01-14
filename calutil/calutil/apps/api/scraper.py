@@ -558,9 +558,16 @@ def bus_stops(debug=False):
             bus_direction.save()
     berkeley_buses(debug)
 
-def get_schedule(username,password,debug=False):
+def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     import twill
     from django.conf import settings
+
+    if term == "SP":
+        term = "FT"
+    elif term == "FL":
+        term = "CT"
+    else:
+        term = "CS"
 
     b = twill.get_browser() #  make it so that twill can handle xhtml  
     b._browser._factory.is_html = True
@@ -569,7 +576,7 @@ def get_schedule(username,password,debug=False):
     config("acknowledge_equiv_refresh",0) #turn of redirection i think... (https://twill.jottit.com/command)
 
     b.clear_cookies()
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + term)
     try:
         fv("1","username",username)
         fv("1","password",password)
@@ -577,11 +584,14 @@ def get_schedule(username,password,debug=False):
         submit('0')
     except:
         pass
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=CT")
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + term)
     #soup = bs4.BeautifulSoup(show())
     f = open("calutil/calutil/data/bearfacts.html")
     soup = bs4.BeautifulSoup(f.read())
-    classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr") + soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
+    if not waitlist:
+        classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
+    else:
+        classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
     cs = [] 
     header = [c.contents[0] for c in classes[0].findAll("th")]
     for c in classes[1:len(classes)]:
