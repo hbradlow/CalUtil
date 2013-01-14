@@ -30,7 +30,11 @@ def active_sessions(request):
 def predictions(request,stop_id,line_tag):
     stop = BusStop.objects.get(stop_id=stop_id)
     if line_tag=="perimiter-P":
-        return perimeter_predictions("P",perimeter_name_for_stop(stop)) 
+        return perimeter_predictions("P",perimeter_name_for_stop(stop,"P")) 
+    if line_tag=="perimiter-SS":
+        return perimeter_predictions("SS",perimeter_name_for_stop(stop,"SS")) 
+    if line_tag=="perimiter-NS":
+        return perimeter_predictions("NS",perimeter_name_for_stop(stop,"NS")) 
     l = []
     for object in stop.predictions()['objects']:
         if object['line'] == line_tag:
@@ -43,8 +47,8 @@ def predictions(request,stop_id,line_tag):
 def distance(lat1,long1,lat2,long2):
     import math
     return math.sqrt((lat1-lat2)**2+(long1-long2)**2)
-def perimeter_name_for_stop(stop):
-    locations = load_perimeter_locations()["P"]
+def perimeter_name_for_stop(stop,line):
+    locations = load_perimeter_locations()[line]
     return min(locations.items(),key=lambda l: distance(l[1]['lat'],l[1]['long'],stop.latitude,stop.longitude))[0]
 
 def library_hours(request,library_id=None):
@@ -94,8 +98,9 @@ def load_perimeter_data():
         return datetime.datetime(2000,1,1,int(h),int(m),0)
     f = open("calutil/calutil/data/perimeter_times.json")
     o = json.loads(f.read())
-    for key,value in o["P"].items():
-        o["P"][key] = [reformat(i) for i in value]
+    for line in ["P","SS","NS"]:
+        for key,value in o[line].items():
+            o[line][key] = [reformat(i) for i in value]
     return o
 def perimeter_predictions(line,stop):
     d = datetime.datetime(2000,1,1,10,23,0)

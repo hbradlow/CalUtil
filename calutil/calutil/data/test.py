@@ -13,6 +13,15 @@ def time_period(start,end,increment):
             datetime_start += increment
 
 
+ns_times = {
+        "times": flatten([
+            [t for t in time_period(datetime.time(19,45),datetime.time(23,45),datetime.timedelta(minutes=30))],
+            [t for t in time_period(datetime.time(0,15),datetime.time(1,45),datetime.timedelta(minutes=30))],
+        ]),
+        "offsets": map(lambda x: x-5, [
+            5,6,7,10,10,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31
+        ])
+}
 ss_times = {
         "times": flatten([
             [t for t in time_period(datetime.time(19,30),datetime.time(23,30),datetime.timedelta(minutes=30))],
@@ -43,7 +52,7 @@ h_times = {
 }
 
 
-o = {"P":{},"H":{},"SS":{}}
+o = {"P":{},"H":{},"SS":{},"NS":{}}
 def stringify(dt):
     h = str(dt.time().hour)
     m = str(dt.time().minute)
@@ -64,10 +73,17 @@ for offset in h_times['offsets']:
     td = datetime.timedelta(minutes=offset)
     o["H"][s] = [stringify(t+td) for t in h_times['times']]
     s = chr(ord(s)+1)
+
 s = "a"
 for offset in ss_times['offsets']:
     td = datetime.timedelta(minutes=offset)
     o["SS"][s] = [stringify(t+td) for t in ss_times['times']]
+    s = chr(ord(s)+1)
+
+s = "a"
+for offset in ns_times['offsets']:
+    td = datetime.timedelta(minutes=offset)
+    o["NS"][s] = [stringify(t+td) for t in ns_times['times']]
     s = chr(ord(s)+1)
 
 import json
