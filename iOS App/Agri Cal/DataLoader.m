@@ -36,12 +36,30 @@
     }
     else
     {
-        return [self loadBlock:block withExtension:self.urlString andCollection:set];
+        return [self loadBlock:block withExtension:self.urlString andCollection:set andData:nil];
     }
 }
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array
 {
-    return [self loadDataWithCompletionBlock:block arrayToSave:array withData:nil];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
+    {
+        NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
+        for (NSObject* object in loaded_set)
+        {
+            [array addObject:object];
+        }
+        return YES;
+    }
+    else
+    {
+        return [self loadBlock:block withExtension:self.urlString andCollection:array andData:nil];
+    }
+}
+- (BOOL)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data
+{
+    return [self loadBlock:block withExtension:@"" andCollection:array andData:data];
 }
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array withData:(NSData*)data
 {
@@ -72,8 +90,7 @@
     if (data != nil)
     {
         [jsonRequest setHTTPMethod:@"POST"];
-        NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
-        [jsonRequest setHTTPBody:requestBody];
+        [jsonRequest setHTTPBody:data];
     }
     
     NSData *receivedData;
@@ -94,7 +111,7 @@
     
     if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
     {
-        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andCollection:set];
+        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andCollection:set andData:nil];
     }
     else
     {

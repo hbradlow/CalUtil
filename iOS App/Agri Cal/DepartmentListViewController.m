@@ -47,13 +47,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
     self.classLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/" andFilePath:kIndividualClassPath];
+    [self refresh];
     self.departmentLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kDepartmentURL];
+    [self loadDepartments];
     self.waitlistLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kWaitListPath];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Loading courses and departments"]];
-    [self refresh];
     [self.searchDisplayController.searchBar setHidden:NO];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
 }
@@ -68,23 +69,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (void)loadCourses
 {
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/personal_schedule/", ServerURL];
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
-        [jsonRequest setHTTPMethod:@"POST"];
-        NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
-        [jsonRequest setHTTPBody:requestBody];
-        
-        NSData *receivedData;
-        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                             returningResponse:&response
-                                                         error:&error];
-        
-        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-        
-        NSArray *arr = [receivedDict objectForKey:@"objects"];
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         NSMutableArray *tempArray = [[NSMutableArray alloc] init];
         for (NSDictionary *currentClass in arr)
         {
@@ -109,36 +94,19 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             self.enrolledCourses = tempArray;
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-            [self saveCourses];
         }
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error loading departments");
-        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-    }
+    };
+    
+    NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [self.classLoader loadDataWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
+    [self.classLoader forceLoadWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
     
 }
 
 - (void)loadDepartments
 {
-    @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/app_data/department/?format=json", ServerURL];
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        
-        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-        
-        NSData *receivedData;
-        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                             returningResponse:&response
-                                                         error:&error];
-        
-        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-        
-        NSArray *arr = [receivedDict objectForKey:@"objects"];
-        
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         NSMutableArray *tempDepartments = [[NSMutableArray alloc] init];
         
         for (NSDictionary *currentDep in arr)
@@ -152,35 +120,13 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
             return [obj1.title caseInsensitiveCompare:obj2.title];
         }];
-        [self saveDepartments];
-        NSLog(@"loaded departments");
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Error loading departments");
-    }
-    
-}
-
-- (void)saveDepartments
-{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self.departments forKey:kDepartmentData];
-    [archiver finishEncoding];
-    [data writeToFile:kDepartmentURL atomically:YES];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kDepartmentKey];
-}
-
-- (void)saveCourses
-{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
-    [archiver encodeObject:self.enrolledCourses forKey:kIndividualData];
-    [archiver finishEncoding];
-    [data writeToFile:kIndividualClassPath atomically:YES];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kIndividualKey];
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.departmentLoader loadDataWithCompletionBlock:block arrayToSave:self.departments];
+    });
 }
 
 #pragma mark - Table view data source
@@ -226,14 +172,13 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == 0 && ![self.enrolledCourses count])
         return 0;
     return 22;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"nr rows in section");
     if (tableView == self.tableView)
     {
         if (section == 0)
@@ -261,6 +206,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.textLabel.font = [UIFont fontWithName:kAppFontBold size:18];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     cell.imageView.image = nil;
     if (tableView == self.tableView)

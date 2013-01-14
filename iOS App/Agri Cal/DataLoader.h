@@ -11,6 +11,7 @@
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block setToSave:(NSSet*)set;
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array;
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data;
+- (BOOL)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data;
 
 
 @end
