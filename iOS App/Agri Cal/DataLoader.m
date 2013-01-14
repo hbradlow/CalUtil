@@ -15,6 +15,7 @@
     if ((self = [super init])) {
         self.urlString = urlString;
         self.filePath = filePath;
+        self.shouldSave = YES;
     }
     return self;
 }
@@ -76,12 +77,15 @@
 }
 
 - (void)saveData:(NSSet*)dataArray{
-    NSMutableData *data = [[NSMutableData alloc]init];
-    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    [archiver encodeObject:dataArray forKey:@"filedata"];
-    [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
-    [archiver finishEncoding];
-    [data writeToFile:self.filePath atomically:YES];
+    if (self.shouldSave)
+    {
+        NSMutableData *data = [[NSMutableData alloc]init];
+        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+        [archiver encodeObject:dataArray forKey:@"filedata"];
+        [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
+        [archiver finishEncoding];
+        [data writeToFile:self.filePath atomically:YES];
+    }
 }
 
 @end

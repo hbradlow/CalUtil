@@ -40,7 +40,8 @@
 @property (nonatomic, strong) DataLoader *cal1Loader;
 @property (nonatomic, strong) DataLoader *busLoader;
 @property (nonatomic, strong) DataLoader *buildingLoader;
-@property (nonatomic, strong) DataLoader *libraryLoader; 
+@property (nonatomic, strong) DataLoader *libraryLoader;
+@property (nonatomic, strong) DataLoader *libraryTimeLoader;
 
 - (IBAction)switchAnnotations:(id)sender;
 - (void)displayInfo:(id)sender;

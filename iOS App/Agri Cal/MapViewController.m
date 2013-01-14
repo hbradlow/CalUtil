@@ -54,6 +54,9 @@ static float LongitudeDelta = 0.015;
     [self loadLibraries];
     self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json" andFilePath:kBuildingFilePath];
     [self loadBuildings];
+    self.libraryTimeLoader = [[DataLoader alloc] initWithUrlString:@"/api/library_hours/" andFilePath:nil];
+    self.libraryTimeLoader.shouldSave = NO;
+    [self loadLibraryTimes];
     
 /** Set up the segmented control UI */
     UIImage *segmentUnselected = [UIImage imageNamed:@"map_seg_bg"];
@@ -164,6 +167,7 @@ static float LongitudeDelta = 0.015;
             NSString *info = [currentLocation objectForKey:@"description"];
             NSString *title = [currentLocation objectForKey:@"name"];
             NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            NSNumber *identifier = [currentLocation objectForKey:@"id"];
             
             if (latitude != nil && latitude != [NSNull null])
             {
@@ -173,6 +177,7 @@ static float LongitudeDelta = 0.015;
                                                                                        andURL:imageURL
                                                                                      andTimes:nil
                                                                                       andInfo:info];
+                annotation.identifier = identifier;
                 [self.libraryAnnotations addObject:annotation];
             }
         }
@@ -181,6 +186,40 @@ static float LongitudeDelta = 0.015;
     dispatch_async(queue, ^{
         [self.libraryLoader loadDataWithCompletionBlock:block setToSave:self.libraryAnnotations];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+    });
+}
+
+- (void)loadLibraryTimes
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        NSPredicate *resultPredicate = [NSPredicate
+                                        predicateWithFormat:@"id >= 0"];
+        
+        [arr filterUsingPredicate:resultPredicate];
+        [arr sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b){
+            NSInteger aId = [[a objectForKey:@"id"] integerValue];
+            NSInteger bId = [[b objectForKey:@"id"] integerValue];
+            if (aId < bId)
+                return NSOrderedAscending;
+            if (aId > bId)
+                return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+        }];
+        for (Cal1CardAnnotation *annotation in self.libraryAnnotations)
+        {
+            annotation.times = @[[[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"]];
+            annotation.subtitle = [NSString stringWithFormat:@"%@", [annotation.times objectAtIndex:0]];
+            if ([[self.mapView annotations] containsObject:annotation])
+            {
+                [self.mapView removeAnnotation:annotation];
+                [self.mapView addAnnotation:annotation];
+            }
+        }
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.libraryTimeLoader loadDataWithCompletionBlock:block setToSave:nil];
     });
 }
 
@@ -249,7 +288,10 @@ static float LongitudeDelta = 0.015;
     {
         MKPinAnnotationView *annotationView = [[BasicMapAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"CalPin"];
         annotationView.canShowCallout = NO;
-        annotationView.pinColor = MKPinAnnotationColorRed;
+        if ([[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] isEqualToString:@"Closed"])
+            annotationView.pinColor = MKPinAnnotationColorRed;
+        else
+            annotationView.pinColor = MKPinAnnotationColorGreen;
         annotationView.canShowCallout = YES;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         [button addTarget:self action:@selector(displayInfo:) forControlEvents:UIControlEventTouchUpInside];
@@ -266,6 +308,7 @@ static float LongitudeDelta = 0.015;
     }
     else 
     {
+        NSLog(@"here");
         [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
 }

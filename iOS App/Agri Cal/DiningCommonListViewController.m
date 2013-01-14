@@ -39,8 +39,10 @@
     self.locations = [NSMutableArray arrayWithArray:@[ @"",@"",@"",@"" ]];
     self.sectionTitles = [[NSMutableArray alloc] init];
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(loadMenus) forControlEvents:UIControlEventValueChanged];
+    self.menuLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/menu/?format=json" andFilePath:nil];
+    self.menuLoader.shouldSave = NO;
     [self loadMenus];
+    [self.refreshControl addTarget:self action:@selector(loadMenus) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating menus"]];
 }
@@ -53,122 +55,102 @@
 
 - (void)loadMenus
 {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-        
-        @try {
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentMenus in arr)
+        {
+            NSDictionary *currentLocation = [currentMenus objectForKey:@"location"];
             
-            NSString *queryString = [NSString stringWithFormat:@"%@/app_data/menu/?format=json", ServerURL];
-            NSURL *requestURL = [NSURL URLWithString:queryString];
-            NSURLResponse *response = nil;
-            NSError *error = nil;
+            NSString *locationName = [currentLocation objectForKey:@"name"];
+            NSString *timeSpan = [currentLocation objectForKey:@"timespan_string"];
+            NSArray *breakfastMenu = [currentMenus objectForKey:@"breakfast_items"];
+            NSArray *lunchMenu = [currentMenus objectForKey:@"lunch_items"];
+            NSArray *dinnerMenu = [currentMenus objectForKey:@"dinner_items"];
+            NSArray *lateNightMenu = [currentMenus objectForKey:@"late_night_items"];
+            NSArray *brunchMenu = [currentMenus objectForKey:@"brunch_items"];
             
-            NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
+            Menu *currentMenu = [[Menu alloc] init];
+            currentMenu.timeSpan = timeSpan;
             
-            NSData *receivedData;
-            receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                                 returningResponse:&response
-                                                             error:&error];
-            
-            NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-            
-            NSArray *arr = [receivedDict objectForKey:@"objects"];
-            for (NSDictionary *currentMenus in arr)
+            for (NSDictionary *currentItem in breakfastMenu)
             {
-                NSDictionary *currentLocation = [currentMenus objectForKey:@"location"];
-                
-                NSString *locationName = [currentLocation objectForKey:@"name"];
-                NSString *timeSpan = [currentLocation objectForKey:@"timespan_string"];
-                NSArray *breakfastMenu = [currentMenus objectForKey:@"breakfast_items"];
-                NSArray *lunchMenu = [currentMenus objectForKey:@"lunch_items"];
-                NSArray *dinnerMenu = [currentMenus objectForKey:@"dinner_items"];
-                NSArray *lateNightMenu = [currentMenus objectForKey:@"late_night_items"];
-                NSArray *brunchMenu = [currentMenus objectForKey:@"brunch_items"];
-                
-                Menu *currentMenu = [[Menu alloc] init];
-                currentMenu.timeSpan = timeSpan;
-                
-                for (NSDictionary *currentItem in breakfastMenu)
-                {
-                    Dish *currentDish = [[Dish alloc] init];
-                    currentDish.name = [currentItem objectForKey:@"name"];
-                    currentDish.type = [currentItem objectForKey:@"type"];
-                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
-                    [currentMenu.breakfast addObject:currentDish];
-                    if ([[currentLocation objectForKey:@"breakfast_times"] count])
-                        currentMenu.breakfastTime = [[[currentLocation objectForKey:@"breakfast_times"] objectAtIndex:0] objectForKey:@"span"];
-                }
-                
-                for (NSDictionary *currentItem in brunchMenu)
-                {
-                    Dish *currentDish = [[Dish alloc] init];
-                    currentDish.name = [currentItem objectForKey:@"name"];
-                    currentDish.type = [currentItem objectForKey:@"type"];
-                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
-                    [currentMenu.brunch addObject:currentDish];
-                    if ([[currentLocation objectForKey:@"brunch_times"] count])
-                        currentMenu.brunchTime = [[[currentLocation objectForKey:@"brunch_times"] objectAtIndex:0] objectForKey:@"span"];
-                }
-                
-                for (NSDictionary *currentItem in lunchMenu)
-                {
-                    Dish *currentDish = [[Dish alloc] init];
-                    currentDish.name = [currentItem objectForKey:@"name"];
-                    currentDish.type = [currentItem objectForKey:@"type"];
-                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
-                    [currentMenu.lunch addObject:currentDish];
-                    if ([[currentLocation objectForKey:@"lunch_times"]count])
-                        currentMenu.lunchTime = [[[currentLocation objectForKey:@"lunch_times"] objectAtIndex:0] objectForKey:@"span"];
-                }
-                
-                for (NSDictionary *currentItem in dinnerMenu)
-                {
-                    Dish *currentDish = [[Dish alloc] init];
-                    currentDish.name = [currentItem objectForKey:@"name"];
-                    currentDish.type = [currentItem objectForKey:@"type"];
-                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
-                    [currentMenu.dinner addObject:currentDish];
-                    if ([[currentLocation objectForKey:@"dinner_times"] count])
-                        currentMenu.dinnerTime = [[[currentLocation objectForKey:@"dinner_times"] objectAtIndex:0] objectForKey:@"span"];
-                }
-                
-                for (NSDictionary *currentItem in lateNightMenu)
-                {
-                    Dish *currentDish = [[Dish alloc] init];
-                    currentDish.name = [currentItem objectForKey:@"name"];
-                    currentDish.type = [currentItem objectForKey:@"type"];
-                    currentDish.nutritionURL = [currentItem objectForKey:@"id"];
-                    [currentMenu.lateNight addObject:currentDish];
-                    if ([[currentLocation objectForKey:@"latenight_times"] count])
-                        currentMenu.lateNightTime = [[[currentLocation objectForKey:@"latenight_times"] objectAtIndex:0] objectForKey:@"span"];
-                }
-                
-                
-                if ([locationName isEqualToString:@"crossroads"])
-                {
-                    [self.locations replaceObjectAtIndex:kCrossroads withObject:currentMenu];
-                }
-                else if ([locationName isEqualToString:@"cafe3"])
-                {
-                    [self.locations replaceObjectAtIndex:kCafe3 withObject:currentMenu];
-                }
-                else if ([locationName isEqualToString:@"ckc"])
-                {
-                    [self.locations replaceObjectAtIndex:kCKC withObject:currentMenu];
-                }
-                else if ([locationName isEqualToString:@"foothill"])
-                {
-                    [self.locations replaceObjectAtIndex:kFoothill withObject:currentMenu];
-                }
+                Dish *currentDish = [[Dish alloc] init];
+                currentDish.name = [currentItem objectForKey:@"name"];
+                currentDish.type = [currentItem objectForKey:@"type"];
+                currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                [currentMenu.breakfast addObject:currentDish];
+                if ([[currentLocation objectForKey:@"breakfast_times"] count])
+                    currentMenu.breakfastTime = [[[currentLocation objectForKey:@"breakfast_times"] objectAtIndex:0] objectForKey:@"span"];
             }
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+            
+            for (NSDictionary *currentItem in brunchMenu)
+            {
+                Dish *currentDish = [[Dish alloc] init];
+                currentDish.name = [currentItem objectForKey:@"name"];
+                currentDish.type = [currentItem objectForKey:@"type"];
+                currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                [currentMenu.brunch addObject:currentDish];
+                if ([[currentLocation objectForKey:@"brunch_times"] count])
+                    currentMenu.brunchTime = [[[currentLocation objectForKey:@"brunch_times"] objectAtIndex:0] objectForKey:@"span"];
+            }
+            
+            for (NSDictionary *currentItem in lunchMenu)
+            {
+                Dish *currentDish = [[Dish alloc] init];
+                currentDish.name = [currentItem objectForKey:@"name"];
+                currentDish.type = [currentItem objectForKey:@"type"];
+                currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                [currentMenu.lunch addObject:currentDish];
+                if ([[currentLocation objectForKey:@"lunch_times"]count])
+                    currentMenu.lunchTime = [[[currentLocation objectForKey:@"lunch_times"] objectAtIndex:0] objectForKey:@"span"];
+            }
+            
+            for (NSDictionary *currentItem in dinnerMenu)
+            {
+                Dish *currentDish = [[Dish alloc] init];
+                currentDish.name = [currentItem objectForKey:@"name"];
+                currentDish.type = [currentItem objectForKey:@"type"];
+                currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                [currentMenu.dinner addObject:currentDish];
+                if ([[currentLocation objectForKey:@"dinner_times"] count])
+                    currentMenu.dinnerTime = [[[currentLocation objectForKey:@"dinner_times"] objectAtIndex:0] objectForKey:@"span"];
+            }
+            
+            for (NSDictionary *currentItem in lateNightMenu)
+            {
+                Dish *currentDish = [[Dish alloc] init];
+                currentDish.name = [currentItem objectForKey:@"name"];
+                currentDish.type = [currentItem objectForKey:@"type"];
+                currentDish.nutritionURL = [currentItem objectForKey:@"id"];
+                [currentMenu.lateNight addObject:currentDish];
+                if ([[currentLocation objectForKey:@"latenight_times"] count])
+                    currentMenu.lateNightTime = [[[currentLocation objectForKey:@"latenight_times"] objectAtIndex:0] objectForKey:@"span"];
+            }
+            
+            
+            if ([locationName isEqualToString:@"crossroads"])
+            {
+                [self.locations replaceObjectAtIndex:kCrossroads withObject:currentMenu];
+            }
+            else if ([locationName isEqualToString:@"cafe3"])
+            {
+                [self.locations replaceObjectAtIndex:kCafe3 withObject:currentMenu];
+            }
+            else if ([locationName isEqualToString:@"ckc"])
+            {
+                [self.locations replaceObjectAtIndex:kCKC withObject:currentMenu];
+            }
+            else if ([locationName isEqualToString:@"foothill"])
+            {
+                [self.locations replaceObjectAtIndex:kFoothill withObject:currentMenu];
+            }
         }
-        @catch (NSException *exception) {
-            NSLog(@"Error when loading menus %@", exception);
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];});
-        }
+    };
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.menuLoader loadDataWithCompletionBlock:block setToSave:nil];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.refreshControl endRefreshing];});
     });
 }
 #pragma mark - Table view data source
@@ -258,7 +240,7 @@
     if ([title isEqualToString:@"Late Night"])
         times = menu.lateNightTime;
     label.text = [NSString stringWithFormat:@"%@: %@", [self.sectionTitles objectAtIndex:section], times];
-
+    
     [view addSubview:label];
     return view;
 }

@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *info;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *imageURL;
+@property (nonatomic, strong) NSNumber *identifier;
 - (id)initWithLatitude:(CLLocationDegrees)latitude
 		  andLongitude:(CLLocationDegrees)longitude
               andTitle:(NSString*)title
