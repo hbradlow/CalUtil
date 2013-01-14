@@ -94,8 +94,14 @@ def load_perimeter_locations():
     return o
 def load_perimeter_data():
     def reformat(s):
+        n = datetime.datetime.now()
         h,m = s.split(":")
-        return datetime.datetime(2000,1,1,int(h),int(m),0)
+        if int(h)<24:
+            return datetime.datetime(n.year,n.month,n.day,int(h),int(m),0)
+        else:
+            h = int(h)%24
+            dt = datetime.timedelta(days=1)
+            return datetime.datetime(n.year,n.month,n.day,int(h),int(m),0)+dt
     f = open("calutil/calutil/data/perimeter_times.json")
     o = json.loads(f.read())
     for line in ["P","SS","NS"]:
@@ -107,10 +113,11 @@ def perimeter_predictions(line,stop):
     times = load_perimeter_data()[line][stop]
     l = []
     for index,time in enumerate(times):
+        print time
         if time<d:
             pass
         else:
-            l.append((time-d).seconds/60.)
+            l.append(round((time-d).seconds/60.,0))
     return HttpResponse(json.dumps(l[:3]))
 def personal_schedule_waitlist(request,semester):
     username = ""
