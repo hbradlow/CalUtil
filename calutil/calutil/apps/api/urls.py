@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 urlpatterns = patterns('api.views',
-    url(r'^bus_stop/predictions/(?P<stop_id>(\d+))/(?P<line_tag>[\w\._-]+)/$',"predictions",name="bus_predictions"),
+    url(r'^bus_stop/predictions/(?P<stop_id>([\d\w]+))/(?P<line_tag>[\w\._-]+)/$',"predictions",name="bus_predictions"),
 
     url(r'^bus_stop/predictions_p/(?P<line>(\w+))/(?P<stop>[\w\._-]+)/$',"perimeter_predictions",name="bus_predictions_p"),
 
