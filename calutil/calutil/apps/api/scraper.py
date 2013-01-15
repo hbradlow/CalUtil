@@ -384,7 +384,7 @@ def scrape_webcasts(debug=False):
                 try:
                     w.course = list([c for c in Course.objects.filter(number=course_number) if department_name in c.department.possible_names])[0]
                 except:
-                    return Course.objects.filter(number=course_number)
+                    pass #wasnt able to find the course
                 w.save()
 def get_cal_balance(username,password):
     import twill
