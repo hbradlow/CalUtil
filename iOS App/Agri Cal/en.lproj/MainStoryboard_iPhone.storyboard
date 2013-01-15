@@ -179,7 +179,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mlv-Ie-jJB">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="0.97999999999999998" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Mhp-cR-Msi" id="ejJ-xc-Iz8"/>
                                     <outlet property="delegate" destination="Mhp-cR-Msi" id="bzb-Nw-rAG"/>
@@ -282,17 +282,22 @@
                     </view>
                     <navigationItem key="navigationItem" id="4bi-EY-i8w">
                         <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="mOZ-8W-6rE">
-                            <rect key="frame" x="96" y="7" width="127" height="30"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="1" id="mOZ-8W-6rE">
+                            <rect key="frame" x="88" y="7" width="143" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="Fa 12"/>
                                 <segment title="Sp 13"/>
+                                <segment title="Su 13"/>
                             </segments>
+                            <connections>
+                                <action selector="switchSession:" destination="ChF-dU-Qok" eventType="valueChanged" id="lsJ-ZN-ps4"/>
+                            </connections>
                         </segmentedControl>
                     </navigationItem>
                     <connections>
                         <outlet property="searchDisplayController" destination="zK5-kS-7ai" id="wiY-ds-RoE"/>
+                        <outlet property="sessionSelector" destination="mOZ-8W-6rE" id="ZwZ-kW-5U9"/>
                         <outlet property="tableView" destination="BUA-ar-We0" id="1HP-Gg-sb3"/>
                         <outlet property="view" destination="BUA-ar-We0" id="XgH-8n-dNt"/>
                         <segue destination="ZYh-en-Qbe" kind="push" identifier="department" id="0Vp-IH-TAS"/>
@@ -646,12 +651,14 @@
         <class className="DepartmentListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
             <relationships>
+                <relationship kind="action" name="switchSession:"/>
                 <relationship kind="outlet" name="sessionSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
         <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
+                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>

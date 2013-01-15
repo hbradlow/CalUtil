@@ -167,6 +167,7 @@
     [self.web stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('username').value='%@';", [[NSUserDefaults standardUserDefaults] objectForKey:@"username"]]];
     [self.web stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('password').value='%@';", [[NSUserDefaults standardUserDefaults] objectForKey:@"password"]]];
     [self.web stringByEvaluatingJavaScriptFromString:@"document.forms[0].submit();"];
+    NSLog(@"should be on airbears");
 }
 
 @end

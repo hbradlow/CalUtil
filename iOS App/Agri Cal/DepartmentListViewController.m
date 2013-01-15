@@ -44,33 +44,77 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 {
     [super viewDidLoad];
     self.departments = [[NSMutableArray alloc] init];
+    self.searchResults = [[NSMutableArray alloc] init];
     self.enrolledCourses = [[NSMutableArray alloc] init];
     self.waitlistedCourses = [[NSMutableArray alloc] init];
-    self.searchResults = [[NSMutableArray alloc] init];
-    self.classLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/" andFilePath:kIndividualClassPath];
-    self.waitlistLoader = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule_waitlist/" andFilePath:kWaitListPath];
-    [self refresh];
-    self.departmentLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json" andFilePath:kDepartmentURL];
-    [self loadDepartments];
+    self.enrolledCoursesSu = [[NSMutableArray alloc] init];
+    self.waitlistedCoursesSu = [[NSMutableArray alloc] init];
+    self.enrolledCoursesFa = [[NSMutableArray alloc] init];
+    self.waitlistedCoursesFa = [[NSMutableArray alloc] init];
+    self.enrolledCoursesSp = [[NSMutableArray alloc] init];
+    self.waitlistedCoursesSp = [[NSMutableArray alloc] init];
+    
+    self.departmentLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/department/?format=json"
+                                                      andFilePath:kDepartmentURL];
+    [self loadDepartments:self.departmentLoader withArray:self.departments];
+    
+    self.waitlistLoaderFa = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule_waitlist/FL/"
+                                                      andFilePath:[NSString stringWithFormat:@"%@FL",kWaitListPath]];
+    self.classLoaderFa = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/FL"
+                                                   andFilePath:[NSString stringWithFormat:@"%@FL",kIndividualClassPath]];
+    
+    self.waitlistLoaderSp = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule_waitlist/SP/"
+                                                      andFilePath:[NSString stringWithFormat:@"%@SP",kWaitListPath]];
+    self.classLoaderSp = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/SP"
+                                                   andFilePath:[NSString stringWithFormat:@"%@SP",kIndividualClassPath]];
+    
+    self.waitlistLoaderSu = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule_waitlist/SU/"
+                                                      andFilePath:[NSString stringWithFormat:@"%@SU",kWaitListPath]];
+    self.classLoaderSu = [[DataLoader alloc] initWithUrlString:@"/api/personal_schedule/SU"
+                                                   andFilePath:[NSString stringWithFormat:@"%@SU",kIndividualClassPath]];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Loading courses and departments"]];
+    [self refresh];
     [self.searchDisplayController.searchBar setHidden:NO];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
 }
 
 - (void)refresh
 {
+    NSLog(@"refresh");
+    NSInteger selectedIndex = [self.sessionSelector selectedSegmentIndex];
+    switch (selectedIndex) {
+        case 0:
+            [self refresh:self.classLoaderFa withArray:self.enrolledCoursesFa];
+            [self refresh:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa];
+            break;
+        case 1:
+            [self refresh:self.classLoaderSp withArray:self.enrolledCoursesSp];
+            [self refresh:self.waitlistLoaderSp withArray:self.waitlistedCoursesSp];
+            break;
+        case 2:
+            [self refresh:self.classLoaderSu withArray:self.enrolledCoursesSu];
+            [self refresh:self.waitlistLoaderSu withArray:self.waitlistedCoursesSu];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)refresh:(DataLoader*)loader withArray:(NSMutableArray*)array
+{
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-    [self loadCourses];
-    [self loadWaitlisted];
+        [self loadCourses:loader withArray:array];
     });
 }
 
-- (void)loadCourses
+- (void)loadCourses:loader withArray:(NSMutableArray*)array
 {
+    [array removeAllObjects];
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentClass in arr)
         {
@@ -88,9 +132,9 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.uniqueID = [currentClass objectForKey:@"id"];
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [self.enrolledCourses addObject:newClass];
+            [array addObject:newClass];
         }
-        if ([self.waitlistedCourses count])
+        if ([array count])
         {
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
@@ -99,49 +143,20 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
     NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
     
-    [self.classLoader loadDataWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
-    [self.classLoader forceLoadWithCompletionBlock:block arrayToSave:self.enrolledCourses withData:requestBody];
+    [loader loadDataWithCompletionBlock:block arrayToSave:array withData:requestBody];
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+    dispatch_async(updateUIQueue, ^(){
+        [self switchSession:self.sessionSelector];
+        [self.tableView reloadData];
+    });
+    [loader forceLoadWithCompletionBlock:block arrayToSave:array withData:requestBody];
+    dispatch_async(updateUIQueue, ^(){
+        [self switchSession:self.sessionSelector];
+        [self.tableView reloadData];
+    });
 }
 
-- (void)loadWaitlisted
-{
-    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        for (NSDictionary *currentClass in arr)
-        {
-            CalClass *newClass = [[CalClass alloc] init];
-            newClass.title = [currentClass objectForKey:@"abbreviation"];
-            newClass.times = [currentClass objectForKey:@"location"];
-            newClass.instructor = [currentClass objectForKey:@"instructor"];
-            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
-            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
-            newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
-            newClass.units = [currentClass objectForKey:@"units"];
-            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
-            newClass.number = [currentClass objectForKey:@"number"];
-            newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
-            newClass.uniqueID = [currentClass objectForKey:@"id"];
-            newClass.ccn = [currentClass objectForKey:@"ccn"];
-            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [self.waitlistedCourses addObject:newClass];
-        }
-        if ([self.waitlistedCourses count])
-        {
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-        }
-    };
-    
-    NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [self.waitlistLoader loadDataWithCompletionBlock:block arrayToSave:self.waitlistedCourses withData:requestBody];
-    [self.waitlistLoader forceLoadWithCompletionBlock:block arrayToSave:self.waitlistedCourses withData:requestBody];
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
-}
-
-- (void)loadDepartments
+- (void)loadDepartments:(DataLoader*)loader withArray:(NSMutableArray*)array
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentDep in arr)
@@ -149,17 +164,17 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             Department *newDep = [[Department alloc] init];
             newDep.title = [[currentDep objectForKey:@"name"] capitalizedString];
             newDep.departmentID = [currentDep objectForKey:@"id"];
-            [self.departments addObject:newDep];
+            [array addObject:newDep];
         }
-        [self.departments sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
+        [array sortUsingComparator:(NSComparator)^(Department *obj1, Department *obj2){
             return [obj1.title caseInsensitiveCompare:obj2.title];
         }];
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.departmentLoader loadDataWithCompletionBlock:block arrayToSave:self.departments];
+        [loader loadDataWithCompletionBlock:block arrayToSave:array];
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
+        /* not working dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];}); */
     });
 }
 
@@ -229,7 +244,9 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             NSPredicate *resultPredicate = [NSPredicate
                                             predicateWithFormat:@"title BEGINSWITH[cd] %@",
                                             [alphabet substringWithRange:NSMakeRange(section-2, 1)]];
-            return [[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] count];
+            if (self.departments && [self.departments count])
+                return [[NSMutableArray arrayWithArray:[self.departments filteredArrayUsingPredicate:resultPredicate]] count];
+            else return 0;
         }
     }
     else
@@ -320,7 +337,6 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 {
     UITableView *table = (UITableView*)sender;
     NSIndexPath *indexPath = [table indexPathForSelectedRow];
-    NSLog(@"performing segue with id: %@", [segue identifier]);
     if ([[segue identifier] isEqualToString:@"department"])
     {
         ClassListViewController *viewController = [segue destinationViewController];
@@ -341,8 +357,13 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     else
     {
         ClassViewController *classViewController = [segue destinationViewController];
-        classViewController.currentClass = [self.enrolledCourses objectAtIndex:indexPath.row];
-        classViewController.title = [[self.enrolledCourses objectAtIndex:indexPath.row] title];
+        NSArray *selectedCourse = nil;
+        if (indexPath.section == 0)
+            selectedCourse = self.enrolledCourses;
+        else
+            selectedCourse = self.waitlistedCourses;
+        classViewController.currentClass = [selectedCourse objectAtIndex:indexPath.row];
+        classViewController.title = [[selectedCourse objectAtIndex:indexPath.row] title];
     }
 }
 
@@ -351,7 +372,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqualToString:@"Loading..."])
         return;
     
-    if (tableView == self.tableView && indexPath.section > 0)
+    if (tableView == self.tableView && indexPath.section > 1)
         [self performSegueWithIdentifier:@"department" sender:tableView];
     else if (tableView != self.tableView)
         [self performSegueWithIdentifier:@"department" sender:tableView];
@@ -378,5 +399,23 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 - (void)viewDidUnload {
     [self setSessionSelector:nil];
     [super viewDidUnload];
+}
+- (IBAction)switchSession:(id)sender {
+    switch ([self.sessionSelector selectedSegmentIndex]) {
+        case 0:
+            self.enrolledCourses = [[NSMutableArray alloc] initWithArray:self.enrolledCoursesFa];
+            self.waitlistedCourses = [[NSMutableArray alloc] initWithArray:self.waitlistedCoursesFa];
+            break;
+        case 1:
+            self.enrolledCourses = [[NSMutableArray alloc] initWithArray:self.enrolledCoursesSp];
+            self.waitlistedCourses = [[NSMutableArray alloc] initWithArray:self.waitlistedCoursesSp];
+            break;
+        case 2:
+            self.enrolledCourses = [[NSMutableArray alloc] initWithArray:self.enrolledCoursesSu];
+            self.waitlistedCourses = [[NSMutableArray alloc] initWithArray:self.waitlistedCoursesSu];
+        default:
+            break;
+    }
+    [self.tableView reloadData];
 }
 @end

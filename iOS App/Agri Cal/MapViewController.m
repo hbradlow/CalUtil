@@ -316,7 +316,6 @@ static float LongitudeDelta = 0.015;
     }
     else 
     {
-        NSLog(@"here");
         [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
 }

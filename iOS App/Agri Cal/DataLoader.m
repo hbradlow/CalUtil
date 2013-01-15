@@ -39,6 +39,7 @@
         return [self loadBlock:block withExtension:self.urlString andCollection:set andData:nil];
     }
 }
+
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
@@ -59,7 +60,7 @@
 }
 - (BOOL)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data
 {
-    return [self loadBlock:block withExtension:@"" andCollection:array andData:data];
+    return [self loadBlock:block withExtension:self.urlString andCollection:array andData:data];
 }
 - (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array withData:(NSData*)data
 {
@@ -98,7 +99,10 @@
     receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
                                          returningResponse:&response
                                                      error:&error];
-    
+    if (error)
+    {
+        return NO;
+    }
     NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:&error];
     if (error)
     {
@@ -124,7 +128,6 @@
 - (void)saveData:(NSObject*)dataArray{
     if (self.shouldSave)
     {
-        NSLog(@"saving %@", dataArray);
         NSMutableData *data = [[NSMutableData alloc]init];
         NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [archiver encodeObject:dataArray forKey:@"filedata"];
