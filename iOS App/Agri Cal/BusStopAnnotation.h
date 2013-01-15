@@ -11,9 +11,9 @@
 
 @interface BusStopAnnotation : BasicMapAnnotation <NSCoding>
 
-@property (nonatomic) NSInteger stopID;
+@property (nonatomic, copy) NSString *stopID;
 @property (nonatomic, strong) NSArray *routes;
 
-- (id)initWithID:(NSInteger)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts;
+- (id)initWithID:(NSString*)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts;
 
 @end

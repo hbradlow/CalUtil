@@ -103,7 +103,7 @@ static float LongitudeDelta = 0.015;
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentStop in arr)
         {
-            NSInteger currentID = [[currentStop objectForKey:@"stop_id"] integerValue];
+            NSString *currentID = [currentStop objectForKey:@"stop_id"];
             NSArray *currentRoutes = [currentStop objectForKey:@"lines"];
             float currentLat = [[currentStop objectForKey:@"latitude"] floatValue];
             float currentLong = [[currentStop objectForKey:@"longitude"] floatValue];

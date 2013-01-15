@@ -13,7 +13,7 @@
 
 @implementation BusStopAnnotation
 
-- (id)initWithID:(NSInteger)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts
+- (id)initWithID:(NSString*)sID latitude:(float)lat longitude:(float)lng routes:(NSArray*)rts
 {
     if ((self = [super init]))
     {
@@ -30,7 +30,7 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeInteger:self.stopID forKey:kIDKey];
+    [aCoder encodeObject:self.stopID forKey:kIDKey];
     [aCoder encodeObject:self.routes forKey:kRoutesKey];
 }
 
@@ -38,7 +38,7 @@
 {
     if ((self = [super initWithCoder:aDecoder]))
     {
-        self.stopID = [aDecoder decodeIntegerForKey:kIDKey];
+        self.stopID = [aDecoder decodeObjectForKey:kIDKey];
         self.routes = [aDecoder decodeObjectForKey:kRoutesKey];
     }
     return self;

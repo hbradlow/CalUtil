@@ -50,7 +50,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
-    NSLog(@"%i", self.annotation.stopID);
+    NSLog(@"%@", self.annotation.stopID);
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
     return cell;
@@ -67,10 +67,10 @@
         [self.refreshControl endRefreshing];
     });
 }
-- (void)updateTimes:(int)extension withTag:(NSString*)tag atIndex:(int)index
+- (void)updateTimes:(NSString*)extension withTag:(NSString*)tag atIndex:(int)index
 {
     @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/predictions/%i/%@", ServerURL, extension, tag];
+        NSString *queryString = [NSString stringWithFormat:@"%@/api/bus_stop/predictions/%@/%@", ServerURL, extension, tag];
         NSLog(@"%@", queryString);
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
