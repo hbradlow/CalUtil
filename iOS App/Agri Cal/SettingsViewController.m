@@ -122,6 +122,7 @@
         [textField setFont:[UIFont fontWithName:kAppFont size:18]];
         [textField setEnabled:YES];
         textField.delegate = self;
+        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         if (indexPath.row==0)
         {
             self.username = textField;

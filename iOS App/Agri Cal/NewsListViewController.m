@@ -69,9 +69,10 @@
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     };
     [self.dataLoader loadDataWithCompletionBlock:block arrayToSave:self.rssFeed];
-    [self.dataLoader forceLoadWithCompletionBlock:block arrayToSave:self.rssFeed withData:nil];
     dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
     dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+    [self.dataLoader forceLoadWithCompletionBlock:block arrayToSave:self.rssFeed withData:nil];
+    dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});    
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
