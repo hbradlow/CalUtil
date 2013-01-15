@@ -538,9 +538,15 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + semester)
     soup = bs4.BeautifulSoup(show())
     if not waitlist:
-        classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
+        try:
+            classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
+        except IndexError:
+            return []
     else:
-        classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
+        try:
+            classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
+        except IndexError:
+            return []
     cs = [] 
     header = [c.contents[0] for c in classes[0].findAll("th")]
     for c in classes[1:len(classes)]:
