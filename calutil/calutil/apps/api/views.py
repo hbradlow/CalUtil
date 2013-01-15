@@ -202,6 +202,7 @@ def dailycal(request,entries):
         soup = bs4.BeautifulSoup(html)
         soup.find("div",{"id":"wrapper"})['id'] = "removed"
         soup.find("div",{"id":"story"})['id'] = "removed"
+        soup.find("body")['style'] = "background-color:#FAFAFA;"
         soup.find("div",{"id":"header"}).extract()
         soup.find("div",{"id":"links"}).extract()
         soup.find("div",{"id":"footer"}).extract()

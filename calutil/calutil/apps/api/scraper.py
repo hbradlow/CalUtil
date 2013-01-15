@@ -529,9 +529,8 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
         fv("1","username",username)
         fv("1","password",password)
         submit('0')
-        submit('0')
     except:
-        pass
+        print show()
     b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + term)
     #soup = bs4.BeautifulSoup(show())
     f = open("calutil/calutil/data/bearfacts.html")
