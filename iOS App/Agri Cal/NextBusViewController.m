@@ -32,7 +32,7 @@
     [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:kTitleAdjustment forBarMetrics:UIBarMetricsDefault];
     self.timer = [NSTimer timerWithTimeInterval:60.0 target:self selector:@selector(updateAllTimes) userInfo:nil repeats:YES];
     [self.timer fire];
-    [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    [self updateAllTimes];  
 }
 
 - (int)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -50,6 +50,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
+    NSLog(@"%i", self.annotation.stopID);
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
     return cell;

@@ -106,10 +106,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (void)refresh:(DataLoader*)loader withArray:(NSMutableArray*)array
 {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self loadCourses:loader withArray:array];
-    });
+    [self loadCourses:loader withArray:array];
 }
 
 - (void)loadCourses:loader withArray:(NSMutableArray*)array
@@ -134,25 +131,17 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [array addObject:newClass];
         }
-        if ([array count])
-        {
-            dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-            dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-        }
     };
     
     NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [loader loadDataWithCompletionBlock:block arrayToSave:array withData:requestBody];
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){
-        [self switchSession:self.sessionSelector];
-        [self.tableView reloadData];
-    });
-    [loader forceLoadWithCompletionBlock:block arrayToSave:array withData:requestBody];
-    dispatch_async(updateUIQueue, ^(){
-        [self switchSession:self.sessionSelector];
-        [self.tableView reloadData];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [loader forceLoadWithCompletionBlock:block arrayToSave:array withData:requestBody];
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){
+            [self.refreshControl endRefreshing];
+            [self switchSession:self.sessionSelector];
+        });
     });
 }
 
@@ -416,6 +405,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         default:
             break;
     }
+    NSLog(@"reloading tableview");
     [self.tableView reloadData];
 }
 @end
