@@ -381,7 +381,10 @@ def scrape_webcasts(debug=False):
                 r2 = re.match("^(.*?)((\s[a-zA-Z]*)?\d+.*?)$",r.group(1).strip())
                 department_name = r2.group(1).strip().upper()
                 course_number = r2.group(2).strip()
-                w.course = list([c for c in Course.objects.filter(number=course_number) if department_name in c.department.possible_names])[0]
+                try:
+                    w.course = list([c for c in Course.objects.filter(number=course_number) if department_name in c.department.possible_names])[0]
+                except:
+                    return Course.objects.filter(number=course_number)
                 w.save()
 def get_cal_balance(username,password):
     import twill
@@ -528,6 +531,7 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     try:
         fv("1","username",username)
         fv("1","password",password)
+        submit('0')
         submit('0')
     except:
         print show()
