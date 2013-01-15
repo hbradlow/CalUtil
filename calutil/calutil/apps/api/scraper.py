@@ -511,11 +511,11 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     from django.conf import settings
 
     if term == "SP":
-        term = "FT"
+        semester = "FT"
     elif term == "FL":
-        term = "CT"
+        semester = "CT"
     else:
-        term = "CS"
+        semester = "CS"
 
     b = twill.get_browser() #  make it so that twill can handle xhtml  
     b._browser._factory.is_html = True
@@ -524,17 +524,15 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     config("acknowledge_equiv_refresh",0) #turn of redirection i think... (https://twill.jottit.com/command)
 
     b.clear_cookies()
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + term)
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + semester)
     try:
         fv("1","username",username)
         fv("1","password",password)
         submit('0')
     except:
         print show()
-    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + term)
-    #soup = bs4.BeautifulSoup(show())
-    f = open("calutil/calutil/data/bearfacts.html")
-    soup = bs4.BeautifulSoup(f.read())
+    b.go("https://bearfacts.berkeley.edu/bearfacts/student/registration.do?bfaction=displayClassSchedules&termStatus=" + semester)
+    soup = bs4.BeautifulSoup(show())
     if not waitlist:
         classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
     else:
@@ -545,7 +543,7 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
         try:
             if debug:
                 print clean(c.findAll("td")[0].contents[0])
-            tmp = Course.objects.filter(ccn=clean(str(c.findAll("td")[0].contents[0]))).filter(semester=settings.CURRENT_SEMESTER_CALLBACK())[0]
+            tmp = Course.objects.filter(ccn=clean(str(c.findAll("td")[0].contents[0]))).filter(semester=term)[0]
             cs.append(tmp)
         except:
             #print c
