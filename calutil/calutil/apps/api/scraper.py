@@ -540,12 +540,12 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     if not waitlist:
         try:
             classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[0].findAll("tr")
-        except IndexError:
+        except (IndexError,AttributeError):
             return []
     else:
         try:
             classes = soup.find("div",{"class":"main-content-div"}).findAll("table",width="100%")[1].findAll("tr")
-        except IndexError:
+        except (IndexError,AttributeError):
             return []
     cs = [] 
     header = [c.contents[0] for c in classes[0].findAll("th")]
