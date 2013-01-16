@@ -145,6 +145,10 @@
                 [self.locations replaceObjectAtIndex:kFoothill withObject:currentMenu];
             }
         }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.refreshControl endRefreshing];
+        });
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
@@ -155,10 +159,6 @@
     });
     dispatch_async(queue, ^{
         [self.menuLoader forceLoadWithCompletionBlock:block withData:nil];
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            [self.refreshControl endRefreshing];
-        });
     });
 }
 #pragma mark - Table view data source

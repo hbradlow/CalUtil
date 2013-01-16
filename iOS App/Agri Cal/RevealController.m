@@ -32,6 +32,7 @@
 
 #import "RevealController.h"
 #import "SettingsViewController.h"
+#import "MapViewController.h"
 
 @implementation RevealController
 
@@ -51,8 +52,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    NewsListViewController *frontViewController = [[NewsListViewController alloc] init];
-    self.newsController = frontViewController;
+    MapViewController *frontViewController = [[MapViewController alloc] init];
     SettingsViewController *rearViewController = [[SettingsViewController alloc] init];
     
     self = [super initWithFrontViewController:frontViewController rearViewController:rearViewController];

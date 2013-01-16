@@ -2,6 +2,11 @@
 #import "CUMenuTextField.h"
 #import "CUSettingsHeader.h"
 
+#define kUsernameIndex 1
+#define kInfoIndex 0 
+#define kCalIndex 2
+#define kMealIndex 3
+
 @implementation SettingsViewController
 @synthesize username;
 @synthesize password;
@@ -26,7 +31,7 @@
     dispatch_async(queue, ^(){
         [self loadBalances];
     });
-    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:3] animated:NO scrollPosition:UITableViewScrollPositionTop];
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:kInfoIndex] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
 - (void)dismissKeyboard
@@ -47,9 +52,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 0)
+    if (section == kUsernameIndex)
         return 2;
-    else if (section < 3)
+    else if (section == kMealIndex || section == kCalIndex)
         return 1;
     else
         return 5;
@@ -90,16 +95,16 @@
     label.textColor = [UIColor colorWithWhite:0.5 alpha:1];
     label.backgroundColor = [UIColor clearColor];
     switch (section) {
-        case 0:
+        case kUsernameIndex:
             label.text = @"CalNet login";
             break;
-        case 1:
+        case kCalIndex:
             label.text = @"Cal1Card balance";
             break;
-        case 2:
+        case kMealIndex:
             label.text = @"Mealpoints";
             break;
-        case 3:
+        case kInfoIndex:
             label.text = @"Information";
             break;
     }
@@ -110,10 +115,7 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    int x = cell.textLabel.frame.origin.x;
-    int y = cell.textLabel.frame.origin.y;
-    NSLog(@"%i,%i", x,y);
-    if (indexPath.section == 0)
+    if (indexPath.section == kUsernameIndex)
     {
         cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"textcell"];
         UITextField *textField = [[CUMenuTextField alloc] initWithFrame:CGRectMake(10, 10, 312, cell.frame.size.height-16)];
@@ -141,7 +143,7 @@
             textField.secureTextEntry = YES;
         }
     }
-    else if (indexPath.section == 3)
+    else if (indexPath.section == kInfoIndex)
     {
         cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
@@ -181,7 +183,7 @@
         cell.textLabel.textColor = [UIColor colorWithWhite:0.75 alpha:1];
         cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
         switch (indexPath.section) {
-            case 1:
+            case kCalIndex:
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
                 {
                     NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]);
@@ -193,7 +195,7 @@
                     cell.textLabel.text = @"N/A  ";
                 }
                 break;
-            case 2:
+            case kMealIndex:
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] isEqualToString:@""])
                 {
                     NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints]);
@@ -220,14 +222,14 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section > 2)
+    if (indexPath.section == kInfoIndex)
         return YES;
     else return NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section > 2)
+    if (indexPath.section == kInfoIndex)
     {
         [self hide];
         RevealController *revealController = [self.parentViewController isKindOfClass:[RevealController class]] ? (RevealController *)self.parentViewController : nil;
@@ -309,14 +311,18 @@
             [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"balance"] forKey:kCalBalance];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
+            NSIndexPath *selectedIndex = [self.tableView indexPathForSelectedRow];
+            [self.tableView reloadData];
+            [self.tableView selectRowAtIndexPath:selectedIndex animated:NO scrollPosition:UITableViewScrollPositionNone];
         });
     }
     @catch (NSException *exception) {
         NSLog(@"Error loading balances");
         [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kMealpoints];
         [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kCalBalance];
+        NSIndexPath *selectedIndex = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
+        [self.tableView selectRowAtIndexPath:selectedIndex animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
