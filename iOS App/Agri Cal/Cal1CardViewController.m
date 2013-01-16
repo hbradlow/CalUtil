@@ -33,6 +33,7 @@
         NSLog(@"Error when loading image");
     }
     self.navigationController.title = self.annotation.title;
+    NSLog(@"%@%@", self.annotation.times, self.annotation.info);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -76,7 +77,9 @@
     int max = [self.annotation.times count];
     if (section < max)
     {
-        label.text = [[self.annotation.times objectAtIndex:section] objectForKey:@"days"];
+        label.text = [[self.annotation.times objectAtIndex:section] objectForKey:@"span"];
+        if ([label.text isEqualToString:@""])
+            label.text = @"Built in";
     }
     else
     {
@@ -100,9 +103,14 @@
     
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    NSString *timeString;
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [[self.annotation.times objectAtIndex:indexPath.row] objectForKey:@"span"];
+            timeString = [[self.annotation.times objectAtIndex:indexPath.row] objectForKey:@"span"];
+            if ([timeString isEqualToString:@""])
+                cell.textLabel.text = @"N/A";
+            else
+                cell.textLabel.text = timeString;
             break;
         case 1:
             cell.textLabel.text = self.annotation.info;

@@ -153,6 +153,8 @@ static float LongitudeDelta = 0.015;
                                                                                      andTimes:nil
                                                                                       andInfo:info];
                 [self.buildingAnnotations addObject:annotation];
+                NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"built"];
+                annotation.times = @[@{@"span" : timeString}];
             }
         }
         [self switchAnnotations:self];
@@ -253,6 +255,8 @@ static float LongitudeDelta = 0.015;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+    if ([self.buildingAnnotations containsObject:view.annotation])
+        self.buildingAnnotation = (BasicMapAnnotation*)view.annotation;
     self.selectedAnnotation = (BasicMapAnnotation*)view.annotation;
 }
 
@@ -263,8 +267,7 @@ static float LongitudeDelta = 0.015;
     }
     if (view.annotation == self.buildingAnnotation)
     {
-        [self.mapView removeAnnotation:self.buildingAnnotation];
-        self.buildingAnnotation = nil;
+        [self.mapView removeAnnotation:view.annotation];
     }
 }
 
@@ -447,11 +450,6 @@ static float LongitudeDelta = 0.015;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.buildingAnnotation)
-    {
-        [self.mapView deselectAnnotation:self.buildingAnnotation animated:NO];
-        [self.mapView removeAnnotation:self.buildingAnnotation];
-    }
     self.searchDisplayController.searchBar.text = @"";
     Cal1CardAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
     self.buildingAnnotation = annotation;
