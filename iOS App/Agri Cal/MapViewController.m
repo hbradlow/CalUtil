@@ -84,7 +84,7 @@ static float LongitudeDelta = 0.015;
             NSString *info = [currentLocation objectForKey:@"info"];
             NSString *title = [currentLocation objectForKey:@"name"];
             NSArray *times = [currentLocation objectForKey:@"times"];
-            NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            NSString *imageURL = [NSString stringWithFormat:@"%@%@", ServerURL,[currentLocation objectForKey:@"image_url"]];
             NSString *type = [currentLocation objectForKey:@"type"];
             if (latitude != nil)
             {
@@ -212,8 +212,9 @@ static float LongitudeDelta = 0.015;
         {
             if ([annotation.identifier integerValue] < [arr count])
             {
-                annotation.times = @[[[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"]];
-                annotation.subtitle = [NSString stringWithFormat:@"%@", [annotation.times objectAtIndex:0]];
+                NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"];
+                annotation.times = @[@{@"span" : timeString}];
+                annotation.subtitle = [NSString stringWithFormat:@"%@", timeString];
                 if ([[self.mapView annotations] containsObject:annotation])
                 {
                     [self.mapView removeAnnotation:annotation];
@@ -252,11 +253,7 @@ static float LongitudeDelta = 0.015;
 }
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-    if (([self.busStopAnnotations containsObject:view.annotation] || [self.calCardAnnotations containsObject:view.annotation])
-        && self.selectedAnnotation == nil)
-    {
-        self.selectedAnnotation = (BasicMapAnnotation*)view.annotation;
-    }
+    self.selectedAnnotation = (BasicMapAnnotation*)view.annotation;
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view{
@@ -292,7 +289,8 @@ static float LongitudeDelta = 0.015;
         annotationView.canShowCallout = NO;
         if ([self.libraryAnnotations containsObject:annotation])
         {
-            if ([[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] isEqualToString:@"Closed"])
+            NSString *timeString = [[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] objectForKey:@"span"];
+            if ([timeString isEqualToString:@"Closed"])
                 annotationView.pinColor = MKPinAnnotationColorRed;
         }
         else
@@ -332,6 +330,7 @@ static float LongitudeDelta = 0.015;
     }
     else if ([[segue identifier] isEqualToString:@"calcard"])
     {
+        NSLog(@"%@", sender);
         Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];
         nextController.annotation = (Cal1CardAnnotation*)sender;
         nextController.navigationItem.title = ((Cal1CardAnnotation*)sender).title;
@@ -474,10 +473,10 @@ static float LongitudeDelta = 0.015;
 - (void)viewWillDisappear:(BOOL)animated
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [self.busLoader save];
-    [self.libraryLoader save];
-    [self.cal1Loader save];
-    [self.buildingLoader save];
+        [self.busLoader save];
+        [self.libraryLoader save];
+        [self.cal1Loader save];
+        [self.buildingLoader save];
     });
     [super viewWillDisappear:animated];
 }

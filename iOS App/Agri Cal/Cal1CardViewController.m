@@ -47,7 +47,6 @@
         CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:22]
                                            constrainedToSize:maximumLabelSize
                                                lineBreakMode:UILineBreakModeWordWrap];
-        NSLog(@"%f %f", expectedLabelSize.height, expectedLabelSize.width);
         return expectedLabelSize.height;
     }
 }
@@ -99,7 +98,6 @@
     if (!cell)
         cell = [[CalCardCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
     
-    NSLog(@"%@", self.annotation.times);
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     switch (indexPath.section) {
