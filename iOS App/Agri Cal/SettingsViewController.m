@@ -22,10 +22,10 @@
                                    initWithTarget:self
                                    action:@selector(dismissKeyboard)];
     
-    /*dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0ul);
     dispatch_async(queue, ^(){
         [self loadBalances];
-    });*/
+    });
     [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:3] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
@@ -212,6 +212,8 @@
 
 - (void)hide
 {
+    [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:@"username"];
+    [[NSUserDefaults standardUserDefaults] setValue:self.password.text forKey:@"password"];
     [self.username resignFirstResponder];
     [self.password resignFirstResponder];
 }
