@@ -16,12 +16,12 @@
 @property (nonatomic, strong) NSMutableArray *departments;
 @property (nonatomic, strong) NSMutableArray *enrolledCourses;
 @property (nonatomic, strong) NSMutableArray *waitlistedCourses;
-@property (nonatomic, strong) NSMutableArray *enrolledCoursesSp;
-@property (nonatomic, strong) NSMutableArray *waitlistedCoursesSp;
-@property (nonatomic, strong) NSMutableArray *enrolledCoursesFa;
-@property (nonatomic, strong) NSMutableArray *waitlistedCoursesFa;
-@property (nonatomic, strong) NSMutableArray *enrolledCoursesSu;
-@property (nonatomic, strong) NSMutableArray *waitlistedCoursesSu;
+@property (strong) NSMutableArray *enrolledCoursesSp;
+@property (strong) NSMutableArray *waitlistedCoursesSp;
+@property (strong) NSMutableArray *enrolledCoursesFa;
+@property (strong) NSMutableArray *waitlistedCoursesFa;
+@property (strong) NSMutableArray *enrolledCoursesSu;
+@property (strong) NSMutableArray *waitlistedCoursesSu;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sessionSelector;
 

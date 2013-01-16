@@ -50,7 +50,6 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     NSDictionary *currentLine = [self.lines objectAtIndex:indexPath.row];
-    NSLog(@"%@", self.annotation.stopID);
     cell.textLabel.text = [currentLine objectForKey:@"title"];
     cell.detailTextLabel.text = @"Loading next departure times";
     return cell;

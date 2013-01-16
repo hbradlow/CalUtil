@@ -35,7 +35,6 @@
                                     <segment title="Cal1Card"/>
                                     <segment title="Libraries"/>
                                 </segments>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
                                     <action selector="switchAnnotations:" destination="2" eventType="valueChanged" id="vsV-bA-H7h"/>
                                 </connections>
