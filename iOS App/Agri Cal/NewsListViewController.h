@@ -18,6 +18,4 @@
 @property (nonatomic, retain) DataLoader *dataLoader;
 @property BOOL hasLoaded;
 @property BOOL isMenuHidden;
-
-- (IBAction)showMenu:(id)sender;
 @end

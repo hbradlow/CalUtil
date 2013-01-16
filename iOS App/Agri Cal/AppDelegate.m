@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "LaunchImageTransitionController.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 @implementation AppDelegate
 
@@ -131,12 +132,26 @@
     });
     
     /* Not currently working, does not seem to stay as top view */
-    LaunchImageTransitionController *launchImgController = [[LaunchImageTransitionController alloc] init];
+    //LaunchImageTransitionController *launchImgController = [[LaunchImageTransitionController alloc] init];
     
-    [self.window addSubview:launchImgController.view];
+    //[self.window addSubview:launchImgController.view];
+    [self fetchSSIDInfo];
 	return YES;
 }
 
+- (void)fetchSSIDInfo
+{
+    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
+    NSLog(@"%s: Supported interfaces: %@", __func__, ifs);
+    id info = nil;
+    for (NSString *ifnam in ifs) {
+        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        NSLog(@"%s: %@ => %@", __func__, ifnam, info);
+        if (info && [info count]) {
+            break;
+        }
+    }
+}
 
 -(void)removeSplash:(UIImageView*)splashView{
     [splashView removeFromSuperview];
