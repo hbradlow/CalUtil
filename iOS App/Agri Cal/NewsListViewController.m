@@ -38,10 +38,10 @@
     [self.menuTableView setUserInteractionEnabled:YES];
     [self.tabBarController.view addSubview:self.menuTableView];
     [self.tabBarController.view sendSubviewToBack:self.menuTableView];
-    self.dataLoader = [[DataLoader alloc] initWithUrlString:@"/api/dailycal/" andFilePath:kNewsFilePath];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self loadRSS];
-    });
+    self.dataLoader = [[DataLoader alloc] initWithUrlString:@"/api/dailycal/"
+                                                andFilePath:kNewsFilePath
+                                               andDataArray:self.rssFeed];
+    [self loadRSS];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -68,11 +68,9 @@
             dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
             dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     };
-    [self.dataLoader loadDataWithCompletionBlock:block arrayToSave:self.rssFeed];
-    dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-    dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-    [self.dataLoader forceLoadWithCompletionBlock:block arrayToSave:self.rssFeed withData:nil];
-    dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});    
+    [self.dataLoader loadDataWithCompletionBlock:block];
+    [self.tableView reloadData];
+    [self.dataLoader forceLoadWithCompletionBlock:block withData:nil];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,6 +116,12 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.dataLoader save];
 }
 
 - (void)viewDidUnload {

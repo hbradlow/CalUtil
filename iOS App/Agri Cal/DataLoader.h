@@ -4,14 +4,20 @@
 
 @property (nonatomic, copy) NSString *urlString;
 @property (nonatomic, copy) NSString *filePath;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSDate *lastUpdate;
 @property (nonatomic) BOOL shouldSave;
 
-- (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString*)filePath;
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block setToSave:(NSSet*)set;
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array;
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data;
-- (BOOL)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data;
+- (id)initWithUrlString:(NSString*)urlString
+            andFilePath:(NSString*)filePath
+           andDataArray:(NSMutableArray*)array;
+- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block;
+- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block;
+- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block
+                           withData:(NSData*)data;
+- (void)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block
+                            withData:(NSData*)data;
+- (void)save;
 
 
 @end

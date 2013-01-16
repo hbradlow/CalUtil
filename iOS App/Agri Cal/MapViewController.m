@@ -23,10 +23,10 @@ static float LongitudeDelta = 0.015;
 - (void)viewDidLoad{
     [super viewDidLoad];
     
-    self.busStopAnnotations = [[NSMutableSet alloc] init];
-    self.calCardAnnotations = [[NSMutableSet alloc] init];
-    self.libraryAnnotations = [[NSMutableSet alloc] init];
-    self.buildingAnnotations = [[NSMutableSet alloc] init];
+    self.busStopAnnotations = [[NSMutableArray alloc] init];
+    self.calCardAnnotations = [[NSMutableArray alloc] init];
+    self.libraryAnnotations = [[NSMutableArray alloc] init];
+    self.buildingAnnotations = [[NSMutableArray alloc] init];
     
 /** Setting up the map */
     self.mapView.delegate = self;
@@ -46,15 +46,23 @@ static float LongitudeDelta = 0.015;
     [self.mapView setNeedsDisplay];
 
 /** Set up the loaders and do the initial loading */
-    self.busLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/bus_stop/?format=json" andFilePath:kBusFilePath];
+    self.busLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/bus_stop/?format=json"
+                                               andFilePath:kBusFilePath
+                                              andDataArray:self.busStopAnnotations];
     [self loadBusStops];
-    self.cal1Loader = [[DataLoader alloc] initWithUrlString:@"/app_data/cal_one_card/?format=json" andFilePath:kCalFilePath];
+    self.cal1Loader = [[DataLoader alloc] initWithUrlString:@"/app_data/cal_one_card/?format=json"
+                                                andFilePath:kCalFilePath
+                                               andDataArray:self.calCardAnnotations];
     [self loadCal1CardLocations];
-    self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library/?format=json" andFilePath:kLibraryFilePath];
+    self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library/?format=json"
+                                                   andFilePath:kLibraryFilePath
+                                                  andDataArray:self.libraryAnnotations];
     [self loadLibraries];
-    self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json" andFilePath:kBuildingFilePath];
+    self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json"
+                                                    andFilePath:kBuildingFilePath
+                                                   andDataArray:self.buildingAnnotations];
     [self loadBuildings];
-    self.libraryTimeLoader = [[DataLoader alloc] initWithUrlString:@"/api/library_hours/" andFilePath:nil];
+    self.libraryTimeLoader = [[DataLoader alloc] initWithUrlString:@"/api/library_hours/" andFilePath:nil andDataArray:nil];
     self.libraryTimeLoader.shouldSave = NO;
     [self loadLibraryTimes];
     
@@ -94,7 +102,7 @@ static float LongitudeDelta = 0.015;
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.cal1Loader loadDataWithCompletionBlock:block setToSave:self.calCardAnnotations];
+        [self.cal1Loader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
     });
 }
@@ -122,7 +130,7 @@ static float LongitudeDelta = 0.015;
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.busLoader loadDataWithCompletionBlock:block setToSave:self.busStopAnnotations];
+        [self.busLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
     });
 }
@@ -152,7 +160,7 @@ static float LongitudeDelta = 0.015;
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.buildingLoader loadDataWithCompletionBlock:block setToSave:self.buildingAnnotations];
+        [self.buildingLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
     });
 }
@@ -184,7 +192,7 @@ static float LongitudeDelta = 0.015;
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.libraryLoader loadDataWithCompletionBlock:block setToSave:self.libraryAnnotations];
+        [self.libraryLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
     });
 }
@@ -222,7 +230,7 @@ static float LongitudeDelta = 0.015;
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.libraryTimeLoader loadDataWithCompletionBlock:block setToSave:nil];
+        [self.libraryTimeLoader loadDataWithCompletionBlock:block];
     });
 }
 
@@ -343,8 +351,8 @@ static float LongitudeDelta = 0.015;
     NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
     if (selectedIndex == 0)
     {
-        [self.mapView removeAnnotations:[self.calCardAnnotations allObjects]];
-        [self.mapView removeAnnotations:[self.libraryAnnotations allObjects]];
+        [self.mapView removeAnnotations:self.calCardAnnotations];
+        [self.mapView removeAnnotations:self.libraryAnnotations];
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -352,8 +360,8 @@ static float LongitudeDelta = 0.015;
     }
     else if (selectedIndex == 1)
     {
-        [self.mapView removeAnnotations:[self.busStopAnnotations allObjects]];
-        [self.mapView removeAnnotations:[self.libraryAnnotations allObjects]];
+        [self.mapView removeAnnotations:self.busStopAnnotations];
+        [self.mapView removeAnnotations:self.libraryAnnotations];
         if (self.buildingAnnotation)
             [self.mapView removeAnnotation:self.buildingAnnotation];
         if (self.selectedAnnotation)
@@ -361,8 +369,8 @@ static float LongitudeDelta = 0.015;
     }
     else if (selectedIndex == 2)
     {
-        [self.mapView removeAnnotations:[self.busStopAnnotations allObjects]];
-        [self.mapView removeAnnotations:[self.calCardAnnotations allObjects]];
+        [self.mapView removeAnnotations:self.busStopAnnotations];
+        [self.mapView removeAnnotations:self.calCardAnnotations];
         if (self.selectedAnnotation)
             [self.mapView removeAnnotation:self.selectedAnnotation];
     }
@@ -374,7 +382,7 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:[self.busStopAnnotations allObjects]];
+                    [self.mapView addAnnotations:self.busStopAnnotations];
                 });
                 break;
             }
@@ -382,7 +390,7 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:[self.calCardAnnotations allObjects]];
+                    [self.mapView addAnnotations:self.calCardAnnotations];
                 });
                 break;
             }
@@ -390,7 +398,7 @@ static float LongitudeDelta = 0.015;
             {
                 dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
                 dispatch_async(updateUIQueue, ^{
-                    [self.mapView addAnnotations:[self.libraryAnnotations allObjects]];
+                    [self.mapView addAnnotations:self.libraryAnnotations];
                 });
                 break;
             }
@@ -414,7 +422,7 @@ static float LongitudeDelta = 0.015;
                                     predicateWithFormat:@"title contains[cd] %@",
                                     searchText];
     
-    self.searchResults = [NSMutableArray arrayWithArray:[[self.buildingAnnotations filteredSetUsingPredicate:resultPredicate] allObjects]];
+    self.searchResults = [NSMutableArray arrayWithArray:[self.buildingAnnotations filteredArrayUsingPredicate:resultPredicate]];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
@@ -470,6 +478,15 @@ static float LongitudeDelta = 0.015;
 
 -(void)selectBuilding{
     [self.mapView selectAnnotation:self.buildingAnnotation animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.busLoader save];
+    [self.libraryLoader save];
+    [self.cal1Loader save];
+    [self.buildingLoader save];
+    [super viewWillDisappear:animated];    
 }
 
 - (void)viewDidUnload {

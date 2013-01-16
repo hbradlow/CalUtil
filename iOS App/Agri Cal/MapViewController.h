@@ -19,10 +19,10 @@
 @property (strong, nonatomic) MKPinAnnotationView *selectedAnnotationView;
 @property (strong, nonatomic) DisclosureAnnotationView *disclosureAnnotationView;
 
-@property (strong, nonatomic) NSMutableSet *busStopAnnotations;
-@property (strong, nonatomic) NSMutableSet *calCardAnnotations;
-@property (strong, nonatomic) NSMutableSet *buildingAnnotations;
-@property (strong, nonatomic) NSMutableSet *libraryAnnotations;
+@property (strong, nonatomic) NSMutableArray *busStopAnnotations;
+@property (strong, nonatomic) NSMutableArray *calCardAnnotations;
+@property (strong, nonatomic) NSMutableArray *buildingAnnotations;
+@property (strong, nonatomic) NSMutableArray *libraryAnnotations;
 @property (strong, nonatomic) NSMutableArray *searchResults;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *annotationSelector;

@@ -10,40 +10,44 @@
 
 @implementation DataLoader
 
-- (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString *)filePath
+- (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString *)filePath andDataArray:(NSMutableArray *)array
 {
     if ((self = [super init])) {
         self.urlString = urlString;
         self.filePath = filePath;
         self.shouldSave = YES;
+        self.dataArray = array;
     }
     return self;
 }
 
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block setToSave:(NSMutableSet*)set
+- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block
 {
-
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
+        NSLog(@"loading from file");
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        NSSet *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
+        NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
         for (NSObject* object in loaded_set)
         {
-            [set addObject:object];
+            [self.dataArray addObject:object];
         }
-        return YES;
     }
     else
     {
-        return [self loadBlock:block withExtension:self.urlString andCollection:set andData:nil];
+        [self loadBlock:block withExtension:self.urlString andData:nil];
     }
 }
-
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array
+- (void)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block withData:(NSData*)data
+{
+    [self loadBlock:block withExtension:self.urlString andData:data];
+}
+- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block withData:(NSData*)data
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
+        NSMutableArray *array = [[NSMutableArray alloc] init];
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
@@ -51,86 +55,64 @@
         {
             [array addObject:object];
         }
-        return YES;
     }
     else
     {
-        return [self loadBlock:block withExtension:self.urlString andCollection:array andData:nil];
+        [self loadBlock:block withExtension:self.urlString andData:data];
     }
 }
-- (BOOL)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSArray*)array withData:(NSData*)data
+
+- (void)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andData:(NSData*)data
 {
-    return [self loadBlock:block withExtension:self.urlString andCollection:array andData:data];
-}
-- (BOOL)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block arrayToSave:(NSMutableArray*)array withData:(NSData*)data
-{
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
-    {
-        NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
-        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
-        for (NSObject* object in loaded_set)
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL, extension];
+        NSURL *requestURL = [NSURL URLWithString:queryString];
+        NSURLResponse *response = nil;
+        
+        NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
+        if (data != nil)
         {
-            [array addObject:object];
+            [jsonRequest setHTTPMethod:@"POST"];
+            [jsonRequest setHTTPBody:data];
         }
-        return YES;
-    }
-    else
-    {
-        return [self loadBlock:block withExtension:self.urlString andCollection:array andData:data];
-    }
+        
+        NSData *receivedData;
+        NSError *error = nil;
+        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
+                                             returningResponse:&response
+                                                         error:&error];
+        if (error)
+        {
+            return;
+        }
+        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:&error];
+        if (error)
+        {
+            return;
+        }
+        NSLog(@"%@", receivedDict);
+        NSMutableArray *arr = [NSMutableArray arrayWithArray:[receivedDict objectForKey:@"objects"]];
+        
+        block(arr);
+        
+        if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
+        {
+            [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andData:nil];
+        }
+        else
+        {
+            self.lastUpdate = [NSDate date];
+        }
+    });
 }
 
-- (BOOL)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andCollection:(NSObject*)set andData:(NSData*)data
-{
-    NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL, extension];
-    NSURL *requestURL = [NSURL URLWithString:queryString];
-    NSURLResponse *response = nil;
-    
-    NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
-    if (data != nil)
-    {
-        [jsonRequest setHTTPMethod:@"POST"];
-        [jsonRequest setHTTPBody:data];
-    }
-    
-    NSData *receivedData;
-    NSError *error = nil;
-    receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                         returningResponse:&response
-                                                     error:&error];
-    if (error)
-    {
-        return NO;
-    }
-    NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:&error];
-    if (error)
-    {
-        return NO;
-    }
-    
-    NSMutableArray *arr = [NSMutableArray arrayWithArray:[receivedDict objectForKey:@"objects"]];
-    
-    block(arr);
-    
-    if (!([[receivedDict objectForKey:@"meta"] objectForKey:@"next"] == [NSNull null]))
-    {
-        return [self loadBlock:block withExtension:[[receivedDict objectForKey:@"meta"] objectForKey:@"next"] andCollection:set andData:nil];
-    }
-    else
-    {
-        [self saveData:set];
-        self.lastUpdate = [NSDate date];
-        return YES;
-    }
-}
-
-- (void)saveData:(NSObject*)dataArray{
+- (void)save{
     if (self.shouldSave)
     {
         NSMutableData *data = [[NSMutableData alloc]init];
         NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-        [archiver encodeObject:dataArray forKey:@"filedata"];
+        [archiver encodeObject:self.dataArray forKey:@"filedata"];
         [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
         [archiver finishEncoding];
         [data writeToFile:self.filePath atomically:YES];

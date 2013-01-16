@@ -13,9 +13,7 @@
 
 @interface DepartmentListViewController : FrontTableViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *departments;
-@property (nonatomic, strong) NSMutableArray *enrolledCourses;
-@property (nonatomic, strong) NSMutableArray *waitlistedCourses;
+@property (strong) NSMutableArray *departments;
 @property (strong) NSMutableArray *enrolledCoursesSp;
 @property (strong) NSMutableArray *waitlistedCoursesSp;
 @property (strong) NSMutableArray *enrolledCoursesFa;

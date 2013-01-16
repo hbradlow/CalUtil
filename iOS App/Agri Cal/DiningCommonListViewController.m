@@ -39,8 +39,9 @@
     self.locations = [NSMutableArray arrayWithArray:@[ @"",@"",@"",@"" ]];
     self.sectionTitles = [[NSMutableArray alloc] init];
     self.refreshControl = [[UIRefreshControl alloc] init];
-    self.menuLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/menu/?format=json" andFilePath:nil];
-    self.menuLoader.shouldSave = NO;
+    self.menuLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/menu/?format=json"
+                                                andFilePath:nil
+                                               andDataArray:self.locations];
     [self loadMenus];
     [self.refreshControl addTarget:self action:@selector(loadMenus) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
@@ -147,7 +148,13 @@
     };
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        [self.menuLoader loadDataWithCompletionBlock:block setToSave:nil];
+        [self.menuLoader loadDataWithCompletionBlock:block];
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.refreshControl endRefreshing];});
+    });
+    dispatch_async(queue, ^{
+        [self.menuLoader forceLoadWithCompletionBlock:block withData:nil];
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             [self.refreshControl endRefreshing];});
@@ -346,6 +353,12 @@
 {
     [self.tableView reloadData];
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.menuLoader save];
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
