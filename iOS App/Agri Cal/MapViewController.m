@@ -155,6 +155,7 @@ static float LongitudeDelta = 0.015;
                 [self.buildingAnnotations addObject:annotation];
                 NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"built"];
                 annotation.times = @[@{@"span" : timeString}];
+                annotation.type = kBuildingType;
             }
         }
         [self switchAnnotations:self];
@@ -337,6 +338,12 @@ static float LongitudeDelta = 0.015;
         Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];
         nextController.annotation = (Cal1CardAnnotation*)sender;
         nextController.navigationItem.title = ((Cal1CardAnnotation*)sender).title;
+        if ([self.buildingAnnotations containsObject:sender])
+            nextController.type = kBuildingType;
+        else if ([self.libraryAnnotations containsObject:sender])
+            nextController.type = kLibType;
+        else
+            nextController.type = kCalType;
     }
 }
 

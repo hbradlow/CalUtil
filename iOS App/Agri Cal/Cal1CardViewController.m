@@ -33,7 +33,6 @@
         NSLog(@"Error when loading image");
     }
     self.navigationController.title = self.annotation.title;
-    NSLog(@"%@%@", self.annotation.times, self.annotation.info);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -67,6 +66,7 @@
     CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
     CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
     view.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
+    rect.origin.x += 10;
     rect.origin.y += 1;
     rect.size.height -= 2;
     rect.size.width -= 4;
@@ -77,9 +77,13 @@
     int max = [self.annotation.times count];
     if (section < max)
     {
-        label.text = [[self.annotation.times objectAtIndex:section] objectForKey:@"span"];
-        if ([label.text isEqualToString:@""])
+        NSLog(@"%@", self.type);
+        if ([self.type isEqualToString:kBuildingType])
             label.text = @"Built in";
+        else if ([self.type isEqualToString:kLibType])
+            label.text = @"Times";
+        else
+            label.text = [[self.annotation.times objectAtIndex:section] objectForKey:@"days"];
     }
     else
     {
@@ -113,7 +117,7 @@
                 cell.textLabel.text = timeString;
             break;
         case 1:
-            cell.textLabel.text = self.annotation.info;
+            cell.textLabel.text = [self.annotation.info stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
             break;
         case 2:
             break;

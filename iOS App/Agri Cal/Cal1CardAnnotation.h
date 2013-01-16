@@ -11,10 +11,10 @@
 
 @interface Cal1CardAnnotation : BasicMapAnnotation <NSCoding>
 
-@property (nonatomic, strong) NSString *title;
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) NSArray *times;
-@property (nonatomic, strong) NSString *info;
-@property (nonatomic, strong) NSString *type;
+@property (nonatomic, copy) NSString *info;
+@property (nonatomic, copy) NSString *type;
 @property (nonatomic, strong) NSString *imageURL;
 @property (nonatomic, strong) NSNumber *identifier;
 - (id)initWithLatitude:(CLLocationDegrees)latitude
