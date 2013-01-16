@@ -83,7 +83,7 @@ static float LongitudeDelta = 0.015;
             NSNumber *longitude = [currentLocation objectForKey:@"longitude"];
             NSString *info = [currentLocation objectForKey:@"info"];
             NSString *title = [currentLocation objectForKey:@"name"];
-            NSString *times = [currentLocation objectForKey:@"times"];
+            NSArray *times = [currentLocation objectForKey:@"times"];
             NSString *imageURL = [currentLocation objectForKey:@"image_url"];
             NSString *type = [currentLocation objectForKey:@"type"];
             if (latitude != nil)
@@ -99,12 +99,10 @@ static float LongitudeDelta = 0.015;
                 [self.calCardAnnotations addObject:annotation];
             }
         }
-    };
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self.cal1Loader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
-    });
+    };
+
+    [self.cal1Loader loadDataWithCompletionBlock:block];
 }
 
 - (void)loadBusStops{
@@ -127,12 +125,10 @@ static float LongitudeDelta = 0.015;
             currentAnnotation.subtitle = subtitle;
             [self.busStopAnnotations addObject:currentAnnotation];
         }
-    };
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self.busLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
-    });
+    };
+
+    [self.busLoader loadDataWithCompletionBlock:block];
 }
 
 - (void)loadBuildings
@@ -146,7 +142,7 @@ static float LongitudeDelta = 0.015;
             NSString *title = [currentLocation objectForKey:@"name"];
             NSString *imageURL = [currentLocation objectForKey:@"image_url"];
             
-            if (latitude != nil && latitude != [NSNull null])
+            if (latitude != nil && (NSNull*)latitude != [NSNull null])
             {
                 Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
                                                                                  andLongitude:[longitude doubleValue]
@@ -157,12 +153,10 @@ static float LongitudeDelta = 0.015;
                 [self.buildingAnnotations addObject:annotation];
             }
         }
-    };
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self.buildingLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
-    });
+    };
+    [self.buildingLoader loadDataWithCompletionBlock:block];
+
 }
 
 -(void)loadLibraries
@@ -177,7 +171,7 @@ static float LongitudeDelta = 0.015;
             NSString *imageURL = [currentLocation objectForKey:@"image_url"];
             NSNumber *identifier = [currentLocation objectForKey:@"id"];
             
-            if (latitude != nil && latitude != [NSNull null])
+            if (latitude != nil && (NSNull*)latitude != [NSNull null])
             {
                 Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
                                                                                  andLongitude:[longitude doubleValue]
@@ -189,12 +183,9 @@ static float LongitudeDelta = 0.015;
                 [self.libraryAnnotations addObject:annotation];
             }
         }
-    };
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self.libraryLoader loadDataWithCompletionBlock:block];
         dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
-    });
+    };
+    [self.libraryLoader loadDataWithCompletionBlock:block];
 }
 
 - (void)loadLibraryTimes
@@ -228,10 +219,7 @@ static float LongitudeDelta = 0.015;
             }
         }
     };
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        [self.libraryTimeLoader loadDataWithCompletionBlock:block];
-    });
+    [self.libraryTimeLoader loadDataWithCompletionBlock:block];
 }
 
 - (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
