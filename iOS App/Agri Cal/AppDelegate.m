@@ -107,7 +107,7 @@
      kAppBlueColor, UITextAttributeTextColor,
      [UIColor colorWithWhite:0.2 alpha:1], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-     [UIFont fontWithName:kAppFont size:16], UITextAttributeFont,
+     [UIFont boldSystemFontOfSize:18], UITextAttributeFont,
      nil];
     [[UISegmentedControl appearance] setTitleTextAttributes:segattributes forState:UIControlStateHighlighted];
 

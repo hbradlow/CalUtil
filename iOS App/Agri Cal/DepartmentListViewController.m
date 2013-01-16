@@ -83,6 +83,14 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Loading courses and departments"]];
     [self.searchDisplayController.searchBar setHidden:NO];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self loadCourses:self.classLoaderFa withArray:self.enrolledCoursesFa forced:YES];
+        [self loadCourses:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa forced:YES];
+        [self loadCourses:self.classLoaderSp withArray:self.enrolledCoursesSp forced:YES];
+        [self loadCourses:self.waitlistLoaderSp withArray:self.waitlistedCoursesSp forced:YES];
+        [self loadCourses:self.classLoaderSu withArray:self.enrolledCoursesSu forced:YES];
+        [self loadCourses:self.waitlistLoaderSu withArray:self.waitlistedCoursesSu forced:YES];
+    });
 }
 
 - (NSMutableArray*)getCurrentCourseArray
@@ -121,26 +129,27 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     NSInteger selectedIndex = [self.sessionSelector selectedSegmentIndex];
     switch (selectedIndex) {
         case 0:
-            [self loadCourses:self.classLoaderFa withArray:self.enrolledCoursesFa];
-            [self loadCourses:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa];
+            [self loadCourses:self.classLoaderFa withArray:self.enrolledCoursesFa forced:YES];
+            [self loadCourses:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa forced:YES];
             break;
         case 1:
-            [self loadCourses:self.classLoaderSp withArray:self.enrolledCoursesSp];
-            [self loadCourses:self.waitlistLoaderSp withArray:self.waitlistedCoursesSp];
+            [self loadCourses:self.classLoaderSp withArray:self.enrolledCoursesSp forced:YES];
+            [self loadCourses:self.waitlistLoaderSp withArray:self.waitlistedCoursesSp forced:YES];
             break;
         case 2:
-            [self loadCourses:self.classLoaderSu withArray:self.enrolledCoursesSu];
-            [self loadCourses:self.waitlistLoaderSu withArray:self.waitlistedCoursesSu];
+            [self loadCourses:self.classLoaderSu withArray:self.enrolledCoursesSu forced:YES];
+            [self loadCourses:self.waitlistLoaderSu withArray:self.waitlistedCoursesSu forced:YES];
             break;
         default:
             break;
     }
 }
 
-- (void)loadCourses:loader withArray:(NSMutableArray*)array
+- (void)loadCourses:loader withArray:(NSMutableArray*)array forced:(BOOL)forced
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        [array removeAllObjects];
+        if ([arr count])
+            [array removeAllObjects];
         for (NSDictionary *currentClass in arr)
         {
             CalClass *newClass = [[CalClass alloc] init];
@@ -167,7 +176,10 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     };
     
     NSData *requestBody = [[NSString stringWithFormat:@"username=%@&password=%@", [[NSUserDefaults standardUserDefaults] objectForKey:kUserName], [[NSUserDefaults standardUserDefaults] objectForKey:kPassword]] dataUsingEncoding:NSUTF8StringEncoding];
+    if (forced)
         [loader forceLoadWithCompletionBlock:block withData:requestBody];
+    else
+        [loader loadDataWithCompletionBlock:block withData:requestBody];
 }
 
 - (void)loadDepartments:(DataLoader*)loader
@@ -186,6 +198,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.tableView reloadData];});
     };
+
     [loader loadDataWithCompletionBlock:block];
 }
 
