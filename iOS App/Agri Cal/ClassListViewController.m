@@ -9,6 +9,8 @@
 #import "ClassListViewController.h"
 #import "CalClass.h"
 #import "ClassViewController.h"
+#import "CUTableViewCell.h"
+#import "CUTableHeaderView.h"
 
 #define kClassesPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingString:[NSString stringWithFormat:@"/course%@",self.departmentURL]]
 #define kClassesData @"classdata"
@@ -139,7 +141,29 @@
     // Return the number of sections.
     return 1;
 }
-
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
+    CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
+    view.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    rect.origin.y += 1;
+    rect.origin.x += 8;
+    rect.size.height -= 2;
+    rect.size.width -= 4;
+    UILabel *label = [[UILabel alloc] initWithFrame:rect];
+    label.font = [UIFont boldSystemFontOfSize:14];
+    label.textColor = kAppBlueColor;
+    label.backgroundColor = [UIColor clearColor];
+    NSString *title = @"Classes";
+    label.text = title;
+    
+    [view addSubview:label];
+    return view;
+}
+- (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 22;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSLog(@"number of rows %i", [self.classes count]);
@@ -156,9 +180,11 @@
     
     if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[CUTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
     }
     CalClass *theClass;
     @try {

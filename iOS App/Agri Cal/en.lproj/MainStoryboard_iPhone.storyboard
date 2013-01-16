@@ -657,7 +657,6 @@
         <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
-                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
@@ -703,9 +702,6 @@
         </class>
         <class className="NewsListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsListViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="showMenu:"/>
-            </relationships>
         </class>
         <class className="NewsStoryViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsStoryViewController.h"/>
@@ -753,6 +749,6 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hJh-bh-VzS"/>
+        <segue reference="NcP-cs-OgF"/>
     </inferredMetricsTieBreakers>
 </document>

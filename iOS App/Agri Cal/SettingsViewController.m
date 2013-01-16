@@ -308,7 +308,9 @@
             [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"meal_points"] forKey:kMealpoints];
             [[NSUserDefaults standardUserDefaults] setObject:[dict objectForKey:@"balance"] forKey:kCalBalance];
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
+        });
     }
     @catch (NSException *exception) {
         NSLog(@"Error loading balances");

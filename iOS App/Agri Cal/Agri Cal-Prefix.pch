@@ -33,4 +33,5 @@
     #define kTitleAdjustment 0 
     #define MENU_IMAGE [UIImage imageNamed:@"menubutton"]
     #define kAppBlueColor [UIColor colorWithRed:16.0/255 green:71.0/255 blue:119.0/255 alpha:1]
+    #define kAppLightBlueColor [UIColor colorWithRed:136.0/255 green:193.0/255 blue:245.0/255 alpha:1]
 #endif

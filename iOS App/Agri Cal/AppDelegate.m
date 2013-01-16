@@ -73,8 +73,8 @@
     [[UIBarButtonItem appearanceWhenContainedIn:[UISearchBar class], nil] setTintColor:[UIColor colorWithWhite:0.95 alpha:1]];
     
     UIImage *segmentUnselectedUnselected = [UIImage imageNamed:@"divider"];
-    UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"divider"];
-    UIImage *segUnselectedSelected = [UIImage imageNamed:@"divider"];
+    UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"divider_blue"];
+    UIImage *segUnselectedSelected = [UIImage imageNamed:@"divider_blue"];
     
     UIImage *segmentUnselected = [UIImage imageNamed:@"empty"];
     UIImage *segmentSelected = [UIImage imageNamed:@"empty"];
@@ -106,9 +106,9 @@
     NSDictionary *segattributes =
     [NSDictionary dictionaryWithObjectsAndKeys:
      kAppBlueColor, UITextAttributeTextColor,
-     [UIColor colorWithWhite:0.2 alpha:1], UITextAttributeTextShadowColor,
+     kAppLightBlueColor, UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
-     [UIFont boldSystemFontOfSize:18], UITextAttributeFont,
+     [UIFont fontWithName:kAppFontBold size:16], UITextAttributeFont,
      nil];
     [[UISegmentedControl appearance] setTitleTextAttributes:segattributes forState:UIControlStateHighlighted];
 
@@ -135,22 +135,8 @@
     //LaunchImageTransitionController *launchImgController = [[LaunchImageTransitionController alloc] init];
     
     //[self.window addSubview:launchImgController.view];
-    [self fetchSSIDInfo];
-	return YES;
-}
 
-- (void)fetchSSIDInfo
-{
-    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
-    NSLog(@"%s: Supported interfaces: %@", __func__, ifs);
-    id info = nil;
-    for (NSString *ifnam in ifs) {
-        info = (__bridge id)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
-        NSLog(@"%s: %@ => %@", __func__, ifnam, info);
-        if (info && [info count]) {
-            break;
-        }
-    }
+	return YES;
 }
 
 -(void)removeSplash:(UIImageView*)splashView{
