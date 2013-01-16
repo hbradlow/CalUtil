@@ -67,8 +67,8 @@ static float LongitudeDelta = 0.015;
     [self loadLibraryTimes];
     
 /** Set up the segmented control UI */
-    UIImage *segmentUnselected = [UIImage imageNamed:@"map_seg_bg"];
-    UIImage *segmentSelected = [UIImage imageNamed:@"map_seg_bg"];
+    UIImage *segmentUnselected = [UIImage imageNamed:@"segbgwhite"];
+    UIImage *segmentSelected = [UIImage imageNamed:@"segbgwhite"];
     
     [self.annotationSelector setBackgroundImage:segmentUnselected forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.annotationSelector setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];

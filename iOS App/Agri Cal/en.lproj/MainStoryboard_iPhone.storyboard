@@ -19,7 +19,7 @@
                                     <outlet property="delegate" destination="2" id="icH-kF-kn8"/>
                                 </connections>
                             </mapView>
-                            <searchBar contentMode="redraw" text="" id="8ge-Fv-ljt">
+                            <searchBar contentMode="redraw" text="" id="8ge-Fv-ljt" customClass="CUSearchBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -27,7 +27,7 @@
                                     <outlet property="delegate" destination="2" id="2CD-Qr-3SC"/>
                                 </connections>
                             </searchBar>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="XIK-ZH-cmh">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="XIK-ZH-cmh" customClass="CUSegmentedControl">
                                 <rect key="frame" x="0.0" y="373" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <segments>
@@ -634,6 +634,12 @@
         <class className="CUNavigationItem" superclassName="UINavigationBar">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CUNavigationItem.h"/>
         </class>
+        <class className="CUSearchBar" superclassName="UISearchBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSearchBar.h"/>
+        </class>
+        <class className="CUSegmentedControl" superclassName="UISegmentedControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSegmentedControl.h"/>
+        </class>
         <class className="Cal1CardViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/Cal1CardViewController.h"/>
             <relationships>
@@ -657,6 +663,7 @@
         <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
+                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>
