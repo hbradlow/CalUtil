@@ -25,7 +25,6 @@
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
-        NSLog(@"loading from file");
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         NSArray *loaded_set = [unarchiver decodeObjectForKey:@"filedata"];
@@ -91,7 +90,6 @@
         {
             return;
         }
-        NSLog(@"%@", receivedDict);
         NSMutableArray *arr = [NSMutableArray arrayWithArray:[receivedDict objectForKey:@"objects"]];
         
         block(arr);

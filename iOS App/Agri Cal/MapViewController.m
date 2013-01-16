@@ -99,7 +99,7 @@ static float LongitudeDelta = 0.015;
                 [self.calCardAnnotations addObject:annotation];
             }
         }
-        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+        [self switchAnnotations:self];
     };
 
     [self.cal1Loader loadDataWithCompletionBlock:block];
@@ -125,10 +125,12 @@ static float LongitudeDelta = 0.015;
             currentAnnotation.subtitle = subtitle;
             [self.busStopAnnotations addObject:currentAnnotation];
         }
-        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+        [self switchAnnotations:self];
     };
-
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self.busLoader loadDataWithCompletionBlock:block];
+    [self switchAnnotations:self];
+    });
 }
 
 - (void)loadBuildings
@@ -153,10 +155,10 @@ static float LongitudeDelta = 0.015;
                 [self.buildingAnnotations addObject:annotation];
             }
         }
-        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+        [self switchAnnotations:self];
     };
     [self.buildingLoader loadDataWithCompletionBlock:block];
-
+    [self switchAnnotations:self];
 }
 
 -(void)loadLibraries
@@ -183,9 +185,10 @@ static float LongitudeDelta = 0.015;
                 [self.libraryAnnotations addObject:annotation];
             }
         }
-        dispatch_sync(dispatch_get_main_queue(), ^{[self switchAnnotations:self];});
+        [self switchAnnotations:self];
     };
     [self.libraryLoader loadDataWithCompletionBlock:block];
+    [self switchAnnotations:self];    
 }
 
 - (void)loadLibraryTimes
@@ -470,11 +473,13 @@ static float LongitudeDelta = 0.015;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [self.busLoader save];
     [self.libraryLoader save];
     [self.cal1Loader save];
     [self.buildingLoader save];
-    [super viewWillDisappear:animated];    
+    });
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
