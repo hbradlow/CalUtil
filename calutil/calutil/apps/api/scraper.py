@@ -458,7 +458,7 @@ def berkeley_busses(debug=False):
             stop.latitude = lat
             stop.longitude = lon
             stop.tag = line.title + stop_name
-            stop.title = line.title
+            stop.title = location['name']
             stop.stop_id = stop.tag
             for s in BusStop.objects.all():
                 if distance(float(lat),float(lon),s.latitude,s.longitude)<.0003:
