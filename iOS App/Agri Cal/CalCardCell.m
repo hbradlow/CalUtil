@@ -15,7 +15,7 @@
     UIColor *whiteColor = [UIColor colorWithWhite:0.98 alpha:1];
     UIColor *lightGrayColor = [UIColor colorWithWhite:0.97 alpha:1];
     
-    CGRect paperRect = CGRectInset(self.bounds, 0, 2);
+    CGRect paperRect = CGRectInset(self.bounds, 4, 4);
     
     CGContextSetFillColorWithColor(context, [[UIColor colorWithWhite:0.9 alpha:1] CGColor]);
     CGContextFillRect(context, paperRect);

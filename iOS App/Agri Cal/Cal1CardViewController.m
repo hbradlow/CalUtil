@@ -58,8 +58,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width, 10000);
-    CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:22]
+    CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width-10, 10000);
+    CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont fontWithName:kAppFont size:18]
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:UILineBreakModeWordWrap];
     return expectedLabelSize.height;
@@ -107,6 +107,7 @@
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.text = [self.annotation.info stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+    cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
     return cell;
 }
 
