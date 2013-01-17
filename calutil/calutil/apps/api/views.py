@@ -113,11 +113,12 @@ def perimeter_predictions(line,stop):
     times = load_perimeter_data()[line][stop]
     l = []
     for index,time in enumerate(times):
-        print time
         if time<d:
             pass
         else:
-            l.append(round((time-d).seconds/60.,0))
+            minutes = round((time-d).seconds/60.,0)
+            if minutes <= 60:
+                l.append(round((time-d).seconds/60.,0))
     return HttpResponse(json.dumps(l[:3]))
 def personal_schedule_waitlist(request,semester):
     username = ""
