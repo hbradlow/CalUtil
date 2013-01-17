@@ -28,12 +28,13 @@
     [super viewDidLoad];
     if (IS_IPHONE5)
     {
-        [self.imageView setImage:[UIImage imageNamed:@"babab-568h@2x.gif"]];
+        NSLog(@"%@", [UIImage imageNamed:@"babab-h568@2x.gif"]);
+        [self.imageView setImage:[UIImage imageNamed:@"babab-h568@2x.gif"]];
         
         NSMutableArray *arr = [[NSMutableArray alloc] init];
         for (int i = 0; i < 126; i ++)
         {
-            NSString *name = [NSString stringWithFormat:@"bababgif-h568@2x%03d.png", i];
+            NSString *name = [NSString stringWithFormat:@"bababgif-h%03d.png", i];
             [arr addObject:[UIImage imageNamed:name]];
         }
         self.animatedView.animationImages = arr;
@@ -59,16 +60,8 @@
             NSMutableArray *arr = [[NSMutableArray alloc] init];
             for (int i = 0; i < 126; i ++)
             {
-                if (i < 100)
-                {
-                    NSString *name = [NSString stringWithFormat:@"bababgif%02d.png", i];
-                    [arr addObject:[UIImage imageNamed:name]];
-                }
-                else
-                {
-                    NSString *name = [NSString stringWithFormat:@"bababgif%03d.png", i];
-                    [arr addObject:[UIImage imageNamed:name]];
-                }
+                NSString *name = [NSString stringWithFormat:@"bababgif%03d.png", i];
+                [arr addObject:[UIImage imageNamed:name]];
             }
             self.animatedView.animationImages = arr;
             self.animatedView.animationDuration = 4.1f;
@@ -87,6 +80,5 @@
     self.animatedView.animationRepeatCount = 1;
     self.animatedView.hidden = NO;
     [self.animatedView startAnimating];
-    self.imageView.hidden = YES;
 }
 @end
