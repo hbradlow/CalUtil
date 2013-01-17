@@ -499,6 +499,45 @@
             </objects>
             <point key="canvasLocation" x="2787" y="1051"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="16e-NB-CPT">
+            <objects>
+                <navigationController storyboardIdentifier="BaBaB" definesPresentationContext="YES" id="tZa-a1-P1D" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2sB-Kd-GuN">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="7hN-ao-TKp" kind="relationship" relationship="rootViewController" id="NG1-YW-YCY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X6m-v7-ggH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1414" y="2772"/>
+        </scene>
+        <!--Babab View Controller - Buy a Bear a Beer-->
+        <scene sceneID="Udt-y1-z4V">
+            <objects>
+                <viewController storyboardIdentifier="" id="7hN-ao-TKp" customClass="BababViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gnc-Th-Fsx">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" id="mKW-ag-3ks">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Buy a Bear a Beer" id="9yy-XP-QsX"/>
+                    <connections>
+                        <outlet property="imageView" destination="mKW-ag-3ks" id="gSS-S6-Ne7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0fU-AB-0Md" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1803" y="2783"/>
+        </scene>
         <!--Navigation Controller - Schedule-->
         <scene sceneID="fYG-hs-fqY">
             <objects>
@@ -611,7 +650,7 @@
                                 </items>
                             </navigationBar>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.14999999999999999" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
@@ -631,6 +670,14 @@
         <image name="world.png" width="20" height="20"/>
     </resources>
     <classes>
+        <class className="BababViewController" superclassName="FrontViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BababViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="animate:"/>
+                <relationship kind="outlet" name="animatedView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
         <class className="CUNavigationItem" superclassName="UINavigationBar">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CUNavigationItem.h"/>
         </class>
@@ -663,7 +710,6 @@
         <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
             <relationships>
-                <relationship kind="action" name="locationDidChange:"/>
                 <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
             </relationships>
         </class>

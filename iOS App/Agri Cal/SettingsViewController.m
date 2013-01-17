@@ -6,6 +6,7 @@
 #define kInfoIndex 0 
 #define kCalIndex 2
 #define kMealIndex 3
+#define kBababIndex 4
 
 @implementation SettingsViewController
 @synthesize username;
@@ -54,15 +55,15 @@
 {
     if (section == kUsernameIndex)
         return 2;
-    else if (section == kMealIndex || section == kCalIndex)
-        return 1;
-    else
+    else if (section == kInfoIndex)
         return 5;
+    else
+        return 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -106,6 +107,9 @@
             break;
         case kInfoIndex:
             label.text = @"Information";
+            break;
+        default:
+            label.text = @"Bar";
             break;
     }
     [view addSubview:label];
@@ -175,7 +179,7 @@
                 break;
         }
     }
-    else
+    else if (indexPath.section == kMealIndex || indexPath.section == kCalIndex)
     {
         cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
@@ -209,6 +213,15 @@
                 break;
         }
     }
+    else
+    {
+        cell = [[CUMenuCellViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor colorWithWhite:0.75 alpha:1];
+        cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
+        cell.textLabel.text = @"Buy a Bear a Beer";
+    }
     return cell;
 }
 
@@ -222,7 +235,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == kInfoIndex)
+    if (indexPath.section == kInfoIndex || indexPath.section == kBababIndex)
         return YES;
     else return NO;
 }
@@ -286,7 +299,16 @@
             default:
                 break;
         }
-        [revealController setFrontViewController:controller animated:NO];
+        [revealController setFrontViewController:controller animated:YES];
+    }
+    if (indexPath.section == kBababIndex)
+    {
+        [self hide];
+        UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+        RevealController *revealController = [self.parentViewController isKindOfClass:[RevealController class]] ? (RevealController *)self.parentViewController : nil;
+        UIViewController *controller;
+        controller = [st instantiateViewControllerWithIdentifier:@"BaBaB"];
+        [revealController setFrontViewController:controller animated:YES];
     }
 }
 
