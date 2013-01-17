@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <StoreKit/StoreKit.h>
 #import "NewsListViewController.h"
 #import "SettingsViewController.h"
 #import "MapViewController.h"
 #import "RevealController.h"
 #import "ZUUIRevealController.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UIWebViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIWebViewDelegate, SKPaymentTransactionObserver>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *username;

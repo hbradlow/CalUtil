@@ -9,6 +9,7 @@
 #import "Cal1CardViewController.h"
 #import "CalCardCell.h"
 #import "CUTableHeaderView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface Cal1CardViewController ()
 
@@ -16,6 +17,15 @@
 
 @implementation Cal1CardViewController
 @synthesize imageView;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.imageView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    self.imageView.layer.shadowOffset = CGSizeMake(0, 0);
+    self.imageView.layer.shadowRadius = 2.0f;
+    self.imageView.layer.shadowOpacity = 1.0f;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -33,22 +43,26 @@
         NSLog(@"Error when loading image");
     }
     self.navigationController.title = self.annotation.title;
+    self.titleLabel.text = self.annotation.title;
+    NSString *timeString = [[self.annotation.times objectAtIndex:0] objectForKey:@"span"];
+    if ([timeString isEqualToString:@""])
+        timeString = @"N/A";
+    
+    if ([self.type isEqualToString:kBuildingType])
+        self.timeLabel.text = [NSString stringWithFormat:@"Built in %@", timeString];
+    else if ([self.type isEqualToString:kLibType])
+        self.timeLabel.text = [NSString stringWithFormat:@"Open %@", timeString];
+    else
+        self.timeLabel.text = [NSString stringWithFormat:@"Open %@",[[self.annotation.times objectAtIndex:0] objectForKey:@"days"]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section < [self.annotation.times count])
-    {
-        return 44;
-    }
-    else
-    {
-        CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width, 10000);
-        CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:22]
-                                           constrainedToSize:maximumLabelSize
-                                               lineBreakMode:UILineBreakModeWordWrap];
-        return expectedLabelSize.height;
-    }
+    CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width, 10000);
+    CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont systemFontOfSize:22]
+                                       constrainedToSize:maximumLabelSize
+                                           lineBreakMode:UILineBreakModeWordWrap];
+    return expectedLabelSize.height;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -58,7 +72,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [self.annotation.times count] + 1;
+    return 1;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -74,21 +88,6 @@
     label.font = [UIFont boldSystemFontOfSize:14];
     label.textColor = kAppBlueColor;
     label.backgroundColor = [UIColor clearColor];
-    int max = [self.annotation.times count];
-    if (section < max)
-    {
-        NSLog(@"%@", self.type);
-        if ([self.type isEqualToString:kBuildingType])
-            label.text = @"Built in";
-        else if ([self.type isEqualToString:kLibType])
-            label.text = @"Times";
-        else
-            label.text = [[self.annotation.times objectAtIndex:section] objectForKey:@"days"];
-    }
-    else
-    {
-        label.text = @"Info";
-    }
     
     [view addSubview:label];
     return view;
@@ -96,7 +95,7 @@
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 22;
+    return 0;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,29 +106,15 @@
     
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-    NSString *timeString;
-    switch (indexPath.section) {
-        case 0:
-            timeString = [[self.annotation.times objectAtIndex:indexPath.row] objectForKey:@"span"];
-            if ([timeString isEqualToString:@""])
-                cell.textLabel.text = @"N/A";
-            else
-                cell.textLabel.text = timeString;
-            break;
-        case 1:
-            cell.textLabel.text = [self.annotation.info stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
-            break;
-        case 2:
-            break;
-        default:
-            break;
-    }
+    cell.textLabel.text = [self.annotation.info stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
     return cell;
 }
 
 - (void)viewDidUnload {
     [self setImageView:nil];
     [self setTableView:nil];
+    [self setTitleLabel:nil];
+    [self setTimeLabel:nil];
     [super viewDidUnload];
 }
 @end

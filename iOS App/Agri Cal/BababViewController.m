@@ -68,6 +68,19 @@
             self.animatedView.animationRepeatCount = 0;
         }
     }
+    
+    NSSet *potentialProds = [NSSet setWithObjects:@"CheapBeer", @"PriceyBeer",nil];
+    SKProductsRequest *request = [[SKProductsRequest alloc] initWithProductIdentifiers:potentialProds];
+    request.delegate = self;
+    [request start];
+}
+
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    for (SKProduct *product in response.products)
+    {
+    
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -136,7 +136,13 @@
     
     //[self.window addSubview:launchImgController.view];
 
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
 	return YES;
+}
+
+- (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
+{
+
 }
 
 -(void)removeSplash:(UIImageView*)splashView{
