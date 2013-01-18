@@ -47,4 +47,5 @@
 - (IBAction)switchAnnotations:(id)sender;
 - (void)displayInfo:(id)sender;
 - (IBAction)refresh:(id)sender;
+- (IBAction)centerOnUser;
 @end

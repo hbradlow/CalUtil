@@ -266,29 +266,35 @@ static float LongitudeDelta = 0.015;
     [self.libraryTimeLoader loadDataWithCompletionBlock:block];
 }
 
-- (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
+- (void)centerOnUser
+{
+    MKUserLocation *aUserLocation = self.mapView.userLocation;
     if (aUserLocation.location.horizontalAccuracy < 0)
         return;
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    span.latitudeDelta = 0.005;
+    span.longitudeDelta = 0.005;
+    CLLocationCoordinate2D location;
+    location.latitude = aUserLocation.coordinate.latitude;
+    location.longitude = aUserLocation.coordinate.longitude;
+    if (TARGET_IPHONE_SIMULATOR)
+    {
+        location.latitude = 37.874908;
+        location.longitude = -122.260521;
+    }
+    region.span = span;
+    region.center = location;
+    [self.mapView setRegion:region animated:YES];
+    self.previousUserLocation = location;
+}
+
+- (void)mapView:(MKMapView *)aMapView didUpdateUserLocation:(MKUserLocation *)aUserLocation {
     if (!self.previousUserLocation.latitude
         || abs(self.previousUserLocation.latitude - aUserLocation.location.coordinate.latitude) > 0.005/2
         || abs(self.previousUserLocation.longitude - aUserLocation.location.coordinate.longitude) > 0.005/2)
     {
-        MKCoordinateRegion region;
-        MKCoordinateSpan span;
-        span.latitudeDelta = 0.005;
-        span.longitudeDelta = 0.005;
-        CLLocationCoordinate2D location;
-        location.latitude = aUserLocation.coordinate.latitude;
-        location.longitude = aUserLocation.coordinate.longitude;
-        if (TARGET_IPHONE_SIMULATOR)
-        {
-            location.latitude = 37.874908;
-            location.longitude = -122.260521;
-        }
-        region.span = span;
-        region.center = location;
-        [aMapView setRegion:region animated:YES];
-        self.previousUserLocation = location;
+        [self centerOnUser];
     }
 }
 
@@ -362,7 +368,7 @@ static float LongitudeDelta = 0.015;
     NSInteger index = self.annotationSelector.selectedSegmentIndex;
     UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 32, 30)];
     iv.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    self.navigationBar.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:iv];
+    [self.navigationBar setRightBarButtonItem:[[UIBarButtonItem alloc] initWithCustomView:iv] animated:YES];
     [iv startAnimating];
     if (index == 0)
         [self loadBusStops:YES];
