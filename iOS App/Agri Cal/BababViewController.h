@@ -9,12 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "FrontViewController.h"
 #import <StoreKit/StoreKit.h>
-#define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
 
 @interface BababViewController : FrontViewController <SKProductsRequestDelegate>
 
+@property (nonatomic, strong) NSMutableDictionary *products;
+
 @property (nonatomic, weak) IBOutlet UIImageView *imageView;
 @property (nonatomic, weak) IBOutlet UIImageView *animatedView;
-- (IBAction)animate:(id)sender;
+
+@property (nonatomic, weak) IBOutlet UIButton *cheapBeer;
+@property (nonatomic, weak) IBOutlet UIButton *priceyBeer;
+@property (weak, nonatomic) IBOutlet UILabel *cheapBeerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceyBeerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cheapBeerTapLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priceyBeerTapLabel;
+- (IBAction)purchase:(id)sender;
 
 @end

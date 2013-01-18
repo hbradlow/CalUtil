@@ -109,7 +109,7 @@
             label.text = @"Information";
             break;
         default:
-            label.text = @"Bar";
+            label.text = @"Bear's Lair";
             break;
     }
     [view addSubview:label];
@@ -307,7 +307,10 @@
         UIStoryboard *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
         RevealController *revealController = [self.parentViewController isKindOfClass:[RevealController class]] ? (RevealController *)self.parentViewController : nil;
         UIViewController *controller;
-        controller = [st instantiateViewControllerWithIdentifier:@"BaBaB"];
+        if (IS_IPHONE5)
+            controller = [st instantiateViewControllerWithIdentifier:@"BaBaB5"];
+        else
+            controller = [st instantiateViewControllerWithIdentifier:@"BaBaB4"];
         [revealController setFrontViewController:controller animated:YES];
     }
 }

@@ -142,7 +142,17 @@
 
 - (void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions
 {
-
+    for (SKPaymentTransaction *transaction in transactions)
+    {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStateFailed:
+                NSLog(@"purchase failed");
+                break;
+            case SKPaymentTransactionStatePurchased:
+                NSLog(@"purchased product");
+                break;
+        }
+    }
 }
 
 -(void)removeSplash:(UIImageView*)splashView{

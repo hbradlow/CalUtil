@@ -547,7 +547,7 @@
         <!--Navigation Controller-->
         <scene sceneID="16e-NB-CPT">
             <objects>
-                <navigationController storyboardIdentifier="BaBaB" definesPresentationContext="YES" id="tZa-a1-P1D" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="BaBaB4" definesPresentationContext="YES" id="tZa-a1-P1D" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2sB-Kd-GuN">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -567,15 +567,15 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="mKW-ag-3ks">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="babab.png" id="mKW-ag-3ks">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="LIP-5B-jW7">
-                                <rect key="frame" x="18" y="289" width="77" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LIP-5B-jW7">
+                                <rect key="frame" x="14" y="218" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="DRINK!">
+                                <state key="normal" image="bottle.png">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -583,20 +583,69 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="animate:" destination="7hN-ao-TKp" eventType="touchUpInside" id="F8Y-FM-glZ"/>
+                                    <action selector="purchase:" destination="7hN-ao-TKp" eventType="touchUpInside" id="l64-5U-cYv"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="eNs-g5-AgI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="08L-6T-7aR">
+                                <rect key="frame" x="262" y="218" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="bottley.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="purchase:" destination="7hN-ao-TKp" eventType="touchUpInside" id="QAO-Ie-K3v"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="$0.99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Nm6-IG-Yxk">
+                                <rect key="frame" x="53" y="223" width="43" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to buy!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BNe-8Q-ICd">
+                                <rect key="frame" x="53" y="241" width="86" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to buy!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NXg-Pb-NJg">
+                                <rect key="frame" x="210" y="241" width="59" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="$4.99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Uvd-ew-HFN">
+                                <rect key="frame" x="224" y="223" width="43" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.7882353663444519" green="0.7882353663444519" blue="0.7882353663444519" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="hwv-ML-aKg">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Buy a Bear a Beer" id="9yy-XP-QsX"/>
                     <connections>
-                        <outlet property="animatedView" destination="eNs-g5-AgI" id="lKg-lv-NJm"/>
+                        <outlet property="animatedView" destination="hwv-ML-aKg" id="H8v-wM-emh"/>
+                        <outlet property="cheapBeer" destination="LIP-5B-jW7" id="DaE-1h-8Z2"/>
+                        <outlet property="cheapBeerLabel" destination="Nm6-IG-Yxk" id="4jy-1t-WwD"/>
+                        <outlet property="cheapBeerTapLabel" destination="BNe-8Q-ICd" id="iL2-hv-Rh0"/>
                         <outlet property="imageView" destination="mKW-ag-3ks" id="gSS-S6-Ne7"/>
+                        <outlet property="priceyBeer" destination="08L-6T-7aR" id="hib-EL-6WS"/>
+                        <outlet property="priceyBeerLabel" destination="Uvd-ew-HFN" id="iNM-85-sqN"/>
+                        <outlet property="priceyBeerTapLabel" destination="NXg-Pb-NJg" id="4By-yn-nu0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0fU-AB-0Md" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -727,14 +776,266 @@
             </objects>
             <point key="canvasLocation" x="1059" y="2862"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="GYQ-LU-fMz">
+            <objects>
+                <navigationController storyboardIdentifier="BaBaB5" definesPresentationContext="YES" id="vZJ-O4-5xC" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="rqO-ik-rAg">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Kmn-V1-Dbe" kind="relationship" relationship="rootViewController" id="8mG-HK-kPi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KfF-8H-blD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1414" y="3432"/>
+        </scene>
+        <!--Babab View Controller - Buy a Bear a Beer-->
+        <scene sceneID="RBc-Qt-zSg">
+            <objects>
+                <viewController storyboardIdentifier="" id="Kmn-V1-Dbe" customClass="BababViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Sfp-LU-Aia">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="babab-568h@2x.png" id="Re3-mm-3px">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="icQ-n3-Ocy">
+                                <rect key="frame" x="14" y="268" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="bottle.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="purchase:" destination="Kmn-V1-Dbe" eventType="touchUpInside" id="Qar-Pt-5j8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7iO-Vz-wDs">
+                                <rect key="frame" x="262" y="268" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" image="bottley.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="purchase:" destination="Kmn-V1-Dbe" eventType="touchUpInside" id="twZ-0F-whr"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="$0.99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xVT-Fz-jen">
+                                <rect key="frame" x="53" y="273" width="43" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to buy!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tQ8-0m-V27">
+                                <rect key="frame" x="53" y="291" width="86" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tap to buy!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="how-tJ-1Ow">
+                                <rect key="frame" x="210" y="291" width="59" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="$4.99" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fyW-ty-qZr">
+                                <rect key="frame" x="224" y="273" width="43" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.78823536630000002" green="0.78823536630000002" blue="0.78823536630000002" alpha="1" colorSpace="deviceRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="JMq-VK-MRc">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Buy a Bear a Beer" id="vTi-9W-w86"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="animatedView" destination="JMq-VK-MRc" id="jAH-R0-cpb"/>
+                        <outlet property="cheapBeer" destination="icQ-n3-Ocy" id="ouj-hV-1UQ"/>
+                        <outlet property="cheapBeerLabel" destination="xVT-Fz-jen" id="FcP-pN-WV9"/>
+                        <outlet property="cheapBeerTapLabel" destination="tQ8-0m-V27" id="cvZ-aw-bZ6"/>
+                        <outlet property="imageView" destination="Re3-mm-3px" id="UqE-3I-FlE"/>
+                        <outlet property="priceyBeer" destination="7iO-Vz-wDs" id="Fp6-jB-bc5"/>
+                        <outlet property="priceyBeerLabel" destination="fyW-ty-qZr" id="bWu-Ox-D8f"/>
+                        <outlet property="priceyBeerTapLabel" destination="how-tJ-1Ow" id="RZV-G1-m5b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="us7-du-Ah3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1803" y="3443"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Calendar-Month.png" width="20" height="20"/>
         <image name="Radio-Tower.png" width="20" height="20"/>
+        <image name="babab-568h@2x.png" width="640" height="1048"/>
+        <image name="babab.png" width="320" height="458"/>
+        <image name="bottle.png" width="100" height="100"/>
+        <image name="bottley.png" width="100" height="100"/>
         <image name="crossroads.png" width="20" height="20"/>
         <image name="userlocbutton.png" width="44" height="44"/>
         <image name="world.png" width="20" height="20"/>
     </resources>
+    <classes>
+        <class className="BababViewController" superclassName="FrontViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/BababViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="purchase:"/>
+                <relationship kind="outlet" name="animatedView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="cheapBeer" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="cheapBeerLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="cheapBeerTapLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="priceyBeer" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="priceyBeerLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="priceyBeerTapLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="CUNavigationItem" superclassName="UINavigationBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUNavigationItem.h"/>
+        </class>
+        <class className="CUSearchBar" superclassName="UISearchBar">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSearchBar.h"/>
+        </class>
+        <class className="CUSegmentedControl" superclassName="UISegmentedControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSegmentedControl.h"/>
+        </class>
+        <class className="Cal1CardViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/Cal1CardViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="ClassListViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassListViewController.h"/>
+        </class>
+        <class className="ClassViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassViewController.h"/>
+        </class>
+        <class className="DepartmentListViewController" superclassName="FrontTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="switchSession:"/>
+                <relationship kind="outlet" name="sessionSelector" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="locationDidChange:"/>
+                <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
+            </relationships>
+        </class>
+        <class className="DishDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DishDetailsViewController.h"/>
+        </class>
+        <class className="FrontTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FrontTableViewController.h"/>
+        </class>
+        <class className="FrontViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FrontViewController.h"/>
+        </class>
+        <class className="InfoView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoView.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="timesTextView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="view" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="InfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MapViewController" superclassName="FrontViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="centerOnUser"/>
+                <relationship kind="action" name="refresh:"/>
+                <relationship kind="action" name="switchAnnotations:"/>
+                <relationship kind="outlet" name="annotationSelector" candidateClass="UISegmentedControl"/>
+                <relationship kind="outlet" name="infoButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="infoView" candidateClass="InfoView"/>
+                <relationship kind="outlet" name="mapKeyImageView" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationItem"/>
+                <relationship kind="outlet" name="refreshButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="NewsListViewController" superclassName="FrontTableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsListViewController.h"/>
+        </class>
+        <class className="NewsStoryViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsStoryViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="NextBusViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NextBusViewController.h"/>
+        </class>
+        <class className="RevealController" superclassName="ZUUIRevealController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/RevealController.h"/>
+        </class>
+        <class className="SettingsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="loginLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
+                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="WebcastListViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WebcastListViewController.h"/>
+        </class>
+        <class className="WebcastViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WebcastViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="ZUUIRevealController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ZUUIRevealController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="frontViewController" candidateClass="UIViewController"/>
+                <relationship kind="outlet" name="rearViewController" candidateClass="UIViewController"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackOpaque"/>
         <simulatedOrientationMetrics key="orientation"/>

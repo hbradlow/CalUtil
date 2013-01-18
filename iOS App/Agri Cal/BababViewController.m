@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.products = [[NSMutableDictionary alloc] init];
     if (IS_IPHONE5)
     {
         NSLog(@"%@", [UIImage imageNamed:@"babab-h568@2x.gif"]);
@@ -77,9 +78,10 @@
 
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
 {
+    NSLog(@"received products %@", response.products);
     for (SKProduct *product in response.products)
     {
-    
+        [self.products setObject:product forKey:product.productIdentifier];
     }
 }
 
@@ -89,9 +91,26 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)animate:(id)sender {
-    self.animatedView.animationRepeatCount = 1;
-    self.animatedView.hidden = NO;
-    [self.animatedView startAnimating];
+- (IBAction)purchase:(id)sender {
+    if ([SKPaymentQueue canMakePayments])
+    {
+        if (sender == self.cheapBeer)
+        {
+            SKPayment *myPayment = [SKPayment paymentWithProduct:[self.products objectForKey:@"CheapBeer"]];
+            [[SKPaymentQueue defaultQueue] addPayment:myPayment];
+        }
+        else
+        {
+            SKPayment *myPayment = [SKPayment paymentWithProduct:[self.products objectForKey:@"PriceyBeer"]];
+            [[SKPaymentQueue defaultQueue] addPayment:myPayment];        
+        }
+    }
+}
+- (void)viewDidUnload {
+    [self setCheapBeerLabel:nil];
+    [self setPriceyBeerLabel:nil];
+    [self setCheapBeerTapLabel:nil];
+    [self setPriceyBeerTapLabel:nil];
+    [super viewDidUnload];
 }
 @end
