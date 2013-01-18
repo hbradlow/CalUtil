@@ -38,4 +38,5 @@
     #define kLibType @"lib" 
     #define kCalType @"cal"
     #define IS_IPHONE5 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
+    #define kPurchaseNotification @"purchased"
 #endif

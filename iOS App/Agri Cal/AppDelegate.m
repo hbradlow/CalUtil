@@ -147,9 +147,14 @@
         switch (transaction.transactionState) {
             case SKPaymentTransactionStateFailed:
                 NSLog(@"purchase failed");
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPurchaseNotification object:nil];                
                 break;
             case SKPaymentTransactionStatePurchased:
                 NSLog(@"purchased product");
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:transaction.payment.productIdentifier];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPurchaseNotification object:nil];
                 break;
         }
     }
