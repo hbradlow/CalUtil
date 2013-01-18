@@ -69,6 +69,10 @@ static float LongitudeDelta = 0.015;
     self.libraryTimeLoader.shouldSave = NO;
     [self loadLibraryTimes];
     
+    self.calTimeLoader = [[DataLoader alloc] initWithUrlString:@"/api/cal1card_hours/" andFilePath:nil andDataArray:nil];
+    self.calTimeLoader.shouldSave = NO;
+    [self loadCalTimes];
+    
 /** Set up the segmented control UI */
     UIImage *segmentUnselected = [UIImage imageNamed:@"segbgwhite"];
     UIImage *segmentSelected = [UIImage imageNamed:@"segbgwhite"];
@@ -99,6 +103,7 @@ static float LongitudeDelta = 0.015;
             NSArray *times = [currentLocation objectForKey:@"times"];
             NSString *imageURL = [NSString stringWithFormat:@"%@%@", ServerURL,[currentLocation objectForKey:@"image_url"]];
             NSString *type = [currentLocation objectForKey:@"type"];
+            NSNumber *identifier = [currentLocation objectForKey:@"id"];
             if (latitude != nil)
             {
                 Cal1CardAnnotation *annotation = [[Cal1CardAnnotation alloc] initWithLatitude:[latitude doubleValue]
@@ -108,7 +113,7 @@ static float LongitudeDelta = 0.015;
                                                                                      andTimes:times
                                                                                       andInfo:info];
                 annotation.type = type;
-                annotation.subtitle = type;
+                annotation.identifier = identifier;
                 [self.calCardAnnotations addObject:annotation];
             }
         }
@@ -255,15 +260,48 @@ static float LongitudeDelta = 0.015;
                 NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"];
                 annotation.times = @[@{@"span" : timeString}];
                 annotation.subtitle = [NSString stringWithFormat:@"%@", timeString];
+            }
+        }
+    };
+    [self.libraryTimeLoader loadDataWithCompletionBlock:block];
+}
+
+- (void)loadCalTimes
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        NSPredicate *resultPredicate = [NSPredicate
+                                        predicateWithFormat:@"id >= 0"];
+        
+        [arr filterUsingPredicate:resultPredicate];
+        [arr sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b){
+            NSInteger aId = [[a objectForKey:@"id"] integerValue];
+            NSInteger bId = [[b objectForKey:@"id"] integerValue];
+            if (aId < bId)
+                return NSOrderedAscending;
+            if (aId > bId)
+                return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+        }];
+        for (Cal1CardAnnotation *annotation in self.calCardAnnotations)
+        {
+            if ([annotation.identifier integerValue] < [arr count])
+            {
+                NSLog(@"found cal time");
+                NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"];
+                annotation.times = @[@{@"span" : timeString}];
+                annotation.subtitle = [NSString stringWithFormat:@"%@", timeString];
+                NSLog(@"%@", annotation.subtitle);
                 if ([[self.mapView annotations] containsObject:annotation])
                 {
+                    NSLog(@"reloading");
                     [self.mapView removeAnnotation:annotation];
                     [self.mapView addAnnotation:annotation];
                 }
             }
         }
     };
-    [self.libraryTimeLoader loadDataWithCompletionBlock:block];
+    [self.calTimeLoader loadDataWithCompletionBlock:block];
 }
 
 - (void)centerOnUser
@@ -360,6 +398,7 @@ static float LongitudeDelta = 0.015;
     }
     else 
     {
+        NSLog(@"display info %@", self.selectedAnnotation);
         [self performSegueWithIdentifier:@"calcard" sender:self.selectedAnnotation];
     }
 }
@@ -373,7 +412,10 @@ static float LongitudeDelta = 0.015;
     if (index == 0)
         [self loadBusStops:YES];
     else if (index == 1)
+    {
         [self loadCal1CardLocations:YES];
+        [self loadCalTimes];
+    }
     else
     {
         [self loadLibraries:YES];
@@ -393,7 +435,7 @@ static float LongitudeDelta = 0.015;
             [nextController.lines addObject:currentLine];
         }
     }
-    else if ([[segue identifier] isEqualToString:@""])
+    else if ([[segue identifier] isEqualToString:@"calcard"])
     {
         NSLog(@"%@", sender);
         Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];

@@ -43,6 +43,7 @@
 @property (nonatomic, strong) DataLoader *buildingLoader;
 @property (nonatomic, strong) DataLoader *libraryLoader;
 @property (nonatomic, strong) DataLoader *libraryTimeLoader;
+@property (nonatomic, strong) DataLoader *calTimeLoader;
 
 - (IBAction)switchAnnotations:(id)sender;
 - (void)displayInfo:(id)sender;

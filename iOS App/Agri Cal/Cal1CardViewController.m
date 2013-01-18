@@ -52,6 +52,7 @@
         self.timeLabel.text = [NSString stringWithFormat:@"Built in %@", timeString];
     else 
         self.timeLabel.text = [NSString stringWithFormat:@"Open %@", timeString];
+    NSLog(@"annotation %@", self.annotation);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

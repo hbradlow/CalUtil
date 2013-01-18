@@ -541,8 +541,8 @@
 		63D9A94D16A91651004512BB /* babab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A94A16A91651004512BB /* babab@2x.png */; };
 		63D9A95016A92A60004512BB /* refreshbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A94E16A92A60004512BB /* refreshbutton.png */; };
 		63D9A95316A92AD3004512BB /* refreshbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A95216A92AD3004512BB /* refreshbutton@2x.png */; };
-		63D9A95616A92DFB004512BB /* userlocbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A95416A92DFB004512BB /* userlocbutton.png */; };
-		63D9A95716A92DFB004512BB /* userlocbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A95516A92DFB004512BB /* userlocbutton@2x.png */; };
+		63D9A95A16A92FF8004512BB /* userlocbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A95816A92FF8004512BB /* userlocbutton.png */; };
+		63D9A95B16A92FF8004512BB /* userlocbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A95916A92FF8004512BB /* userlocbutton@2x.png */; };
 		63DA57B1168AD36B003E5D75 /* RevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B0168AD36A003E5D75 /* RevealController.m */; };
 		63DA57B4168AD3CE003E5D75 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
@@ -1175,8 +1175,8 @@
 		63D9A94A16A91651004512BB /* babab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "babab@2x.png"; sourceTree = "<group>"; };
 		63D9A94E16A92A60004512BB /* refreshbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refreshbutton.png; sourceTree = "<group>"; };
 		63D9A95216A92AD3004512BB /* refreshbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refreshbutton@2x.png"; sourceTree = "<group>"; };
-		63D9A95416A92DFB004512BB /* userlocbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlocbutton.png; sourceTree = "<group>"; };
-		63D9A95516A92DFB004512BB /* userlocbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userlocbutton@2x.png"; sourceTree = "<group>"; };
+		63D9A95816A92FF8004512BB /* userlocbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userlocbutton.png; sourceTree = "<group>"; };
+		63D9A95916A92FF8004512BB /* userlocbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userlocbutton@2x.png"; sourceTree = "<group>"; };
 		63DA57AF168AD36A003E5D75 /* RevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealController.h; sourceTree = "<group>"; };
 		63DA57B0168AD36A003E5D75 /* RevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevealController.m; sourceTree = "<group>"; };
 		63DA57B2168AD3CE003E5D75 /* ZUUIRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUUIRevealController.h; sourceTree = "<group>"; };
@@ -1937,8 +1937,8 @@
 		63C28D4C15FAF42A00E212F0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				63D9A95416A92DFB004512BB /* userlocbutton.png */,
-				63D9A95516A92DFB004512BB /* userlocbutton@2x.png */,
+				63D9A95816A92FF8004512BB /* userlocbutton.png */,
+				63D9A95916A92FF8004512BB /* userlocbutton@2x.png */,
 				63D9A94E16A92A60004512BB /* refreshbutton.png */,
 				63D9A95216A92AD3004512BB /* refreshbutton@2x.png */,
 				63D9A94816A91651004512BB /* babab-568h@2x.png */,
@@ -2641,8 +2641,8 @@
 				63D9A94D16A91651004512BB /* babab@2x.png in Resources */,
 				63D9A95016A92A60004512BB /* refreshbutton.png in Resources */,
 				63D9A95316A92AD3004512BB /* refreshbutton@2x.png in Resources */,
-				63D9A95616A92DFB004512BB /* userlocbutton.png in Resources */,
-				63D9A95716A92DFB004512BB /* userlocbutton@2x.png in Resources */,
+				63D9A95A16A92FF8004512BB /* userlocbutton.png in Resources */,
+				63D9A95B16A92FF8004512BB /* userlocbutton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
