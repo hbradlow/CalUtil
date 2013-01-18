@@ -40,7 +40,7 @@
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YsW-pf-4Ka">
-                                <rect key="frame" x="263" y="320" width="46" height="45"/>
+                                <rect key="frame" x="265" y="321" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="userlocbutton.png">
@@ -732,7 +732,7 @@
         <image name="Calendar-Month.png" width="20" height="20"/>
         <image name="Radio-Tower.png" width="20" height="20"/>
         <image name="crossroads.png" width="20" height="20"/>
-        <image name="userlocbutton.png" width="48" height="46"/>
+        <image name="userlocbutton.png" width="44" height="44"/>
         <image name="world.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
