@@ -51,6 +51,46 @@ def perimeter_name_for_stop(stop,line):
     locations = load_perimeter_locations()[line]
     return min(locations.items(),key=lambda l: distance(l[1]['lat'],l[1]['long'],stop.latitude,stop.longitude))[0]
 
+def get_library_hours():
+    import requests
+    import json
+    url = "http://www.lib.berkeley.edu/hours"
+    soup = bs4.BeautifulSoup(requests.get(url).text)
+    state = ""
+    objects = []
+    for tr in soup.findAll("table",{"class":"front"})[0].find("tbody").findAll("tr"):
+        new_state = tr['class']
+        if new_state == state:
+            continue
+        new_state = state
+        try:
+            name = tr.findAll("td")[0].find("a").text.strip()
+            times = tr.findAll("td")[1].text.strip()
+            try:
+                i = Library.objects.get(name=name).id
+            except Library.DoesNotExist:
+                i = -1
+            objects.append({"name":name,"times":times,"id":i})
+        except AttributeError:
+            pass #there isnt anything in this row
+    return objects
+
+def get_cal1card_hours():
+    import datetime
+    day = datetime.datetime.now().weekday()
+    objects = [] 
+    for location in CalOneCardLocation.objects.all():
+        o = {"id":location.id,"name":location.name,"times":""}
+        times = []
+        for timespan in location.timespans.all():
+            if day in timespan.day_range():
+                times.append(timespan.span)
+        o['times'] = ",".join(times)
+        objects.append(o)
+    return objects
+def cal1card_hours(request):
+    return HttpResponse(json.dumps(wrap(get_cal1card_hours())))
+
 def library_hours(request,library_id=None):
     import requests
     import json

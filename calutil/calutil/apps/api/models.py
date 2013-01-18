@@ -133,9 +133,61 @@ class TimeSpan(models.Model):
         ("brunch","Brunch"),
         ("latenight","Late Night"),
     )
+    DAYMAP = {
+        "monday":   0,
+        "tuesday":  1,
+        "wednesday":2,
+        "thursday": 3,
+        "friday":   4,
+        "saturday": 5,
+        "sunday":   6,
+    }
     days = models.CharField(max_length=50,help_text="example: Monday-Friday")
     type = models.CharField(max_length=50,choices=TYPES,null=True)
     span = models.CharField(max_length=50,help_text="example: 8am-10am")
+    def day_range(self):
+        import re
+        m = re.match(r's*(\w+)s*(-(\w+))?',self.days)
+        if not m:
+            return []
+        low = None
+        high = None
+        if m.group(1):
+            low = TimeSpan.DAYMAP[m.group(1).lower()]
+        if m.group(3):
+            high = TimeSpan.DAYMAP[m.group(3).lower()]
+        if low is not None:
+            if high is not None:
+                return range(low,high+1)
+            else:
+                return [low]
+        return []
+    def time_from_string(self,t):
+        import datetime
+        suffix = t.split(" ")[-1]
+        time = datetime.datetime.strptime(t.split(" ")[0],"%H:%M")
+        dt = datetime.timedelta(hours=12)
+        if suffix == "pm" and time.hour < 12:
+            return (time+dt).time()
+        if suffix == "am" and time.hour == 12:
+            return (time-dt).time()
+        return time.time()
+
+    def time_range(self):
+        import re
+        m = re.match(r'\s*([\d:]+ (am|pm))\s*(-\s*([\d:]+ (am|pm)))?\s*',self.span)
+        if not m:
+            return m
+        print m.group(1),m.group(4)
+        t1 = self.time_from_string(m.group(1))
+        t2 = self.time_from_string(m.group(4))
+        print "Times:",t1,t2
+        if t1 is not None:
+            if t2 is not None:
+                return [t1,t2]
+            return [t1]
+        return []
+
     def __unicode__(self):
         return self.get_type_display()+" -> "+self.days+" -> "+self.span
 class CalOneCardLocation(models.Model):
