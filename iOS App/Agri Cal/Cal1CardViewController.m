@@ -47,7 +47,7 @@
     NSString *timeString = [[self.annotation.times objectAtIndex:0] objectForKey:@"span"];
     if ([timeString isEqualToString:@""])
         timeString = @"N/A";
-    
+    timeString = [timeString stringByReplacingOccurrencesOfString:@"Built in" withString:@""];
     if ([self.type isEqualToString:kBuildingType])
         self.timeLabel.text = [NSString stringWithFormat:@"Built in %@", timeString];
     else if ([self.type isEqualToString:kLibType])
@@ -59,7 +59,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGSize maximumLabelSize = CGSizeMake(tableView.frame.size.width-10, 10000);
-    CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont fontWithName:kAppFont size:18]
+    CGSize expectedLabelSize = [self.annotation.info sizeWithFont:[UIFont fontWithName:kAppFont size:19]
                                        constrainedToSize:maximumLabelSize
                                            lineBreakMode:UILineBreakModeWordWrap];
     return expectedLabelSize.height;
@@ -78,24 +78,14 @@
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     CGRect rect = CGRectMake(0, 0, tableView.frame.size.width, [self tableView:tableView heightForHeaderInSection:section]);
-    CUTableHeaderView *view = [[CUTableHeaderView alloc] initWithFrame:rect];
-    view.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
-    rect.origin.x += 10;
-    rect.origin.y += 1;
-    rect.size.height -= 2;
-    rect.size.width -= 4;
-    UILabel *label = [[UILabel alloc] initWithFrame:rect];
-    label.font = [UIFont boldSystemFontOfSize:14];
-    label.textColor = kAppBlueColor;
-    label.backgroundColor = [UIColor clearColor];
-    
-    [view addSubview:label];
+    UIView *view = [[UIView alloc] initWithFrame:rect];
+    view.backgroundColor = [UIColor clearColor];
     return view;
 }
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 0;
+    return 4;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,8 +96,13 @@
     
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+    NSLog(@"%@", self.annotation.info);
     cell.textLabel.text = [self.annotation.info stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
     cell.textLabel.font = [UIFont fontWithName:kAppFont size:18];
+    CGRect frame = cell.textLabel.frame;
+    frame.origin.y += 4;
+    cell.textLabel.frame = frame;
+    cell.textLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1];
     return cell;
 }
 
