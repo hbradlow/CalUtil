@@ -50,10 +50,8 @@
     timeString = [timeString stringByReplacingOccurrencesOfString:@"Built in" withString:@""];
     if ([self.type isEqualToString:kBuildingType])
         self.timeLabel.text = [NSString stringWithFormat:@"Built in %@", timeString];
-    else if ([self.type isEqualToString:kLibType])
+    else 
         self.timeLabel.text = [NSString stringWithFormat:@"Open %@", timeString];
-    else
-        self.timeLabel.text = [NSString stringWithFormat:@"Open %@",[[self.annotation.times objectAtIndex:0] objectForKey:@"days"]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

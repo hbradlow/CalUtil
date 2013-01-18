@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 @property (weak, nonatomic) IBOutlet UIButton *mapKeyImageView;
 @property (strong, nonatomic) IBOutlet InfoView *infoView;
 
@@ -45,4 +46,5 @@
 
 - (IBAction)switchAnnotations:(id)sender;
 - (void)displayInfo:(id)sender;
+- (IBAction)refresh:(id)sender;
 @end

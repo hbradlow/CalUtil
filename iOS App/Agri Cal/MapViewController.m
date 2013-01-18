@@ -2,6 +2,7 @@
 #import "NextBusViewController.h"
 #import "Cal1CardViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CURefreshButton.h"
 
 @implementation MapViewController
 
@@ -45,23 +46,25 @@ static float LongitudeDelta = 0.015;
     [[self.mapView layer] setShadowOffset:CGSizeMake(0, 3)];
     [self.mapView setNeedsDisplay];
 
+    [self setRightBarButton];
+
 /** Set up the loaders and do the initial loading */
     self.busLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/bus_stop/?format=json"
                                                andFilePath:kBusFilePath
                                               andDataArray:self.busStopAnnotations];
-    [self loadBusStops];
+    [self loadBusStops:NO];
     self.cal1Loader = [[DataLoader alloc] initWithUrlString:@"/app_data/cal_one_card/?format=json"
                                                 andFilePath:kCalFilePath
                                                andDataArray:self.calCardAnnotations];
-    [self loadCal1CardLocations];
+    [self loadCal1CardLocations:NO];
     self.libraryLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/library/?format=json"
                                                    andFilePath:kLibraryFilePath
                                                   andDataArray:self.libraryAnnotations];
-    [self loadLibraries];
+    [self loadLibraries:NO];
     self.buildingLoader = [[DataLoader alloc] initWithUrlString:@"/app_data/building/?format=json"
                                                     andFilePath:kBuildingFilePath
                                                    andDataArray:self.buildingAnnotations];
-    [self loadBuildings];
+    [self loadBuildings:NO];
     self.libraryTimeLoader = [[DataLoader alloc] initWithUrlString:@"/api/library_hours/" andFilePath:nil andDataArray:nil];
     self.libraryTimeLoader.shouldSave = NO;
     [self loadLibraryTimes];
@@ -75,7 +78,17 @@ static float LongitudeDelta = 0.015;
     self.annotationSelector.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
 }
 
-- (void)loadCal1CardLocations{
+- (void)setRightBarButton
+{
+    CGRect frame = CGRectMake(0.0f, 0.0f, 32.0f, 30.0f);
+    CURefreshButton *a1 = [[CURefreshButton alloc] initWithFrame:frame];
+    [a1 addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventTouchUpInside];
+    [a1 setImage:[UIImage imageNamed:@"refreshbutton"] forState:UIControlStateNormal];
+    UIBarButtonItem *random = [[UIBarButtonItem alloc] initWithCustomView:a1];
+    [self.navigationItem setRightBarButtonItem:random animated:YES];
+}
+
+- (void)loadCal1CardLocations:(BOOL)forced{
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentLocation in arr)
         {
@@ -99,13 +112,19 @@ static float LongitudeDelta = 0.015;
                 [self.calCardAnnotations addObject:annotation];
             }
         }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self setRightBarButton];
+        });
         [self switchAnnotations:self];
     };
-
-    [self.cal1Loader loadDataWithCompletionBlock:block];
+    if (forced)
+        [self.cal1Loader forceLoadWithCompletionBlock:block withData:nil];
+    else
+        [self.cal1Loader loadDataWithCompletionBlock:block];
+    [self switchAnnotations:self];
 }
 
-- (void)loadBusStops{
+- (void)loadBusStops:(BOOL)forced{
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentStop in arr)
         {
@@ -125,15 +144,21 @@ static float LongitudeDelta = 0.015;
             currentAnnotation.subtitle = subtitle;
             [self.busStopAnnotations addObject:currentAnnotation];
         }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self setRightBarButton];
+        });
         [self switchAnnotations:self];
     };
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    [self.busLoader loadDataWithCompletionBlock:block];
-    [self switchAnnotations:self];
+        if (forced)
+            [self.busLoader forceLoadWithCompletionBlock:block withData:nil];
+        else
+            [self.busLoader loadDataWithCompletionBlock:block];
+        [self switchAnnotations:self];
     });
 }
 
-- (void)loadBuildings
+- (void)loadBuildings:(BOOL)forced
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentLocation in arr)
@@ -158,13 +183,19 @@ static float LongitudeDelta = 0.015;
                 annotation.type = kBuildingType;
             }
         }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self setRightBarButton];
+        });
         [self switchAnnotations:self];
     };
-    [self.buildingLoader loadDataWithCompletionBlock:block];
+    if (forced)
+        [self.buildingLoader forceLoadWithCompletionBlock:block withData:nil];
+    else
+        [self.buildingLoader loadDataWithCompletionBlock:block];
     [self switchAnnotations:self];
 }
 
--(void)loadLibraries
+-(void)loadLibraries:(BOOL)forced
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentLocation in arr)
@@ -187,11 +218,17 @@ static float LongitudeDelta = 0.015;
                 annotation.identifier = identifier;
                 [self.libraryAnnotations addObject:annotation];
             }
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self setRightBarButton];
+            });
         }
         [self switchAnnotations:self];
     };
-    [self.libraryLoader loadDataWithCompletionBlock:block];
-    [self switchAnnotations:self];    
+    if (!forced)
+        [self.libraryLoader loadDataWithCompletionBlock:block];
+    else
+        [self.libraryLoader forceLoadWithCompletionBlock:block withData:nil];
+    [self switchAnnotations:self];
 }
 
 - (void)loadLibraryTimes
@@ -321,6 +358,24 @@ static float LongitudeDelta = 0.015;
     }
 }
 
+- (IBAction)refresh:(id)sender {
+    NSInteger index = self.annotationSelector.selectedSegmentIndex;
+    UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 32, 30)];
+    iv.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    self.navigationBar.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:iv];
+    [iv startAnimating];
+    if (index == 0)
+        [self loadBusStops:YES];
+    else if (index == 1)
+        [self loadCal1CardLocations:YES];
+    else
+    {
+        [self loadLibraries:YES];
+        [self loadLibraryTimes];
+    }
+    [self loadBuildings:YES];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     if ([[segue identifier] isEqualToString:@"bus"])
     {
@@ -332,7 +387,7 @@ static float LongitudeDelta = 0.015;
             [nextController.lines addObject:currentLine];
         }
     }
-    else if ([[segue identifier] isEqualToString:@"calcard"])
+    else if ([[segue identifier] isEqualToString:@""])
     {
         NSLog(@"%@", sender);
         Cal1CardViewController *nextController = (Cal1CardViewController*)[segue destinationViewController];
@@ -493,6 +548,7 @@ static float LongitudeDelta = 0.015;
     [self setSearchBar:nil];
     [self setMapKeyImageView:nil];
     [self setInfoButton:nil];
+    [self setRefreshButton:nil];
     [super viewDidUnload];
 }
 

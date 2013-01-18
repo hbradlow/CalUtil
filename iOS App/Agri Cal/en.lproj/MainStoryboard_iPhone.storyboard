@@ -43,11 +43,14 @@
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Map" image="world.png" id="7"/>
-                    <navigationItem key="navigationItem" title="Maps" id="UMW-eg-V7p"/>
+                    <navigationItem key="navigationItem" title="Maps" id="UMW-eg-V7p">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="nrk-eP-DUA"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="annotationSelector" destination="XIK-ZH-cmh" id="Awg-I4-kro"/>
                         <outlet property="mapView" destination="N0G-e7-n14" id="7dI-kL-pDk"/>
+                        <outlet property="navigationBar" destination="UMW-eg-V7p" id="jGg-wd-XzU"/>
                         <outlet property="searchBar" destination="8ge-Fv-ljt" id="076-F2-Skb"/>
                         <outlet property="searchDisplayController" destination="HnC-EA-YeH" id="9bK-Jg-qh6"/>
                         <segue destination="HRo-jH-eTq" kind="push" identifier="bus" id="0DT-nr-lPZ"/>
@@ -716,136 +719,6 @@
         <image name="crossroads.png" width="20" height="20"/>
         <image name="world.png" width="20" height="20"/>
     </resources>
-    <classes>
-        <class className="BababViewController" superclassName="FrontViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/BababViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="animate:"/>
-                <relationship kind="outlet" name="animatedView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-        <class className="CUNavigationItem" superclassName="UINavigationBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUNavigationItem.h"/>
-        </class>
-        <class className="CUSearchBar" superclassName="UISearchBar">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSearchBar.h"/>
-        </class>
-        <class className="CUSegmentedControl" superclassName="UISegmentedControl">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CUSegmentedControl.h"/>
-        </class>
-        <class className="Cal1CardViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/Cal1CardViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="timeLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="ClassListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassListViewController.h"/>
-        </class>
-        <class className="ClassViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ClassViewController.h"/>
-        </class>
-        <class className="DepartmentListViewController" superclassName="FrontTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DepartmentListViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="switchSession:"/>
-                <relationship kind="outlet" name="sessionSelector" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="DiningCommonListViewController" superclassName="FrontTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DiningCommonListViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="locationDidChange:"/>
-                <relationship kind="outlet" name="locationSelector" candidateClass="UISegmentedControl"/>
-            </relationships>
-        </class>
-        <class className="DishDetailsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DishDetailsViewController.h"/>
-        </class>
-        <class className="FrontTableViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FrontTableViewController.h"/>
-        </class>
-        <class className="FrontViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FrontViewController.h"/>
-        </class>
-        <class className="InfoView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoView.h"/>
-            <relationships>
-                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
-                <relationship kind="outlet" name="textView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="timesTextView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="view" candidateClass="UIView"/>
-            </relationships>
-        </class>
-        <class className="InfoViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MapViewController" superclassName="FrontViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="switchAnnotations:"/>
-                <relationship kind="outlet" name="annotationSelector" candidateClass="UISegmentedControl"/>
-                <relationship kind="outlet" name="infoButton" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="infoView" candidateClass="InfoView"/>
-                <relationship kind="outlet" name="mapKeyImageView" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationItem"/>
-                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="NewsListViewController" superclassName="FrontTableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsListViewController.h"/>
-        </class>
-        <class className="NewsStoryViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NewsStoryViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="NextBusViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NextBusViewController.h"/>
-        </class>
-        <class className="RevealController" superclassName="ZUUIRevealController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/RevealController.h"/>
-        </class>
-        <class className="SettingsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SettingsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="loginLabel" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="navigationBar" candidateClass="UINavigationBar"/>
-                <relationship kind="outlet" name="password" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="saveButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="tableView" candidateClass="UITableView"/>
-                <relationship kind="outlet" name="username" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="WebcastListViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WebcastListViewController.h"/>
-        </class>
-        <class className="WebcastViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/WebcastViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
-            </relationships>
-        </class>
-        <class className="ZUUIRevealController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ZUUIRevealController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="frontViewController" candidateClass="UIViewController"/>
-                <relationship kind="outlet" name="rearViewController" candidateClass="UIViewController"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackOpaque"/>
         <simulatedOrientationMetrics key="orientation"/>

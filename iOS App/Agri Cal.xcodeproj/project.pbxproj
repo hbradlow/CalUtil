@@ -531,6 +531,11 @@
 		63C28D4015FAD72C00E212F0 /* ClassListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D3F15FAD72B00E212F0 /* ClassListViewController.m */; };
 		63C28D4715FAF00A00E212F0 /* ClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63C28D4615FAF00A00E212F0 /* ClassViewController.m */; };
 		63D6146715EECA9F00931A59 /* DisclosureAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */; };
+		63D9A91616A8D880004512BB /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A91416A8D880004512BB /* button.png */; };
+		63D9A91716A8D880004512BB /* button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A91516A8D880004512BB /* button@2x.png */; };
+		63D9A91A16A8D987004512BB /* CURefreshButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D9A91916A8D987004512BB /* CURefreshButton.m */; };
+		63D9A92116A8E59B004512BB /* refreshbutton.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A91F16A8E59B004512BB /* refreshbutton.png */; };
+		63D9A92216A8E59B004512BB /* refreshbutton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63D9A92016A8E59B004512BB /* refreshbutton@2x.png */; };
 		63DA57B1168AD36B003E5D75 /* RevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B0168AD36A003E5D75 /* RevealController.m */; };
 		63DA57B4168AD3CE003E5D75 /* ZUUIRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DA57B3168AD3CE003E5D75 /* ZUUIRevealController.m */; };
 		63DE52B81539330C00F9ECFB /* bearbasics.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 63DE52B71539330C00F9ECFB /* bearbasics.jpg */; };
@@ -1152,6 +1157,12 @@
 		63C28D4615FAF00A00E212F0 /* ClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassViewController.m; sourceTree = "<group>"; };
 		63D6146515EECA9F00931A59 /* DisclosureAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisclosureAnnotationView.h; sourceTree = "<group>"; };
 		63D6146615EECA9F00931A59 /* DisclosureAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisclosureAnnotationView.m; sourceTree = "<group>"; };
+		63D9A91416A8D880004512BB /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button.png; sourceTree = "<group>"; };
+		63D9A91516A8D880004512BB /* button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button@2x.png"; sourceTree = "<group>"; };
+		63D9A91816A8D987004512BB /* CURefreshButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CURefreshButton.h; sourceTree = "<group>"; };
+		63D9A91916A8D987004512BB /* CURefreshButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CURefreshButton.m; sourceTree = "<group>"; };
+		63D9A91F16A8E59B004512BB /* refreshbutton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refreshbutton.png; sourceTree = "<group>"; };
+		63D9A92016A8E59B004512BB /* refreshbutton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refreshbutton@2x.png"; sourceTree = "<group>"; };
 		63DA57AF168AD36A003E5D75 /* RevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevealController.h; sourceTree = "<group>"; };
 		63DA57B0168AD36A003E5D75 /* RevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevealController.m; sourceTree = "<group>"; };
 		63DA57B2168AD3CE003E5D75 /* ZUUIRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZUUIRevealController.h; sourceTree = "<group>"; };
@@ -1892,6 +1903,8 @@
 			children = (
 				6393DE20150301F3003B77F5 /* MapViewController.h */,
 				6393DE21150301F3003B77F5 /* MapViewController.m */,
+				63D9A91816A8D987004512BB /* CURefreshButton.h */,
+				63D9A91916A8D987004512BB /* CURefreshButton.m */,
 				63EF75C5169F91F800A6564B /* DataLoader.h */,
 				63EF75C6169F91F800A6564B /* DataLoader.m */,
 				63389DD815F0230F00953A01 /* NextBusViewController.h */,
@@ -1908,6 +1921,10 @@
 		63C28D4C15FAF42A00E212F0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				63D9A91F16A8E59B004512BB /* refreshbutton.png */,
+				63D9A92016A8E59B004512BB /* refreshbutton@2x.png */,
+				63D9A91416A8D880004512BB /* button.png */,
+				63D9A91516A8D880004512BB /* button@2x.png */,
 				63C0D6B116A7E14A00CDF4B0 /* babagif */,
 				63C0D73016A7E14A00CDF4B0 /* babagif-h568 */,
 				63C0D7AF16A7E14A00CDF4B0 /* babagif@2x */,
@@ -2594,6 +2611,10 @@
 				63C0D9A516A7E14A00CDF4B0 /* bababgif-4123.png in Resources */,
 				63C0D9A616A7E14A00CDF4B0 /* bababgif-4124.png in Resources */,
 				63C0D9A716A7E14A00CDF4B0 /* bababgif-4125.png in Resources */,
+				63D9A91616A8D880004512BB /* button.png in Resources */,
+				63D9A91716A8D880004512BB /* button@2x.png in Resources */,
+				63D9A92116A8E59B004512BB /* refreshbutton.png in Resources */,
+				63D9A92216A8E59B004512BB /* refreshbutton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2686,6 +2707,7 @@
 				63C0CE5A16A6D23400CDF4B0 /* CUSearchBar.m in Sources */,
 				63C0CE5D16A6D2E200CDF4B0 /* CUSegmentedControl.m in Sources */,
 				63C0CE6416A7933B00CDF4B0 /* BababViewController.m in Sources */,
+				63D9A91A16A8D987004512BB /* CURefreshButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
