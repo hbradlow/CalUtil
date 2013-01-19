@@ -99,7 +99,13 @@ class CourseResource(ModelResource):
         except:
             pass #probably obj doesnt have a building
         return bundle
+    def alter_list_data_to_serialize(self,request, to_be_serialized):
+        for obj in to_be_serialized['objects']:
+            for field_name in self._meta.field_list_to_remove:
+                del obj.data[field_name]
+        return to_be_serialized
     class Meta:
+        field_list_to_remove = ['semester','year','ccn','abbreviation','number','section','type','instructor','location','units','exam_group','days','pnp','department','limit','enrolled','waitlist']
         queryset = Course.objects.all()
         resource_name = "course"
         filtering = {
