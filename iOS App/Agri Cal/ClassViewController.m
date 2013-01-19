@@ -21,12 +21,25 @@
     self.sections = [[NSMutableArray alloc] init];
     self.navigationItem.backBarButtonItem.title = @"Back";
     self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(loadSections) forControlEvents:UIControlEventValueChanged];
+    [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating sections"]];
     [self.refreshControl beginRefreshing];
-    self.classLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/section/?format=json&course=%@", self.currentClass.uniqueID]
+    self.classLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/%@/?format=json", self.currentClass.uniqueID]
                                                  andFilePath:nil
-                                                andDataArray:self.sections];
+                                                andDataArray:nil];
+    self.classLoader.shouldSave = NO;
+    self.sectionLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/section/?format=json&class=%@", self.currentClass.uniqueID]
+                                                   andFilePath:nil
+                                                  andDataArray:self.sections];
+    self.sectionLoader.shouldSave = NO;
+    [self loadClassForce:YES];
+    //[self loadSectionsForce:YES];
+}
+
+- (void)refresh
+{
+    [self loadSectionsForce:YES];
+    //[self loadClassForce:YES];
 }
 
 - (void)loadSectionsForce:(BOOL)forced
@@ -49,6 +62,41 @@
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [self.sections addObject:newClass];
+            NSLog(@"section %@",newClass);
+        }
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+    };
+    if (!forced)
+    {
+        [self.sectionLoader loadDataWithCompletionBlock:block];
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
+    }
+    else
+        [self.sectionLoader forceLoadWithCompletionBlock:block withData:nil];
+}
+- (void)loadClassForce:(BOOL)forced
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        for (NSDictionary *currentClass in arr)
+        {
+            CalClass *newClass = [[CalClass alloc] init];
+            newClass.title = [currentClass objectForKey:@"section"];
+            newClass.times = [currentClass objectForKey:@"location"];
+            newClass.instructor = [currentClass objectForKey:@"instructor"];
+            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
+            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
+            newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
+            newClass.units = [currentClass objectForKey:@"units"];
+            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
+            newClass.number = [currentClass objectForKey:@"number"];
+            newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
+            newClass.uniqueID = [currentClass objectForKey:@"id"];
+            newClass.ccn = [currentClass objectForKey:@"ccn"];
+            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
+            self.currentClass = newClass;
+            NSLog(@"class %@",newClass);
         }
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});

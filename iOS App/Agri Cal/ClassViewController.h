@@ -15,5 +15,6 @@
 @property (nonatomic, retain) CalClass *currentClass;
 @property (nonatomic, retain) NSMutableArray *sections;
 @property (nonatomic, retain) DataLoader *classLoader;
+@property (nonatomic, retain) DataLoader *sectionLoader;
 
 @end

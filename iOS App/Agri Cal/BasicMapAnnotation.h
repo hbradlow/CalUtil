@@ -14,8 +14,8 @@
     NSString *_title; 
     NSString *_subtitle;
 }
-@property (nonatomic, retain) NSString *title;
-@property (nonatomic, retain) NSString *subtitle;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *subtitle;
 
 - (id)initWithLatitude:(CLLocationDegrees)latitude
           andLongitude:(CLLocationDegrees)longitude;

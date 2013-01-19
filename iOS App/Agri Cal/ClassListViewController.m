@@ -33,7 +33,7 @@
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating course list"]];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.courseLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/?format=json&department=%@", self.departmentURL]
+    self.courseLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/?format=json&department=%@&semester=%@", self.departmentURL, self.departmentSeason]
                                                   andFilePath:[NSString stringWithFormat:@"%@kClassesPath", self.departmentSeason]
                                                  andDataArray:self.classes];
     [self loadCoursesForced:NO];
@@ -50,25 +50,16 @@
 }
 - (void)loadCoursesForced:(BOOL)forced
 {
-    NSLog(@"loading classes forced: %i", forced);
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        NSLog(@"received classes");
         for (NSDictionary *currentClass in arr)
         {
             CalClass *newClass = [[CalClass alloc] init];
             newClass.title = [currentClass objectForKey:@"abbreviation"];
-            newClass.times = [currentClass objectForKey:@"location"];
-            newClass.instructor = [currentClass objectForKey:@"instructor"];
-            newClass.enrolledLimit = [currentClass objectForKey:@"limit"];
-            newClass.enrolled = [currentClass objectForKey:@"enrolled"];
             newClass.availableSeats = [currentClass objectForKey:@"available_seats"];
-            newClass.units = [currentClass objectForKey:@"units"];
-            newClass.waitlist = [currentClass objectForKey:@"waitlist"];
             newClass.number = [currentClass objectForKey:@"number"];
             newClass.hasWebcast = [[currentClass objectForKey:@"webcast_flag"] boolValue];
             newClass.uniqueID = [currentClass objectForKey:@"id"];
-            newClass.ccn = [currentClass objectForKey:@"ccn"];
-            newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
+            newClass.times = [currentClass objectForKey:@"location"];
             [self.classes addObject:newClass];
         }
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();

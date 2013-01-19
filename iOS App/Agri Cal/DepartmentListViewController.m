@@ -44,6 +44,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 {
     [super viewDidLoad];
     self.departments = [[NSMutableArray alloc] init];
+    self.sessions = [[NSMutableArray alloc] init];
     self.searchResults = [[NSMutableArray alloc] init];
     self.enrolledCoursesSu = [[NSMutableArray alloc] init];
     self.waitlistedCoursesSu = [[NSMutableArray alloc] init];
@@ -78,12 +79,17 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                                                    andFilePath:[NSString stringWithFormat:@"%@SU",kIndividualClassPath]
                                                   andDataArray:self.waitlistedCoursesSu];
     
+    self.sessionLoader = [[DataLoader alloc] initWithUrlString:@"/api/current_sessions"
+                                                   andFilePath:@"current_session"
+                                                  andDataArray:self.sessions];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Loading courses and departments"]];
     [self.searchDisplayController.searchBar setHidden:NO];
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [self loadSessionsForced:YES];
         [self loadCourses:self.classLoaderFa withArray:self.enrolledCoursesFa forced:YES];
         [self loadCourses:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa forced:YES];
         [self loadCourses:self.classLoaderSp withArray:self.enrolledCoursesSp forced:YES];
@@ -141,6 +147,47 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             break;
         default:
             break;
+    }
+}
+
+- (void)loadSessionsForced:(BOOL)forced
+{
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        if ([arr count])
+            [self.sessions removeAllObjects];
+        for (NSDictionary *currentClass in arr)
+        {
+            [self.sessions addObject:currentClass];
+        }
+        dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
+        dispatch_async(updateUIQueue, ^(){
+            [self updateSessions];
+        });
+    };
+    
+    if (forced)
+        [self.sessionLoader forceLoadWithCompletionBlock:block withData:nil];
+    else
+        [self.sessionLoader loadDataWithCompletionBlock:block withData:nil];
+}
+
+- (void)updateSessions
+{
+    for (NSDictionary *item in self.sessions)
+    {
+        NSString *sem = [item objectForKey:@"semester"];
+        if ([sem isEqualToString:@"FA"])
+        {
+            [self.sessionSelector setTitle:[item objectForKey:@"session"] forSegmentAtIndex:0];
+        }
+        else if ([sem isEqualToString:@"SP"])
+        {
+            [self.sessionSelector setTitle:[item objectForKey:@"session"] forSegmentAtIndex:1];
+        }
+        else if ([sem isEqualToString:@"SU"])
+        {
+            [self.sessionSelector setTitle:[item objectForKey:@"session"] forSegmentAtIndex:2];
+        }
     }
 }
 

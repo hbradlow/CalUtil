@@ -20,6 +20,7 @@
 @property (strong) NSMutableArray *waitlistedCoursesFa;
 @property (strong) NSMutableArray *enrolledCoursesSu;
 @property (strong) NSMutableArray *waitlistedCoursesSu;
+@property (strong) NSMutableArray *sessions;
 @property (nonatomic, strong) NSMutableArray *searchResults;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sessionSelector;
 
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) DataLoader *classLoaderSp;
 @property (nonatomic, strong) DataLoader *waitlistLoaderSu;
 @property (nonatomic, strong) DataLoader *classLoaderSu;
+@property (nonatomic, strong) DataLoader *sessionLoader;
 
 - (IBAction)switchSession:(id)sender;
 @end
