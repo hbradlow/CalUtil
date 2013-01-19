@@ -514,9 +514,9 @@ def get_schedule(username,password,term="SP",waitlist=False,debug=False):
     from django.conf import settings
 
     if term == "SP":
-        semester = "FT"
-    elif term == "FL":
         semester = "CT"
+    elif term == "FL":
+        semester = "FT"
     else:
         semester = "CS"
 
