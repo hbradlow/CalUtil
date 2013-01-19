@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DataLoader.h"
 
 @interface ClassListViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, retain) NSMutableArray *classes;
-@property (nonatomic, retain) NSString *departmentURL;
+@property (nonatomic, copy) NSString *departmentURL;
 @property (nonatomic, retain) NSMutableArray *searchResults;
+@property (nonatomic, retain) DataLoader *courseLoader;
+@property (nonatomic, copy) NSString *departmentSeason;
 
 @end

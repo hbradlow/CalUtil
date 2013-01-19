@@ -10,6 +10,8 @@
 
 @implementation DataLoader
 
+static BOOL Debugging = 0;
+
 - (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString *)filePath andDataArray:(NSMutableArray *)array
 {
     if ((self = [super init])) {
@@ -23,6 +25,8 @@
 
 - (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block
 {
+    if (Debugging)
+        NSLog(@"loadDataWithCompletionBlock");
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.filePath])
     {
         NSData *data = [[NSMutableData alloc] initWithContentsOfFile:self.filePath];
@@ -40,6 +44,8 @@
 }
 - (void)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block withData:(NSData*)data
 {
+    if (Debugging)
+        NSLog(@"forceLoadWithCompletionBlock");
     [self loadBlock:block withExtension:self.urlString andData:data];
 }
 - (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block withData:(NSData*)data
@@ -54,21 +60,28 @@
         {
             [array addObject:object];
         }
+        if (Debugging)
+            NSLog(@"loadDataWithCompletionBlock:withData loaded from file");
     }
     else
     {
         [self loadBlock:block withExtension:self.urlString andData:data];
+        if (Debugging)
+            NSLog(@"loadDataWithCompletionBlock:withData loaded from url");
     }
 }
 
 - (void)loadBlock:(void (^) (NSMutableArray*))block withExtension:(NSString*)extension andData:(NSData*)data
 {
+    if (Debugging)
+        NSLog(@"loadBlock:WithExtension:andData");
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSString *queryString = [NSString stringWithFormat:@"%@%@", ServerURL, extension];
         NSURL *requestURL = [NSURL URLWithString:queryString];
         NSURLResponse *response = nil;
-        
+        if (Debugging)
+            NSLog(@"loadDataWithCompletionBlock:withData using url %@", queryString);
         NSMutableURLRequest *jsonRequest = [NSMutableURLRequest requestWithURL:requestURL];
         if (data != nil)
         {

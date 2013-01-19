@@ -132,9 +132,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             [self loadCourses:self.waitlistLoaderFa withArray:self.waitlistedCoursesFa forced:YES];
             break;
         case 1:
-            NSLog(@"Loading classes");
             [self loadCourses:self.classLoaderSp withArray:self.enrolledCoursesSp forced:YES];
-            NSLog(@"Loading waitlisted");
             [self loadCourses:self.waitlistLoaderSp withArray:self.waitlistedCoursesSp forced:YES];
             break;
         case 2:
@@ -149,7 +147,6 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 - (void)loadCourses:loader withArray:(NSMutableArray*)array forced:(BOOL)forced
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
-        NSLog(@"%@", arr);
         if ([arr count])
             [array removeAllObjects];
         for (NSDictionary *currentClass in arr)
@@ -169,7 +166,6 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [array addObject:newClass];
-            NSLog(@"%@", newClass.title);
         }
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){
@@ -251,6 +247,8 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 - (float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (self.tableView != tableView)
+        return 0;
     if (section == 0 && ![[self getCurrentCourseArray] count])
         return 0;
     if (section == 1 && ![[self getCurrentWaitlistArray] count])

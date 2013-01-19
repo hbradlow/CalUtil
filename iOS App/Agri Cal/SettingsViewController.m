@@ -134,7 +134,6 @@
             self.username = textField;
             textField.placeholder = @"Username";
             textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"username"];
-            NSLog(@"username %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"username"]);
             [cell addSubview:textField];
         }
         if (indexPath.row==1)
@@ -142,7 +141,6 @@
             self.password = textField;
             textField.placeholder = @"Password";
             textField.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"password"];
-            NSLog(@"username %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"password"]);            
             [cell addSubview:textField];
             textField.secureTextEntry = YES;
         }
@@ -190,24 +188,20 @@
             case kCalIndex:
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance] isEqualToString:@""])
                 {
-                    NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]);
                     cell.textLabel.text = [NSString stringWithFormat:@"%@  ",[[NSUserDefaults standardUserDefaults] objectForKey:kCalBalance]];
                 }
                 else
                 {
-                    NSLog(@".");
                     cell.textLabel.text = @"N/A  ";
                 }
                 break;
             case kMealIndex:
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] && ![[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints] isEqualToString:@""])
                 {
-                    NSLog(@"-%@",[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints]);
                     cell.textLabel.text = [NSString stringWithFormat:@"%@  ",[[NSUserDefaults standardUserDefaults] objectForKey:kMealpoints]];
                 }
                 else
                 {
-                    NSLog(@".");
                     cell.textLabel.text = @"N/A  ";
                 }
                 break;
@@ -287,7 +281,6 @@
             case 4:
                 if (revealController.newsController)
                 {
-                    NSLog(@"existed");
                     controller = revealController.newsController;
                 }
                 else
@@ -342,7 +335,6 @@
         });
     }
     @catch (NSException *exception) {
-        NSLog(@"Error loading balances");
         [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kMealpoints];
         [[NSUserDefaults standardUserDefaults] setObject:@"N/A" forKey:kCalBalance];
         NSIndexPath *selectedIndex = [self.tableView indexPathForSelectedRow];
@@ -368,7 +360,6 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    NSLog(@"here %i", textField == self.username);
     if (textField == self.username)
         [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:@"username"];
     else

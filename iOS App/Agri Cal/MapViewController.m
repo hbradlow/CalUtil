@@ -287,14 +287,11 @@ static float LongitudeDelta = 0.015;
         {
             if ([annotation.identifier integerValue] < [arr count])
             {
-                NSLog(@"found cal time");
                 NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"times"];
                 annotation.times = @[@{@"span" : timeString}];
                 annotation.subtitle = [NSString stringWithFormat:@"%@", timeString];
-                NSLog(@"%@", annotation.subtitle);
                 if ([[self.mapView annotations] containsObject:annotation])
                 {
-                    NSLog(@"reloading");
                     [self.mapView removeAnnotation:annotation];
                     [self.mapView addAnnotation:annotation];
                 }
