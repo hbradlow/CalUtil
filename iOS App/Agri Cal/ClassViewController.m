@@ -24,7 +24,7 @@
     [self.refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating sections"]];
     [self.refreshControl beginRefreshing];
-    self.classLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/%@/?format=json", self.currentClass.uniqueID]
+    self.classLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/?format=json&id=%@", self.currentClass.uniqueID]
                                                  andFilePath:nil
                                                 andDataArray:nil];
     self.classLoader.shouldSave = NO;
@@ -33,13 +33,13 @@
                                                   andDataArray:self.sections];
     self.sectionLoader.shouldSave = NO;
     [self loadClassForce:YES];
-    //[self loadSectionsForce:YES];
+    [self loadSectionsForce:YES];
 }
 
 - (void)refresh
 {
     [self loadSectionsForce:YES];
-    //[self loadClassForce:YES];
+    [self loadClassForce:YES];
 }
 
 - (void)loadSectionsForce:(BOOL)forced

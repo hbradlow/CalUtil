@@ -121,6 +121,7 @@ static BOOL Debugging = 1;
 - (void)save{
     if (self.shouldSave)
     {
+        NSLog(@"dataLoader saving %@", self.filePath);
         NSMutableData *data = [[NSMutableData alloc]init];
         NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
         [archiver encodeObject:self.dataArray forKey:@"filedata"];

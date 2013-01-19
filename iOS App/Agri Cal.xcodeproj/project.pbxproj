@@ -2865,17 +2865,17 @@
 		6393DE46150301F3003B77F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kevin Lindkvist (J5R4359SW8)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Kevin Lindkvist (J5R4359SW8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kevin Lindkvist (J5R4359SW8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Agri Cal/Agri Cal-Prefix.pch";
 				INFOPLIST_FILE = "Agri Cal/Agri Cal-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "7FB90D58-E438-4732-B354-4873027BBEFF";
+				"PROVISIONING_PROFILE[sdk=*]" = "7FB90D58-E438-4732-B354-4873027BBEFF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FB90D58-E438-4732-B354-4873027BBEFF";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2883,15 +2883,15 @@
 		6393DE47150301F3003B77F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kevin Lindkvist (J5R4359SW8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kevin Lindkvist (J5R4359SW8)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Agri Cal/Agri Cal-Prefix.pch";
 				INFOPLIST_FILE = "Agri Cal/Agri Cal-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PROVISIONING_PROFILE = "7FB90D58-E438-4732-B354-4873027BBEFF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7FB90D58-E438-4732-B354-4873027BBEFF";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

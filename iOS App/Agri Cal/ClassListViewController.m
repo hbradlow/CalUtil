@@ -34,7 +34,7 @@
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
     self.courseLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/course/?format=json&department=%@&semester=%@", self.departmentURL, self.departmentSeason]
-                                                  andFilePath:[NSString stringWithFormat:@"%@kClassesPath", self.departmentSeason]
+                                                  andFilePath:[NSString stringWithFormat:@"%@%@", kClassesPath, self.departmentSeason]
                                                  andDataArray:self.classes];
     [self loadCoursesForced:NO];
 }
@@ -213,6 +213,12 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
         return;
     
     [self performSegueWithIdentifier:@"class" sender:tableView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.courseLoader save];
+    [super viewWillDisappear:animated];
 }
 
 @end

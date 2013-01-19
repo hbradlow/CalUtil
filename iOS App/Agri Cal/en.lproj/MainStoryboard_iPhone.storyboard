@@ -199,8 +199,8 @@
             <objects>
                 <navigationController storyboardIdentifier="dining" definesPresentationContext="YES" id="Zey-bX-XrF" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Dining" image="crossroads.png" id="eiA-xN-HHm"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="blackOpaque" id="cQY-iv-cd2">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="cQY-iv-cd2">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -387,7 +387,7 @@
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dfU-xM-iHS">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                                 <sections/>
                                 <connections>
                                     <outlet property="dataSource" destination="8XP-WZ-HXk" id="sx4-f8-jKE"/>
@@ -466,7 +466,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="6sO-CY-igX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="0.97999999999999998" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="WQt-s6-aOT" id="fkL-o4-R4C"/>
                                     <outlet property="delegate" destination="WQt-s6-aOT" id="NJJ-60-ikb"/>
@@ -651,8 +651,8 @@
             <objects>
                 <navigationController storyboardIdentifier="schedule" definesPresentationContext="YES" id="Qyj-L5-9jW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Schedule" image="Calendar-Month.png" id="tUZ-02-P0y"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="blackOpaque" id="3xu-4q-bVe">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3xu-4q-bVe">
                         <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -673,6 +673,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7RC-56-4gw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
