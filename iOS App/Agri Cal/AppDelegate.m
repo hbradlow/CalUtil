@@ -76,6 +76,10 @@
     UIImage *segmentSelectedUnselected = [UIImage imageNamed:@"divider_blue"];
     UIImage *segUnselectedSelected = [UIImage imageNamed:@"divider_blue"];
     
+    UIImage *segmentUnselectedUnselectedTr = [UIImage imageNamed:@"divider_tr"];
+    UIImage *segmentSelectedUnselectedTr = [UIImage imageNamed:@"divider_blue_tr"];
+    UIImage *segUnselectedSelectedTr = [UIImage imageNamed:@"divider_blue_tr"];
+    
     UIImage *segmentUnselected = [UIImage imageNamed:@"empty"];
     UIImage *segmentSelected = [UIImage imageNamed:@"empty"];
     
@@ -88,6 +92,19 @@
                                    rightSegmentState:UIControlStateNormal
                                           barMetrics:UIBarMetricsDefault];
     [[UISegmentedControl appearance] setDividerImage:segUnselectedSelected
+                                 forLeftSegmentState:UIControlStateNormal
+                                   rightSegmentState:UIControlStateSelected
+                                          barMetrics:UIBarMetricsDefault];
+    
+    [[UISegmentedControl appearanceWhenContainedIn:[UINavigationBar class], nil] setDividerImage:segmentUnselectedUnselectedTr
+                                 forLeftSegmentState:UIControlStateNormal
+                                   rightSegmentState:UIControlStateNormal
+                                          barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearanceWhenContainedIn:[UINavigationBar class], nil]setDividerImage:segmentSelectedUnselectedTr
+                                 forLeftSegmentState:UIControlStateSelected
+                                   rightSegmentState:UIControlStateNormal
+                                          barMetrics:UIBarMetricsDefault];
+    [[UISegmentedControl appearanceWhenContainedIn:[UINavigationBar class], nil]setDividerImage:segUnselectedSelectedTr
                                  forLeftSegmentState:UIControlStateNormal
                                    rightSegmentState:UIControlStateSelected
                                           barMetrics:UIBarMetricsDefault];
@@ -106,7 +123,7 @@
     NSDictionary *segattributes =
     [NSDictionary dictionaryWithObjectsAndKeys:
      kAppBlueColor, UITextAttributeTextColor,
-     kAppLightBlueColor, UITextAttributeTextShadowColor,
+     [UIColor clearColor], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
      [UIFont fontWithName:kAppFontBold size:16], UITextAttributeFont,
      nil];
@@ -115,7 +132,7 @@
     NSDictionary *segattributesunsel =
     [NSDictionary dictionaryWithObjectsAndKeys:
      [UIColor colorWithWhite:0.4 alpha:1], UITextAttributeTextColor,
-     [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5], UITextAttributeTextShadowColor,
+     [UIColor clearColor], UITextAttributeTextShadowColor,
      [NSValue valueWithUIOffset:UIOffsetMake(0, 0)], UITextAttributeTextShadowOffset,
      [UIFont fontWithName:kAppFont size:16], UITextAttributeFont,
      nil];

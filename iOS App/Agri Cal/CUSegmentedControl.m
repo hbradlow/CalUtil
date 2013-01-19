@@ -25,10 +25,6 @@
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
-    self.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.layer.shadowOffset = CGSizeMake(0, 0);
-    self.layer.shadowRadius = 2.0f;
-    self.layer.shadowOpacity = 1.0f;
 }
 
 

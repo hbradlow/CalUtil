@@ -77,9 +77,9 @@ static float LongitudeDelta = 0.015;
     UIImage *segmentUnselected = [UIImage imageNamed:@"segbgwhite"];
     UIImage *segmentSelected = [UIImage imageNamed:@"segbgwhite"];
     
+    self.annotationSelector.segmentedControlStyle = UISegmentedControlStyleBar;
     [self.annotationSelector setBackgroundImage:segmentUnselected forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.annotationSelector setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-    self.annotationSelector.backgroundColor = [UIColor colorWithWhite:0.98 alpha:1];
 }
 
 - (void)setRightBarButton
