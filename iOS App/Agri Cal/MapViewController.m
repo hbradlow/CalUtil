@@ -84,7 +84,7 @@ static float LongitudeDelta = 0.015;
 
 - (void)setRightBarButton
 {
-    CGRect frame = CGRectMake(0.0f, 0.0f, 32.0f, 30.0f);
+    CGRect frame = CGRectMake(0.0f, 0.0f, 32.0f, 32.0f);
     CURefreshButton *a1 = [[CURefreshButton alloc] initWithFrame:frame];
     [a1 addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventTouchUpInside];
     [a1 setImage:[UIImage imageNamed:@"refreshbutton"] forState:UIControlStateNormal];

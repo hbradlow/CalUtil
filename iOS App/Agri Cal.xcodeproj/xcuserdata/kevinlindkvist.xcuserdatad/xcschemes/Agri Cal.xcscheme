@@ -89,7 +89,8 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
+      customArchiveName = "CalUtil"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

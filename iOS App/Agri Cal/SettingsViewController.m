@@ -354,6 +354,16 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self.view addGestureRecognizer:self.tapRecognizer];
+    if (textField == self.password)
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        CGRect frame = self.tableView.frame;
+        frame.origin.y -= 22;
+        [UIView beginAnimations:@"tableview" context:nil];
+        self.tableView.frame = frame;
+        [UIView commitAnimations];
+    }
+    
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
@@ -362,7 +372,14 @@
     if (textField == self.username)
         [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:@"username"];
     else
+    {
         [[NSUserDefaults standardUserDefaults] setValue:self.password.text forKey:@"password"];
+        CGRect frame = self.tableView.frame;
+        frame.origin.y += 22;
+        [UIView beginAnimations:@"tableview" context:nil];
+        self.tableView.frame = frame;
+        [UIView commitAnimations];
+    }
     [textField resignFirstResponder];
 }
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
