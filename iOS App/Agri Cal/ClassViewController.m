@@ -19,33 +19,19 @@
 {
     [super viewWillAppear:animated];
     self.sections = [[NSMutableArray alloc] init];
-    [self loadSections];
     self.navigationItem.backBarButtonItem.title = @"Back";
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(loadSections) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:@"Updating sections"]];
     [self.refreshControl beginRefreshing];
+    self.classLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/section/?format=json&course=%@", self.currentClass.uniqueID]
+                                                 andFilePath:nil
+                                                andDataArray:self.sections];
 }
 
-- (void)loadSections
+- (void)loadSectionsForce:(BOOL)forced
 {
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-    dispatch_async(queue, ^{
-    @try {
-        NSString *queryString = [NSString stringWithFormat:@"%@/app_data/section/?format=json&course=%@", ServerURL, self.currentClass.uniqueID];
-        NSURL *requestURL = [NSURL URLWithString:queryString];
-        NSURLResponse *response = nil;
-        NSError *error = nil;
-        NSURLRequest *jsonRequest = [NSURLRequest requestWithURL:requestURL];
-        
-        NSData *receivedData;
-        receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
-                                             returningResponse:&response
-                                                         error:&error];
-        
-        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
-        NSArray *arr = [receivedDict objectForKey:@"objects"];
-        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+    void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
         for (NSDictionary *currentClass in arr)
         {
             CalClass *newClass = [[CalClass alloc] init];
@@ -62,18 +48,19 @@
             newClass.uniqueID = [currentClass objectForKey:@"id"];
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
-            [tempArray addObject:newClass];
+            [self.sections addObject:newClass];
         }
-        self.sections = tempArray;
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
+    };
+    if (!forced)
+    {
+        [self.classLoader loadDataWithCompletionBlock:block];
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
     }
-    @catch (NSException *exception) {
-        NSLog(@"Error when loading list of classes");
-         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
-        dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
-    }
-    });
+    else
+        [self.classLoader forceLoadWithCompletionBlock:block withData:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

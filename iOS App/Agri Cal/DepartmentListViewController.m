@@ -368,6 +368,21 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     {
         ClassListViewController *viewController = [segue destinationViewController];
         viewController.title = [table cellForRowAtIndexPath:[table indexPathForSelectedRow]].textLabel.text;
+        
+        NSString *seasonString = @"";
+        NSInteger selectedIndex = self.sessionSelector.selectedSegmentIndex;
+        switch (selectedIndex) {
+            case 0:
+                seasonString = @"FA";
+                break;
+            case 1:
+                seasonString = @"SP";
+                break;
+            case 2:
+                seasonString = @"SU";
+        }
+        viewController.departmentSeason = seasonString;
+        
         if (table == self.tableView)
         {
             NSPredicate *resultPredicate = [NSPredicate
