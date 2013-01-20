@@ -45,14 +45,13 @@
     self.navigationController.title = self.annotation.title;
     self.titleLabel.text = self.annotation.title;
     NSString *timeString = [[self.annotation.times objectAtIndex:0] objectForKey:@"span"];
-    if ([timeString isEqualToString:@""])
+    if ([timeString isEqualToString:@""] || (NSNull*)timeString == [NSNull null])
         timeString = @"N/A";
-    timeString = [timeString stringByReplacingOccurrencesOfString:@"Built in" withString:@""];
+    timeString = [timeString stringByReplacingOccurrencesOfString:@"Built " withString:@""];
     if ([self.type isEqualToString:kBuildingType])
-        self.timeLabel.text = [NSString stringWithFormat:@"Built in %@", timeString];
+        self.timeLabel.text = [NSString stringWithFormat:@"Built in: %@", timeString];
     else 
-        self.timeLabel.text = [NSString stringWithFormat:@"Open %@", timeString];
-    NSLog(@"annotation %@", self.annotation);
+        self.timeLabel.text = [NSString stringWithFormat:@"Hours: %@", timeString];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

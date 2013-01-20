@@ -129,6 +129,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellIdentifier];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     CalClass *currentClass;
     if (indexPath.section == 0)
         currentClass = self.currentClass;

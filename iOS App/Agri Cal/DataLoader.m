@@ -10,7 +10,7 @@
 
 @implementation DataLoader
 
-static BOOL Debugging = 1;
+static BOOL Debugging = 0;
 
 - (id)initWithUrlString:(NSString*)urlString andFilePath:(NSString *)filePath andDataArray:(NSMutableArray *)array
 {

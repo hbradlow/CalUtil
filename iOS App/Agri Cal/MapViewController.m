@@ -166,6 +166,17 @@ static float LongitudeDelta = 0.015;
 - (void)loadBuildings:(BOOL)forced
 {
     void (^block) (NSMutableArray*) = ^(NSMutableArray* arr){
+        [self.buildingAnnotations removeAllObjects];
+        [arr sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *a, NSDictionary *b){
+            NSInteger aId = [[a objectForKey:@"id"] integerValue];
+            NSInteger bId = [[b objectForKey:@"id"] integerValue];
+            if (aId < bId)
+                return NSOrderedAscending;
+            if (aId > bId)
+                return NSOrderedDescending;
+            else
+                return NSOrderedSame;
+        }];
         for (NSDictionary *currentLocation in arr)
         {
             NSNumber *latitude = [currentLocation objectForKey:@"latitude"];
@@ -173,6 +184,7 @@ static float LongitudeDelta = 0.015;
             NSString *info = [currentLocation objectForKey:@"description"];
             NSString *title = [currentLocation objectForKey:@"name"];
             NSString *imageURL = [currentLocation objectForKey:@"image_url"];
+            NSString *identifier = [currentLocation objectForKey:@"id"];
             
             if (latitude != nil && (NSNull*)latitude != [NSNull null])
             {
@@ -183,9 +195,11 @@ static float LongitudeDelta = 0.015;
                                                                                      andTimes:nil
                                                                                       andInfo:info];
                 [self.buildingAnnotations addObject:annotation];
-                NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]] objectForKey:@"built"];
+                annotation.identifier = [NSNumber numberWithInteger:[identifier integerValue]];
+                NSString *timeString = [[arr objectAtIndex:[annotation.identifier integerValue]-1] objectForKey:@"built"];
                 annotation.times = @[@{@"span" : timeString}];
                 annotation.type = kBuildingType;
+                NSLog(@"%@", annotation.times);
             }
         }
         dispatch_sync(dispatch_get_main_queue(), ^{
