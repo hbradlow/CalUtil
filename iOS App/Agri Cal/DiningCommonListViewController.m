@@ -249,8 +249,10 @@
         times = menu.lateNightTime;
     if (times && !((NSNull*)times == [NSNull null]))
         label.text = [NSString stringWithFormat:@"%@: %@", [self.sectionTitles objectAtIndex:section], times];
+    else if (section == 0)
+        label.text = [NSString stringWithFormat:@"%@: 7:00 a.m. - 10:00 p.m.", [self.sectionTitles objectAtIndex:section]];
     else
-        label.text = [NSString stringWithFormat:@"%@: N/A", [self.sectionTitles objectAtIndex:section]];
+        label.text = [NSString stringWithFormat:@"%@: 11:00 p.m. - 2:00 p.m.", [self.sectionTitles objectAtIndex:section]];
     [view addSubview:label];
     return view;
 }

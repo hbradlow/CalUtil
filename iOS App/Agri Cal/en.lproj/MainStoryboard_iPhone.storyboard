@@ -238,7 +238,7 @@
                             <rect key="frame" x="5" y="7" width="310" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
-                                <segment title="Cross"/>
+                                <segment title="Xroads"/>
                                 <segment title="CKC"/>
                                 <segment title="Cafè 3"/>
                                 <segment title="Foothill"/>

@@ -134,7 +134,10 @@
     if (indexPath.section == 0)
         currentClass = self.currentClass;
     else
-        currentClass = [self.sections objectAtIndex:indexPath.section-1];
+    {
+        if ([self.sections count])
+            currentClass = [self.sections objectAtIndex:indexPath.section-1];
+    }
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Title";
