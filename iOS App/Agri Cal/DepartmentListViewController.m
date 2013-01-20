@@ -217,7 +217,7 @@ static NSString *alphabet = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){
             [self.refreshControl endRefreshing];
-            [self switchSession:self.sessionSelector];
+            [self.tableView reloadData];
         });
     };
     
@@ -487,13 +487,6 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.waitlistLoaderFa save];
-    [self.waitlistLoaderSu save];
-    [self.waitlistLoaderSp save];
-    [self.classLoaderFa save];
-    [self.classLoaderSu save];
-    [self.classLoaderSp save];
-    [self.departmentLoader save];
     [super viewWillDisappear:animated];
     
 }
@@ -503,6 +496,7 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
     [super viewDidUnload];
 }
 - (IBAction)switchSession:(id)sender {
+    [self refresh];
     [self.tableView reloadData];
 }
 @end

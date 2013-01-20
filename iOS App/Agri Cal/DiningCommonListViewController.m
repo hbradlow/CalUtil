@@ -362,7 +362,6 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.menuLoader save];
     [super viewWillDisappear:animated];
 }
 

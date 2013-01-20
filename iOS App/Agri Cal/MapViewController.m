@@ -594,12 +594,6 @@ static float LongitudeDelta = 0.015;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self.busLoader save];
-        [self.libraryLoader save];
-        [self.cal1Loader save];
-        [self.buildingLoader save];
-    });
     [super viewWillDisappear:animated];
 }
 

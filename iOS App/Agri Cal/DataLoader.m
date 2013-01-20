@@ -113,22 +113,25 @@ static BOOL Debugging = 0;
         }
         else
         {
+            [self save];
             self.lastUpdate = [NSDate date];
         }
     });
 }
 
 - (void)save{
-    if (self.shouldSave)
-    {
-        NSLog(@"dataLoader saving %@", self.filePath);
-        NSMutableData *data = [[NSMutableData alloc]init];
-        NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-        [archiver encodeObject:self.dataArray forKey:@"filedata"];
-        [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
-        [archiver finishEncoding];
-        [data writeToFile:self.filePath atomically:YES];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (self.shouldSave)
+        {
+            NSLog(@"dataLoader saving %@", self.filePath);
+            NSMutableData *data = [[NSMutableData alloc]init];
+            NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+            [archiver encodeObject:self.dataArray forKey:@"filedata"];
+            [archiver encodeObject:self.lastUpdate forKey:@"lastupdate"];
+            [archiver finishEncoding];
+            [data writeToFile:self.filePath atomically:YES];
+        }
+    });
 }
 
 @end

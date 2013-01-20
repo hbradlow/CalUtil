@@ -66,9 +66,13 @@
         dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
     };
     if (forced)
+    {
+        [self.classes removeAllObjects];
         [self.courseLoader forceLoadWithCompletionBlock:block withData:nil];
+    }
     else
     {
+        [self.classes removeAllObjects];
         [self.courseLoader loadDataWithCompletionBlock:block];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
@@ -112,7 +116,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"number of rows %i", [self.classes count]);
     if (tableView == self.tableView)
         return MAX([self.classes count], 1);
     else
@@ -217,7 +220,6 @@ shouldReloadTableForSearchScope:(NSInteger)searchOption
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self.courseLoader save];
     [super viewWillDisappear:animated];
 }
 

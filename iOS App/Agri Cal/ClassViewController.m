@@ -28,7 +28,7 @@
                                                  andFilePath:nil
                                                 andDataArray:nil];
     self.classLoader.shouldSave = NO;
-    self.sectionLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/section/?format=json&class=%@", self.currentClass.uniqueID]
+    self.sectionLoader = [[DataLoader alloc] initWithUrlString:[NSString stringWithFormat:@"/app_data/section/?format=json&course=%@", self.currentClass.uniqueID]
                                                    andFilePath:nil
                                                   andDataArray:self.sections];
     self.sectionLoader.shouldSave = NO;
@@ -62,7 +62,6 @@
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             [self.sections addObject:newClass];
-            NSLog(@"section %@",newClass);
         }
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
@@ -74,7 +73,10 @@
         [self.tableView reloadData];
     }
     else
+    {
+        [self.sections removeAllObjects];
         [self.sectionLoader forceLoadWithCompletionBlock:block withData:nil];
+    }
 }
 - (void)loadClassForce:(BOOL)forced
 {
@@ -96,7 +98,6 @@
             newClass.ccn = [currentClass objectForKey:@"ccn"];
             newClass.finalExamGroup = [currentClass objectForKey:@"exam_group"];
             self.currentClass = newClass;
-            NSLog(@"class %@",newClass);
         }
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^(){[self.refreshControl endRefreshing];[self.tableView reloadData];});
