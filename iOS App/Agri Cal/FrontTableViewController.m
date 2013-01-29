@@ -44,7 +44,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
     [self.refreshControl endRefreshing];
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
