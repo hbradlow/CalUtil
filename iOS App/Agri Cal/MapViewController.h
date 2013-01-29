@@ -8,7 +8,7 @@
 #import "FrontViewController.h"
 #import "DataLoader.h"
 
-@interface MapViewController : FrontViewController  <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface MapViewController : FrontViewController  <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 
 // The main map view
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -37,6 +37,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *busButton;
 @property (weak, nonatomic) IBOutlet UIButton *calButton;
 @property (weak, nonatomic) IBOutlet UIButton *libButton;
+
+@property (strong, nonatomic) UIPanGestureRecognizer *dragRecognizer;
 
 @property CLLocationCoordinate2D previousUserLocation;
 

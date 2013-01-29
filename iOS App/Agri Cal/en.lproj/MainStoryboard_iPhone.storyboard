@@ -24,7 +24,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" id="Fia-5b-dCd" customClass="SelectorBgView">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" id="Fia-5b-dCd" customClass="SelectorBgView">
                                 <rect key="frame" x="320" y="-1" width="206" height="417"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <subviews>
@@ -47,7 +47,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Aaj-JB-9KS">
-                                        <rect key="frame" x="-4" y="140.5" width="214" height="138"/>
+                                        <rect key="frame" x="-4" y="139.5" width="214" height="140"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
@@ -122,7 +122,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Phn-on-uar">
-                                <rect key="frame" x="305" y="349" width="16" height="46"/>
+                                <rect key="frame" x="304" y="349" width="16" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" image="key_display_button.png">

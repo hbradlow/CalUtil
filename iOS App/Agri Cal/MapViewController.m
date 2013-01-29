@@ -78,6 +78,8 @@ static float LongitudeDelta = 0.015;
     self.annotationSelector.segmentedControlStyle = UISegmentedControlStyleBar;
     [self.annotationSelector setBackgroundImage:segmentUnselected forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [self.annotationSelector setBackgroundImage:segmentSelected forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    
+    self.dragRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanFrom:)];
 }
 
 - (void)setRightBarButton
@@ -404,6 +406,41 @@ static float LongitudeDelta = 0.015;
     }
     return nil;
 }
+float totalTranslation = 0;
+- (void)handlePanFrom:(UIPanGestureRecognizer*)recognizer {
+    CGPoint translation = [recognizer translationInView:recognizer.view];
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+    } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CGRect annotationFrame = self.annotationSelectionView.frame;
+        if (annotationFrame.origin.x + translation.x >= 320-annotationFrame.size.width && annotationFrame.origin.x + translation.x < 320)
+        {
+        for (UIView *subview in self.view.subviews)
+        {
+            CGRect frame = subview.frame;
+            frame.origin.x += translation.x;
+            subview.frame = frame;
+        }
+        totalTranslation += translation.x;
+        }
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        CGRect initial = self.annotationSelectionView.frame;
+        for (UIView *subview in self.view.subviews)
+        {
+            CGRect frame = subview.frame;
+            if (self.annotationSelectionView.frame.origin.x < 240)
+                frame.origin.x -= totalTranslation;
+            else
+            {
+                frame.origin.x += 320 - initial.origin.x;
+            }
+            subview.frame = frame;
+        }
+        totalTranslation = 0;
+        [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view];        
+        [self.view removeGestureRecognizer:recognizer];
+    }
+    [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view];
+}
 
 - (void)displayInfo:(id)sender{
     if ([self.busStopAnnotations containsObject:self.selectedAnnotation])
@@ -426,18 +463,19 @@ static float LongitudeDelta = 0.015;
                           delay: 0
                         options: UIViewAnimationOptionAllowUserInteraction
                      animations:^{
+                         CGRect initial = self.annotationSelectionView.frame;
                          for (UIView *subview in self.view.subviews)
                          {
                          CGRect frame = subview.frame;
                          if (isNotDisplayed)
                          {
-                            self.annotationSelectionView.hidden = NO;
                              frame.origin.x -= self.annotationSelectionView.frame.size.width;
+                             [self.view addGestureRecognizer:self.dragRecognizer];
                          }
                          else
                          {
-                             self.annotationSelectionView.hidden = YES;
-                             frame.origin.x += self.annotationSelectionView.frame.size.width;
+                             frame.origin.x += 320 - initial.origin.x;
+                             [self.view removeGestureRecognizer:self.dragRecognizer];
                          }
                          subview.frame = frame;
                          }
