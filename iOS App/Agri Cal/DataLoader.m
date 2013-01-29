@@ -121,7 +121,7 @@ static BOOL Debugging = 0;
 
 - (void)save{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (self.shouldSave)
+        if (self.shouldSave && self.filePath)
         {
             NSLog(@"dataLoader saving %@", self.filePath);
             NSMutableData *data = [[NSMutableData alloc]init];

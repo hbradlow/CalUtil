@@ -25,7 +25,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGContextSetFillColorWithColor(context, [self.backgroundColor CGColor]);
+    CGContextSetFillColorWithColor(context, [[UIColor colorWithHue:0 saturation:0 brightness:0.98 alpha:1] CGColor]);
     CGContextFillRect(context, self.bounds);
     
     CGRect separator = CGRectMake(self.bounds.origin.x,
