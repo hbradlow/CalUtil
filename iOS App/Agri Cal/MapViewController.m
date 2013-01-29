@@ -417,20 +417,30 @@ static float LongitudeDelta = 0.015;
 
 - (IBAction)displayAnnotationSelector:(id)sender
 {
-    CGRect frame = self.view.frame;
-    
-    [UIView beginAnimations:@"animate_map" context:nil];
-    if (self.view.frame.origin.x == 0)
-    {
-        frame.origin.x -= self.annotationSelectionView.frame.size.width;
-    }
-    else
-    {
-        frame.origin.x += self.annotationSelectionView.frame.size.width;
-    }
-    
-    self.view.frame = frame;
-    [UIView commitAnimations];
+    [self.navigationController.view setNeedsDisplay];
+    [self.view setNeedsDisplay];
+    BOOL isNotDisplayed = self.annotationSelectionView.frame.origin.x == 320;
+    [UIView animateWithDuration:.2
+                          delay: 0
+                        options: UIViewAnimationOptionAllowUserInteraction
+                     animations:^{
+                         for (UIView *subview in self.view.subviews)
+                         {
+                         CGRect frame = subview.frame;
+                         if (isNotDisplayed)
+                         {
+                             frame.origin.x -= self.annotationSelectionView.frame.size.width;
+                         }
+                         else
+                         {
+                             frame.origin.x += self.annotationSelectionView.frame.size.width;
+                         }
+                         subview.frame = frame;
+                         }
+                     }
+                     completion:^(BOOL completed) {
+                     }
+     ];
 }
 
 - (IBAction)refresh:(id)sender {
@@ -482,11 +492,11 @@ static float LongitudeDelta = 0.015;
 
 - (IBAction)selectAnnotations:(id)sender
 {
-    NSLog(@"here");
     self.libButton.selected = NO;
     self.busButton.selected = NO;
     self.calButton.selected = NO;
     [sender setSelected:YES];
+    [self displayAnnotationSelector:nil];
     if (sender == self.busButton)
     {
         [self.annotationSelector setSelectedSegmentIndex:0];
