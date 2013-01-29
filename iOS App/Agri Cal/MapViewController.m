@@ -429,16 +429,19 @@ static float LongitudeDelta = 0.015;
                          CGRect frame = subview.frame;
                          if (isNotDisplayed)
                          {
+                            self.annotationSelectionView.hidden = NO;
                              frame.origin.x -= self.annotationSelectionView.frame.size.width;
                          }
                          else
                          {
+                             self.annotationSelectionView.hidden = YES;
                              frame.origin.x += self.annotationSelectionView.frame.size.width;
                          }
                          subview.frame = frame;
                          }
                      }
                      completion:^(BOOL completed) {
+                         [self.navigationController.view setNeedsDisplay];
                      }
      ];
 }
