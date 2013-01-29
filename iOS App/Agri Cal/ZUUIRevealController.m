@@ -502,7 +502,8 @@
 	
 	if (animated)
 	{
-		[UIView animateWithDuration:0.15f delay:0.0f options:UIViewAnimationCurveEaseOut animations:^
+		[UIView animateWithDuration:0.15f delay:0.0f options:UIViewAnimationOptionCurveEaseOut
+                         animations:^
          {
              CGRect offsetRect = CGRectOffset(self.frontView.frame, xSwapOffset, 0.0f);
              self.frontView.frame = offsetRect;
@@ -526,7 +527,7 @@
              [self _addFrontViewControllerToHierarchy:newFrontViewController];
              [newFrontViewController viewDidAppear:animated];
 			 
-             [UIView animateWithDuration:0.225f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^
+             [UIView animateWithDuration:0.225f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^
               {
                   CGRect offsetRect = CGRectMake(0.0f, 0.0f, self.frontView.frame.size.width, self.frontView.frame.size.height);
                   self.frontView.frame = offsetRect;

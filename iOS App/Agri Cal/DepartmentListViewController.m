@@ -5,7 +5,6 @@
 //  Created by Kevin Lindkvist on 9/6/12.
 //
 //
-#warning Add abbreviation to departments
 #import "DepartmentListViewController.h"
 #import "ClassListViewController.h"
 #import "ClassViewController.h"

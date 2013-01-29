@@ -6,8 +6,6 @@
 
 @implementation MapViewController
 
-static NSString *OffCampus = @"Off-Campus";
-static NSString *OnCampus = @"On-campus by Cal Dining";
 static float CenterOfCampusLat = 37.870218;
 static float CenterOfCampusLong = -122.259481;
 static float LatitudeDelta = 0.015;
@@ -417,6 +415,24 @@ static float LongitudeDelta = 0.015;
     }
 }
 
+- (IBAction)displayAnnotationSelector:(id)sender
+{
+    CGRect frame = self.view.frame;
+    
+    [UIView beginAnimations:@"animate_map" context:nil];
+    if (self.view.frame.origin.x == 0)
+    {
+        frame.origin.x -= self.annotationSelectionView.frame.size.width;
+    }
+    else
+    {
+        frame.origin.x += self.annotationSelectionView.frame.size.width;
+    }
+    
+    self.view.frame = frame;
+    [UIView commitAnimations];
+}
+
 - (IBAction)refresh:(id)sender {
     NSInteger index = self.annotationSelector.selectedSegmentIndex;
     UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 32, 30)];
@@ -464,8 +480,32 @@ static float LongitudeDelta = 0.015;
     }
 }
 
+- (IBAction)selectAnnotations:(id)sender
+{
+    NSLog(@"here");
+    self.libButton.selected = NO;
+    self.busButton.selected = NO;
+    self.calButton.selected = NO;
+    [sender setSelected:YES];
+    if (sender == self.busButton)
+    {
+        [self.annotationSelector setSelectedSegmentIndex:0];
+    }
+    else if (sender == self.calButton)
+    {
+        [self.annotationSelector setSelectedSegmentIndex:1];
+    }
+    else
+    {
+        [self.annotationSelector setSelectedSegmentIndex:2];
+    }
+    
+    [self switchAnnotations:nil];
+}
+
 - (IBAction)switchAnnotations:(id)sender{
-    NSInteger selectedIndex = [self.annotationSelector selectedSegmentIndex];
+    NSInteger selectedIndex = self.annotationSelector.selectedSegmentIndex;
+    
     if (selectedIndex == 0)
     {
         [self.mapView removeAnnotations:self.calCardAnnotations];
@@ -602,7 +642,6 @@ static float LongitudeDelta = 0.015;
     [self setWebView:nil];
     [self setNavigationBar:nil];
     [self setSearchBar:nil];
-    [self setMapKeyImageView:nil];
     [self setInfoButton:nil];
     [self setRefreshButton:nil];
     [super viewDidUnload];

@@ -56,7 +56,7 @@
     
     [[UISearchBar appearance] setTintColor:[UIColor colorWithWhite:0.8 alpha:1]];
     [[UISearchBar appearance] setBackgroundImage:[UIImage imageNamed:@"searchbar"]];
-    [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"empty"] forState:UIBarMetricsDefault];
+    [[UISearchBar appearance] setSearchFieldBackgroundImage:[UIImage imageNamed:@"empty"] forState:UIControlStateNormal];
     
     NSDictionary *attributes =
     [NSDictionary dictionaryWithObjectsAndKeys:

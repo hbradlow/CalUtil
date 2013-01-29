@@ -321,7 +321,7 @@
                                                      returningResponse:&response
                                                                  error:&error];
         
-        NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        NSMutableDictionary *dict = [NSJSONSerialization JSONObjectWithData:receivedData options:0 error:nil];
         
         if (dict)
         {

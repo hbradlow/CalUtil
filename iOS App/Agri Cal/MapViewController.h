@@ -32,8 +32,11 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
-@property (weak, nonatomic) IBOutlet UIButton *mapKeyImageView;
-@property (strong, nonatomic) IBOutlet InfoView *infoView;
+@property (weak, nonatomic) IBOutlet UIButton *mapKeyButton;
+@property (strong, nonatomic) IBOutlet UIView *annotationSelectionView;
+@property (weak, nonatomic) IBOutlet UIButton *busButton;
+@property (weak, nonatomic) IBOutlet UIButton *calButton;
+@property (weak, nonatomic) IBOutlet UIButton *libButton;
 
 @property CLLocationCoordinate2D previousUserLocation;
 
@@ -46,6 +49,7 @@
 @property (nonatomic, strong) DataLoader *calTimeLoader;
 
 - (IBAction)switchAnnotations:(id)sender;
+- (IBAction)displayAnnotationSelector:(id)sender;
 - (void)displayInfo:(id)sender;
 - (IBAction)refresh:(id)sender;
 - (IBAction)centerOnUser;

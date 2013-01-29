@@ -12,7 +12,6 @@
             andFilePath:(NSString*)filePath
            andDataArray:(NSMutableArray*)array;
 - (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block;
-- (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block;
 - (void)loadDataWithCompletionBlock:(void (^) (NSMutableArray*))block
                            withData:(NSData*)data;
 - (void)forceLoadWithCompletionBlock:(void (^) (NSMutableArray*))block

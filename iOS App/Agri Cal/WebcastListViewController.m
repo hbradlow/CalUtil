@@ -50,7 +50,7 @@
                                                  returningResponse:&response
                                                              error:&error];
             
-            NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+            NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:0 error:nil];
             
             NSArray *arr = [receivedDict objectForKey:@"objects"];
             

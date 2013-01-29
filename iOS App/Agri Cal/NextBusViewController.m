@@ -80,7 +80,7 @@
         NSData *receivedData = [NSURLConnection sendSynchronousRequest:jsonRequest
                                                      returningResponse:&response
                                                                  error:&error];
-        NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:nil];
+        NSArray *arr = [NSJSONSerialization JSONObjectWithData:receivedData options:0 error:nil];
         dispatch_queue_t updateUIQueue = dispatch_get_main_queue();
         dispatch_async(updateUIQueue, ^{
             NSString *subtitle = [arr componentsJoinedByString:@", "];

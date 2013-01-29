@@ -98,7 +98,7 @@ static BOOL Debugging = 0;
         {
             return;
         }
-        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:NSJSONWritingPrettyPrinted error:&error];
+        NSDictionary *receivedDict = [NSJSONSerialization JSONObjectWithData:receivedData options:0 error:&error];
         if (error)
         {
             return;
