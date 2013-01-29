@@ -72,7 +72,7 @@
     }
     else
     {
-        [self.classes removeAllObjects];
+         [self.classes removeAllObjects];
         [self.courseLoader loadDataWithCompletionBlock:block];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];

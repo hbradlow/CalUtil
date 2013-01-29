@@ -318,7 +318,7 @@ static float LongitudeDelta = 0.015;
 - (void)centerOnUser
 {
     MKUserLocation *aUserLocation = self.mapView.userLocation;
-    if (aUserLocation.location.horizontalAccuracy < 0)
+    if (aUserLocation.location.horizontalAccuracy < 0 || aUserLocation.coordinate.latitude < 0)
         return;
     MKCoordinateRegion region;
     MKCoordinateSpan span;
