@@ -386,6 +386,8 @@ static float LongitudeDelta = 0.015;
             NSString *timeString = [[((Cal1CardAnnotation*)annotation).times objectAtIndex:0] objectForKey:@"span"];
             if ([timeString isEqualToString:@"Closed"])
                 annotationView.pinColor = MKPinAnnotationColorRed;
+            else
+                annotationView.pinColor = MKPinAnnotationColorGreen;
         }
         else
             annotationView.pinColor = MKPinAnnotationColorGreen;
